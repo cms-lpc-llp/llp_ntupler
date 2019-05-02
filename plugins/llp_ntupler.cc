@@ -457,6 +457,26 @@ void llp_ntupler::enableMuonSystemBranches()
     llpTree->Branch("cscT",cscT,"cscT[nCsc]"); 
     llpTree->Branch("cscChi2",cscChi2,"cscChi2[nCsc]");
 
+    llpTree->Branch("nRpc",&nRpc,"nRpc/I"); 
+    llpTree->Branch("rpcPhi",rpcPhi,"rpcPhi[nRpc]");
+    llpTree->Branch("rpcEta",rpcEta,"rpcEta[nRpc]"); 
+    llpTree->Branch("rpcX",rpcX,"rpcX[nRpc]"); 
+    llpTree->Branch("rpcY",rpcY,"rpcY[nRpc]"); 
+    llpTree->Branch("rpcZ",rpcZ,"rpcZ[nRpc]"); 
+    llpTree->Branch("rpcT",rpcT,"rpcT[nRpc]"); 
+    llpTree->Branch("rpcTError",rpcTError,"rpcTError[nRpc]");
+
+    llpTree->Branch("nDt",&nDt,"nDt/I"); 
+    llpTree->Branch("dtPhi",dtPhi,"dtPhi[nDt]");
+    llpTree->Branch("dtEta",dtEta,"dtEta[nDt]"); 
+    llpTree->Branch("dtX",dtX,"dtX[nDt]"); 
+    llpTree->Branch("dtY",dtY,"dtY[nDt]"); 
+    llpTree->Branch("dtZ",dtZ,"dtZ[nDt]"); 
+    llpTree->Branch("dtDirX",dtDirX,"dtDirX[nDt]"); 
+    llpTree->Branch("dtDirY",dtDirY,"dtDirY[nDt]"); 
+    llpTree->Branch("dtDirZ",dtDirZ,"dtDirZ[nDt]"); 
+    llpTree->Branch("dtT",dtT,"dtT[nDt]"); 
+    llpTree->Branch("dtTError",dtTError,"dtTError[nDt]");
 };
 
 void llp_ntupler::enableEcalRechitBranches()
@@ -995,6 +1015,31 @@ void llp_ntupler::resetMuonSystemBranches()
       cscT[i] = 0.0;
       cscChi2[i] = 0.0;
     }
+    nRpc = 0;
+    for ( int i = 0; i < OBJECTARRAYSIZE; i++)
+    {
+      rpcPhi[i] = 0.0;
+      rpcEta[i] = 0.0;
+      rpcX[i] = 0.0;
+      rpcY[i] = 0.0;
+      rpcZ[i] = 0.0;
+      rpcT[i] = 0.0;
+      rpcTError[i] = 0.0;
+    }
+    nDt = 0;
+    for ( int i = 0; i < OBJECTARRAYSIZE; i++)
+    {
+      dtPhi[i] = 0.0;
+      dtEta[i] = 0.0;
+      dtX[i] = 0.0;
+      dtY[i] = 0.0;
+      dtZ[i] = 0.0;
+      dtDirX[i] = 0.0;
+      dtDirY[i] = 0.0;
+      dtDirZ[i] = 0.0;
+      dtT[i] = 0.0;
+      dtTError[i] = 0.0;
+    }
     return;
 };
 void llp_ntupler::resetJetBranches()
@@ -1218,32 +1263,34 @@ void llp_ntupler::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
 
     //resetting output tree branches
     resetBranches();
-    cout << "here1\n";
+    //cout << "here1\n";
     fillEventInfo(iEvent);
-    cout << "here2\n";
+    //cout << "here2\n";
     fillPVAll();
-    cout << "here3\n";
+    //cout << "here3\n";
     fillMuons(iEvent);
-    cout << "here5\n";
+    //cout << "here4\n";
+    fillMuonSystem(iEvent, iSetup);
+    //cout << "here5\n";
     fillElectrons(iEvent);
-    cout << "here6\n";
+    //cout << "here6\n";
     fillPhotons(iEvent, iSetup);
-    cout << "here7\n";
+    //cout << "here7\n";
     fillTaus();
-    cout << "here8\n";
+    //cout << "here8\n";
     fillJets(iSetup);
-    cout << "here9\n";
+    //cout << "here9\n";
     fillMet(iEvent);
-    cout << "here10\n";
+    //cout << "here10\n";
     if ( enableTriggerInfo_ ) fillTrigger( iEvent );
-    cout << "here10\n";
+    //cout << "here10\n";
     if (!isData) {
 	fillPileUp();
 	fillMC();
 	fillGenParticles();
     }
 
-    cout << "here13\n";
+    // cout << "here13\n";
     llpTree->Fill();
 };
 
@@ -1369,6 +1416,92 @@ bool llp_ntupler::fillPileUp()
     return true;
 };
 
+bool llp_ntupler::fillMuonSystem(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+{
+    edm::ESHandle<CSCGeometry> cscG;
+    edm::ESHandle<DTGeometry> dtG;
+    edm::ESHandle<RPCGeometry> rpcG;
+
+    iSetup.get<MuonGeometryRecord>().get(cscG); 
+    iSetup.get<MuonGeometryRecord>().get(dtG); 
+    iSetup.get<MuonGeometryRecord>().get(rpcG); 
+
+    for (const CSCSegment cscSegment : *cscSegments) {
+	float globPhi   = 0.;
+	float globX = 0.;
+	float globY = 0.;
+	float globZ = 0.;
+	float globEta = 0.;
+	CSCDetId id  = (CSCDetId)(cscSegment).cscDetId();
+	LocalPoint segPos = (cscSegment).localPosition();
+	const CSCChamber* cscchamber = cscG->chamber(id);
+	if (cscchamber) {
+	    GlobalPoint globalPosition = cscchamber->toGlobal(segPos);
+	    globPhi   = globalPosition.phi();
+	    globEta   = globalPosition.eta();
+	    globX = globalPosition.x();
+	    globY = globalPosition.y();
+	    globZ = globalPosition.z();
+	    // globR = pow(globX*globX+globY*globY,0.5);
+	    cscNRecHits[nCsc] = cscSegment.nRecHits();
+	    cscX[nCsc] = globX;
+	    cscY[nCsc] = globY;
+	    cscZ[nCsc] = globZ;
+	    cscPhi[nCsc] = globPhi;
+	    cscEta[nCsc] = globEta;
+	    cscT[nCsc] = cscSegment.time();
+	    cscChi2[nCsc] = cscSegment.chi2();
+	    nCsc++;
+	}
+    }
+    for (const RPCRecHit rpcRecHit : *rpcRecHits){
+	LocalPoint  rpcRecHitLocalPosition       = rpcRecHit.localPosition();
+	// LocalError  segmentLocalDirectionError = iDT->localDirectionError();
+	DetId geoid = rpcRecHit.geographicalId();
+	RPCDetId rpcdetid = RPCDetId(geoid);
+	const RPCChamber * rpcchamber = rpcG->chamber(rpcdetid);
+	if (rpcchamber) {
+	    GlobalPoint globalPosition = rpcchamber->toGlobal(rpcRecHitLocalPosition);
+	    rpcX[nRpc] = globalPosition.x();
+	    rpcY[nRpc] = globalPosition.y();
+	    rpcZ[nRpc] = globalPosition.z();
+	    rpcPhi[nRpc] = globalPosition.phi();
+	    rpcEta[nRpc] = globalPosition.eta();
+	    rpcT[nRpc] = rpcRecHit.time();
+	    rpcTError[nRpc] = rpcRecHit.timeError();
+	    nRpc++;
+	}
+    }      
+    for(DTRecSegment4D dtSegment : *dtSegments){
+	LocalPoint  segmentLocalPosition       = dtSegment.localPosition();
+	LocalVector segmentLocalDirection      = dtSegment.localDirection();
+	// LocalError  segmentLocalPositionError  = iDT->localPositionError();
+	// LocalError  segmentLocalDirectionError = iDT->localDirectionError();
+	DetId geoid = dtSegment.geographicalId();
+	DTChamberId dtdetid = DTChamberId(geoid);
+	const DTChamber * dtchamber = dtG->chamber(dtdetid);
+	if (dtchamber) {
+	    GlobalPoint globalPosition = dtchamber->toGlobal(segmentLocalPosition);
+	    GlobalVector globalDirection = dtchamber->toGlobal(segmentLocalDirection);
+
+	    dtPhi[nDt] = globalPosition.phi();
+	    dtEta[nDt] = globalPosition.eta();
+	    dtX[nDt] = globalPosition.x();
+	    dtY[nDt] = globalPosition.y();
+	    dtZ[nDt] = globalPosition.z();
+	    dtDirX[nDt] = globalDirection.x();
+	    dtDirY[nDt] = globalDirection.y();
+	    dtDirZ[nDt] = globalDirection.z();
+	    dtT[nDt] = 0;//dtSegment.time();
+	    dtTError[nDt] = -1;//dtSegment.timeError();
+	    nDt++;
+	}
+
+    }
+
+
+    return true;
+}
 
 bool llp_ntupler::fillMuons(const edm::Event& iEvent)
 {
@@ -2278,14 +2411,6 @@ bool llp_ntupler::fillElectrons(const edm::Event& iEvent)
 
 		edm::ESHandle<CaloGeometry> geoHandle;
 		iSetup.get<CaloGeometryRecord>().get(geoHandle);
-
-		edm::ESHandle<CSCGeometry> cscG;
-		edm::ESHandle<DTGeometry> dtG;
-		edm::ESHandle<RPCGeometry> rpcG;
-
-		iSetup.get<MuonGeometryRecord>().get(cscG); 
-		iSetup.get<MuonGeometryRecord>().get(dtG); 
-		iSetup.get<MuonGeometryRecord>().get(rpcG); 
 
 
 		const CaloSubdetectorGeometry *barrelGeometry = geoHandle->getSubdetectorGeometry(DetId::Ecal, EcalBarrel);

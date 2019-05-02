@@ -102,6 +102,7 @@ using namespace std;
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "DataFormats/DTRecHit/interface/DTRecHitCollection.h"
 #include "DataFormats/DTRecHit/interface/DTRecSegment4DCollection.h"
+#include "DataFormats/RPCRecHit/interface/RPCRecHit.h"
 #include "DataFormats/RPCRecHit/interface/RPCRecHitCollection.h"
 
 //ROOT includes
@@ -186,6 +187,7 @@ public:
   bool fillPVAll();
   bool fillPileUp();
   bool fillMuons(const edm::Event& iEvent);
+  bool fillMuonSystem(const edm::Event& iEvent, const edm::EventSetup& iSetup);
   bool fillElectrons(const edm::Event& iEvent);
   bool fillTaus();
   bool fillPhotons(const edm::Event& iEvent, const edm::EventSetup& iSetup);
@@ -645,6 +647,27 @@ protected:
   float cscNRecHits[OBJECTARRAYSIZE];
   float cscT[OBJECTARRAYSIZE];
   float cscChi2[OBJECTARRAYSIZE];
+
+  int nRpc;
+  float rpcPhi[OBJECTARRAYSIZE];
+  float rpcEta[OBJECTARRAYSIZE];
+  float rpcX[OBJECTARRAYSIZE];
+  float rpcY[OBJECTARRAYSIZE];
+  float rpcZ[OBJECTARRAYSIZE];
+  float rpcT[OBJECTARRAYSIZE];
+  float rpcTError[OBJECTARRAYSIZE];
+
+  int nDt;
+  float dtPhi[OBJECTARRAYSIZE];
+  float dtEta[OBJECTARRAYSIZE];
+  float dtX[OBJECTARRAYSIZE];
+  float dtY[OBJECTARRAYSIZE];
+  float dtZ[OBJECTARRAYSIZE];
+  float dtDirX[OBJECTARRAYSIZE];
+  float dtDirY[OBJECTARRAYSIZE];
+  float dtDirZ[OBJECTARRAYSIZE];
+  float dtT[OBJECTARRAYSIZE];
+  float dtTError[OBJECTARRAYSIZE];
 
   //AK4 Jets
   int nJets;
