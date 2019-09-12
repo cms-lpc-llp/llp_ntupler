@@ -1499,13 +1499,13 @@ void llp_ntupler::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   fillEventInfo(iEvent);
   // fillPVAll();
   // fillPVTracks();
-  fillMuons(iEvent);
+  // fillMuons(iEvent);
   fillMuonSystem(iEvent, iSetup);
-  fillElectrons(iEvent);
+  // fillElectrons(iEvent);
   // fillPhotons(iEvent, iSetup);
   // fillTaus();
   fillJets(iSetup);
-  fillMet(iEvent);
+  // fillMet(iEvent);
   if ( enableTriggerInfo_ ) fillTrigger( iEvent );
   if ( enableCaloJet_ ) fillCaloJets( iSetup );
   if (!isData) {
@@ -1690,7 +1690,7 @@ bool llp_ntupler::fillMuonSystem(const edm::Event& iEvent, const edm::EventSetup
     iSetup.get<MuonGeometryRecord>().get(dtG);
     iSetup.get<MuonGeometryRecord>().get(rpcG);
 
-    for (const CSCSegment cscSegment : *cscSegments) {
+  for (const CSCSegment cscSegment : *cscSegments) {
 	float globPhi   = 0.;
 	float globX = 0.;
 	float globY = 0.;
@@ -3378,12 +3378,22 @@ bool llp_ntupler::fillGenParticles(){
 
   for(size_t i=0; i<genParticles->size();i++)
   {
+    // if ((*genParticles)[i].numberOfMothers() > 0 &&(*genParticles)[i].pdgId() != 0){
+
+    //   const reco::Candidate* firstMotherWithDifferentID = findFirstMotherWithDifferentID(&(*genParticles)[i]);
+    //   if (firstMotherWithDifferentID)
+    //   {
+    //     // gParticleMotherId[i] = firstMotherWithDifferentID->pdgId();
+    //     std::cout<<(*genParticles)[i].pdgId()<<", "<<(*genParticles)[i].status()<<", "<<((*genParticles)[i].mother(0))->pdgId()<<", "<<firstMotherWithDifferentID->pdgId()<<","<<(*genParticles)[i].energy()<<std::endl;
+    //   }
+    // }
     if( (abs((*genParticles)[i].pdgId()) >= 1 && abs((*genParticles)[i].pdgId()) <= 6 && ( (*genParticles)[i].status() < 30 ))
        || (abs((*genParticles)[i].pdgId()) >= 11 && abs((*genParticles)[i].pdgId()) <= 16)
        || (abs((*genParticles)[i].pdgId()) == 21 && (*genParticles)[i].status() < 30)
        || (abs((*genParticles)[i].pdgId()) >= 22 && abs((*genParticles)[i].pdgId()) <= 25 && ( (*genParticles)[i].status() < 30))
        || (abs((*genParticles)[i].pdgId()) >= 32 && abs((*genParticles)[i].pdgId()) <= 42)
        || (abs((*genParticles)[i].pdgId()) >= 1000001 && abs((*genParticles)[i].pdgId()) <= 1000039)
+       || (abs((*genParticles)[i].pdgId()) >= 42 && abs((*genParticles)[i].pdgId()) <= 9999999 )
        || (abs((*genParticles)[i].pdgId()) == 9000006 || abs((*genParticles)[i].pdgId()) == 9000007))
        {
          if ((*genParticles)[i].pt()>pt_cut){
