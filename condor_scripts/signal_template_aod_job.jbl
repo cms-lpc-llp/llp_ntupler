@@ -1,0 +1,29 @@
+Universe = vanilla
+Executable = signal_template_aod_job.sh
+
+Arguments = 10
+
+#The logs directory must exist
+Log = logs/test_job.$(Cluster).log
+Output = logs/test_job.out.$(Cluster).$(Process)
+Error = logs/test_job.err.$(Cluster).$(Process)
+
+Requirements=(TARGET.OpSysAndVer=="CentOS7")
+
+#This is necessary to choose either rhel7 (slc7) or rhel6 (slc6) as needed
++RunAsOwner = True
++InteractiveUser = true
++SingularityImage = "/cvmfs/singularity.opensciencegrid.org/bbockelm/cms:rhel7"
++SingularityBindCVMFS = True
+run_as_owner = True
+
+#Provide information on proxy in order to access storage
+x509userproxy = $ENV(X509_USER_PROXY)
+
+#Don't request more than needed, otherwise your job will wait longer in queue
+RequestDisk = 8
+RequestMemory = 20000
+RequestCpus = 1
+
+#This number can be used to queue more than one job
+Queue 1
