@@ -8,8 +8,8 @@ model = ['x1n2-n1-wlv-hbb']
 mh = [200]
 #ctau = [100]
 filePerJob = 3
-ctau = [ 'pl100', 'prompt']
-#ctau = ['pl100', 'pl1000', 'pl10000','prompt']
+#ctau = [ 'pl100', 'prompt']
+ctau = ['pl100', 'pl1000', 'pl10000','prompt']
 
 pwd = os.getcwd()
 home_dir = '/mnt/hadoop/store/group/phys_exotica/jmao/aodsim/RunIISummer16/AODSIM/'

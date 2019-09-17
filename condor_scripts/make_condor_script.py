@@ -3,11 +3,11 @@ import subprocess, time, sys, shlex
 import fileinput
 
 
-model = ['x1n2-n1-wlv-hbb']
-#model = ['n3n2-n1-hbb-hbb']
+#model = ['x1n2-n1-wlv-hbb']
+model = ['n3n2-n1-hbb-hbb']
 mh = [200]
-ctau = [ 'pl100', 'prompt']
-#ctau = ['pl100', 'pl1000', 'pl10000','prompt']
+#ctau = [ 'pl100', 'prompt']
+ctau = ['pl100', 'pl1000', 'pl10000','prompt']
 filePerJob = 3
 
 pwd = os.getcwd()
@@ -84,7 +84,7 @@ for i,m in enumerate(model):
 		        			if 'condor_scripts' in line:
 		        				new_line = line.replace(line,'cd '+script_dir+'\n')
 		        			elif 'gfal-copy bbbb_ggh_mh125_mx50_pl500_signal_aod_test.py' in line:
-		        				new_line = line.replace('bbbb_ggh_mh125_mx50_pl500_signal_aod_test.py',script_dir+script_name)
+		        				new_line = line.replace('gfal-copy','gfal-copy -f').replace('bbbb_ggh_mh125_mx50_pl500_signal_aod_test.py',script_dir+script_name)
 		        			elif 'cmsRun bbbb_ggh_mh125_mx50_pl500_signal_aod_test.py' in line:
 		        				new_line = line.replace('bbbb_ggh_mh125_mx50_pl500_signal_aod_test.py',script_name)
 		        			elif '/store/group/phys_exotica/jmao/jet_timing_studies/samples/signal/' in line:

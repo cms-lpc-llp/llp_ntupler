@@ -1505,7 +1505,7 @@ void llp_ntupler::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   // fillPhotons(iEvent, iSetup);
   // fillTaus();
   fillJets(iSetup);
-  // fillMet(iEvent);
+  fillMet(iEvent);
   if ( enableTriggerInfo_ ) fillTrigger( iEvent );
   if ( enableCaloJet_ ) fillCaloJets( iSetup );
   if (!isData) {
@@ -3374,7 +3374,9 @@ bool llp_ntupler::fillGenParticles(){
   //Fills selected gen particles
   //double pt_cut = isFourJet ? 20.:20.;//this needs to be done downstream
   const double pt_cut = 0.0;
-  int llp_id = 9000006;
+  //int llp_id = 9000006;
+  int llp1_id = 1000023; //n2
+  int llp2_id = 1000025; //n3
 
   for(size_t i=0; i<genParticles->size();i++)
   {
@@ -3495,15 +3497,18 @@ bool llp_ntupler::fillGenParticles(){
     //---------------------------------------
     if (enableGenLLPInfo_)
     {
-      if ( abs(gParticleId[i]) == llp_id  && gParticleStatus[i] == 22 )
+      if ( ( abs(gParticleId[i]) == llp1_id  || abs(gParticleId[i]) == llp2_id ) && gParticleStatus[i] == 22 )
+      //if ( abs(gParticleId[i]) == llp1_id  && gParticleStatus[i] == 22 )
       {
-        if (gParticleId[i] == llp_id)
+        if (gParticleId[i] == llp1_id)
+        //if (gParticleId[i] == llp_id)
         {
           gLLP_prod_vertex_x[0] = prunedV[i]->vx();
           gLLP_prod_vertex_y[0] = prunedV[i]->vy();
           gLLP_prod_vertex_z[0] = prunedV[i]->vz();
         }
-        else if (gParticleId[i] == -1*llp_id)
+        //else if (gParticleId[i] == -1*llp_id)
+        else if (gParticleId[i] == llp2_id)
         {
           gLLP_prod_vertex_x[1] = prunedV[i]->vx();
           gLLP_prod_vertex_y[1] = prunedV[i]->vy();
@@ -3520,7 +3525,8 @@ bool llp_ntupler::fillGenParticles(){
           if (tmpParticle->numberOfDaughters() > 0)
           {
             dau = tmpParticle->daughter(0);
-            if (dau && (dau->pdgId() != llp_id && dau->pdgId() != llp_id+1))
+            //if (dau && (dau->pdgId() != llp_id && dau->pdgId() != llp_id+1))
+            if (dau && (dau->pdgId() != llp1_id && dau->pdgId() != llp2_id))
             {
               foundDaughter = true;
             } else
@@ -3537,7 +3543,8 @@ bool llp_ntupler::fillGenParticles(){
         if (foundDaughter)
         {
 
-          if (gParticleId[i] == llp_id)
+          //if (gParticleId[i] == llp_id)
+          if (gParticleId[i] == llp1_id)
           {
             gLLP_decay_vertex_x[0] = dau->vx();
             gLLP_decay_vertex_y[0] = dau->vy();
@@ -3655,7 +3662,8 @@ bool llp_ntupler::fillGenParticles(){
 
             }
           }
-          else if (gParticleId[i] == -1*llp_id)
+          else if (gParticleId[i] == llp2_id)
+          //else if (gParticleId[i] == -1*llp_id)
           {
             gLLP_decay_vertex_x[1] = dau->vx();
             gLLP_decay_vertex_y[1] = dau->vy();
