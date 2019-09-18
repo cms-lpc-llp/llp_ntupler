@@ -972,6 +972,9 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
  float gParticleProdVertexY[GENPARTICLEARRAYSIZE];
  float gParticleProdVertexZ[GENPARTICLEARRAYSIZE];
 
+ float gParticleDecayVertexX[GENPARTICLEARRAYSIZE];
+ float gParticleDecayVertexY[GENPARTICLEARRAYSIZE];
+ float gParticleDecayVertexZ[GENPARTICLEARRAYSIZE];
 
  float gLLP_prod_vertex_x[LLP_ARRAY_SIZE];
  float gLLP_prod_vertex_y[LLP_ARRAY_SIZE];

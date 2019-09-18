@@ -11,7 +11,7 @@ process.load("Configuration.EventContent.EventContent_cff")
 #load input files
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-'root://cmsxrootd.fnal.gov//store/mc/RunIISummer16DR80Premix/WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/D67E96A0-F9BE-E611-A03B-F45214939090.root',
+'file:/mnt/hadoop/store/group/phys_exotica/jmao/aodsim/RunIISummer16/AODSIM/MSSM-1d-prod/n3n2-n1-hbb-hbb_mh200_pl100_ev100000/crab_CMSSW_8_0_21_n3n2-n1-hbb-hbb_mchi200_pl100_ev100000_AODSIM_CaltechT2/190912_202259/0000/n3n2-n1-hbb-hbb_step2_10.root',
 
 #        'file:/mnt/hadoop/store/user/christiw/RunIISummer16_withISR/ppTohToSS1SS2_SS1Tobb_SS2Toveve_vh_withISR_MC_prod/ppTohToSS1SS2_SS1Tobb_SS2Toveve_vh_withISR_mh300_mx125_pl1000_ev100000/crab_CMSSW_8_0_21_ppTohToSS1SS2_SS1Tobb_SS2Toveve_vh_ISR_mh300_mx125_pl1000_ev100000_AOD_CaltechT2/190417_011411/0000/ppTohToSS1SS2_SS1Tobb_SS2Toveve_ggh_withISR_step2_1.root',
 )

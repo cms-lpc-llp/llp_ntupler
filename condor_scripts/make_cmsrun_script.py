@@ -3,8 +3,8 @@ import subprocess, time, sys, shlex
 import fileinput
 
 
-model = ['x1n2-n1-wlv-hbb']
-#model = ['n3n2-n1-hbb-hbb']
+#model = ['x1n2-n1-wlv-hbb']
+model = ['n3n2-n1-hbb-hbb']
 mh = [200]
 #ctau = [100]
 filePerJob = 3

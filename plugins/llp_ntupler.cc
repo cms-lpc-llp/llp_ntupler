@@ -739,6 +739,9 @@ void llp_ntupler::enableGenParticleBranches()
   llpTree->Branch("gParticleProdVertexX", gParticleProdVertexX, "gParticleProdVertexX[nGenParticle]/F");
   llpTree->Branch("gParticleProdVertexY", gParticleProdVertexY, "gParticleProdVertexY[nGenParticle]/F");
   llpTree->Branch("gParticleProdVertexZ", gParticleProdVertexZ, "gParticleProdVertexZ[nGenParticle]/F");
+  llpTree->Branch("gParticleDecayVertexX", gParticleDecayVertexX, "gParticleDecayVertexX[nGenParticle]/F");
+  llpTree->Branch("gParticleDecayVertexY", gParticleDecayVertexY, "gParticleDecayVertexY[nGenParticle]/F");
+  llpTree->Branch("gParticleDecayVertexZ", gParticleDecayVertexZ, "gParticleDecayVertexZ[nGenParticle]/F");
 
    llpTree->Branch("gLLP_prod_vertex_x", gLLP_prod_vertex_x, "gLLP_prod_vertex_x[2]/F");
    llpTree->Branch("gLLP_prod_vertex_y", gLLP_prod_vertex_y, "gLLP_prod_vertex_y[2]/F");
@@ -1387,6 +1390,10 @@ void llp_ntupler::resetGenParticleBranches()
     gParticleProdVertexX[i] = -99999.0;
     gParticleProdVertexY[i] = -99999.0;
     gParticleProdVertexZ[i] = -99999.0;
+
+    gParticleDecayVertexX[i] = -99999.0;
+    gParticleDecayVertexY[i] = -99999.0;
+    gParticleDecayVertexZ[i] = -99999.0;
 
   }
   for ( int i = 0; i < LLP_ARRAY_SIZE; i++ )
@@ -3228,6 +3235,7 @@ bool llp_ntupler::fillMC()
           genVertexY = dau->vy();
           genVertexZ = dau->vz();
           if(readGenVertexTime_) genVertexT = *genParticles_t0;
+	  else genVertexT = 0.; 
           foundGenVertex = true;
           break;
         }
@@ -3426,6 +3434,7 @@ bool llp_ntupler::fillGenParticles(){
     gParticleMotherId[i] = 0;
     gParticleMotherIndex[i] = -1;
 
+    //std::cout << "prod " << gParticleProdVertexX[i] << " vx " << prunedV[i]->vx() << std::endl;
     /*
     //For Neutralinos we try to find the decay vertex locaton.
     //Algorithm: Find the first daughter particle that is not a neutralino,
@@ -3471,9 +3480,10 @@ bool llp_ntupler::fillGenParticles(){
       if (firstMotherWithDifferentID)
       {
         gParticleMotherId[i] = firstMotherWithDifferentID->pdgId();
-        //gParticleDecayVertexX[i] = firstMotherWithDifferentID->vx();
-        //gParticleDecayVertexY[i] = firstMotherWithDifferentID->vy();
-        //gParticleDecayVertexZ[i] = firstMotherWithDifferentID->vz();
+        gParticleDecayVertexX[i] = firstMotherWithDifferentID->vx();
+        gParticleDecayVertexY[i] = firstMotherWithDifferentID->vy();
+        gParticleDecayVertexZ[i] = firstMotherWithDifferentID->vz();
+    //std::cout << "decay " << gParticleDecayVertexX[i] << " vx " << firstMotherWithDifferentID->vx() << std::endl;
       }
 
       //find the mother and keep going up the mother chain if the ID's are the same
