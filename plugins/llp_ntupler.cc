@@ -24,36 +24,37 @@ llp_ntupler::llp_ntupler(const edm::ParameterSet& iConfig):
   eleHLTFilterNamesFile_(iConfig.getParameter<string> ("eleHLTFilterNamesFile")),
   muonHLTFilterNamesFile_(iConfig.getParameter<string> ("muonHLTFilterNamesFile")),
   photonHLTFilterNamesFile_(iConfig.getParameter<string> ("photonHLTFilterNamesFile")),
-  verticesToken_(consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("vertices"))),
-  tracksTag_(consumes<edm::View<reco::Track> >(iConfig.getParameter<edm::InputTag>("tracks"))),
-  cscSegmentInputToken_(consumes<CSCSegmentCollection>(edm::InputTag("cscSegments"))),
-  dtSegmentInputToken_(consumes<DTRecSegment4DCollection>(edm::InputTag("dt4DCosmicSegments"))),
-  rpcRecHitInputToken_(consumes<RPCRecHitCollection>(edm::InputTag("rpcRecHits"))),
-  muonsToken_(consumes<reco::MuonCollection>(iConfig.getParameter<edm::InputTag>("muons"))),
-  electronsToken_(consumes<reco::GsfElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
-  tausToken_(consumes<reco::PFTauCollection>(iConfig.getParameter<edm::InputTag>("taus"))),
-  photonsToken_(consumes<reco::PhotonCollection>(iConfig.getParameter<edm::InputTag>("photons"))),
-  jetsCaloToken_(consumes<reco::CaloJetCollection>(iConfig.getParameter<edm::InputTag>("jetsCalo"))),
+  //verticesToken_(consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("vertices"))),
+  //tracksTag_(consumes<edm::View<reco::Track> >(iConfig.getParameter<edm::InputTag>("tracks"))),
+  //cscSegmentInputToken_(consumes<CSCSegmentCollection>(edm::InputTag("cscSegments"))),
+  //dtSegmentInputToken_(consumes<DTRecSegment4DCollection>(edm::InputTag("dt4DCosmicSegments"))),
+  //rpcRecHitInputToken_(consumes<RPCRecHitCollection>(edm::InputTag("rpcRecHits"))),
+  //muonsToken_(consumes<reco::MuonCollection>(iConfig.getParameter<edm::InputTag>("muons"))),
+  //electronsToken_(consumes<reco::GsfElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
+  //tausToken_(consumes<reco::PFTauCollection>(iConfig.getParameter<edm::InputTag>("taus"))),
+  //photonsToken_(consumes<reco::PhotonCollection>(iConfig.getParameter<edm::InputTag>("photons"))),
+  //jetsCaloToken_(consumes<reco::CaloJetCollection>(iConfig.getParameter<edm::InputTag>("jetsCalo"))),
   // jetsPFToken_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jetsPF"))),
-  jetsToken_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jets"))),
-  jetsPuppiToken_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jetsPuppi"))),
-  jetsAK8Token_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jetsAK8"))),
-  PFCandsToken_(consumes<reco::PFCandidateCollection>(iConfig.getParameter<edm::InputTag>("pfCands"))),
-  PFClustersToken_(consumes<reco::PFClusterCollection>(iConfig.getParameter<edm::InputTag>("pfClusters"))),
+  //jetsToken_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jets"))),
+  //jetsPuppiToken_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jetsPuppi"))),
+  //jetsAK8Token_(consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("jetsAK8"))),
+  //PFCandsToken_(consumes<reco::PFCandidateCollection>(iConfig.getParameter<edm::InputTag>("pfCands"))),
+  //PFClustersToken_(consumes<reco::PFClusterCollection>(iConfig.getParameter<edm::InputTag>("pfClusters"))),
   //genParticlesToken_(consumes<edm::View<reco::GenParticle> >(iConfig.getParameter<edm::InputTag>("genParticles"))),
   //genParticlesToken_(consumes<edm::View<pat::PackedGenParticle> >(iConfig.getParameter<edm::InputTag>("genParticles"))),
   genParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticles"))),
   genJetsToken_(consumes<reco::GenJetCollection>(iConfig.getParameter<edm::InputTag>("genJets"))),
   triggerBitsToken_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("triggerBits"))),
-  hepMCToken_(consumes<edm::HepMCProduct>(iConfig.getParameter<edm::InputTag>("hepMC"))),
+  //hepMCToken_(consumes<edm::HepMCProduct>(iConfig.getParameter<edm::InputTag>("hepMC"))),
   //triggerObjectsToken_(consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("triggerObjects"))),
   //triggerPrescalesToken_(consumes<pat::PackedTriggerPrescales>(iConfig.getParameter<edm::InputTag>("triggerPrescales"))),
   genMetCaloToken_(consumes<reco::GenMETCollection>(iConfig.getParameter<edm::InputTag>("genMetsCalo"))),
   genMetTrueToken_(consumes<reco::GenMETCollection>(iConfig.getParameter<edm::InputTag>("genMetsTrue"))),
-  metToken_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("mets"))),
+  //genMetTrueToken_(consumes<reco::GenMETCollection>(iConfig.getParameter<edm::InputTag>("genMetsTrue"))),
+  //metToken_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("mets"))),
 //  metNoHFToken_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("metsNoHF"))),
-  metPuppiToken_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("metsPuppi"))),
-  metFilterBitsToken_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("metFilterBits"))),
+  //metPuppiToken_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("metsPuppi"))),
+  //metFilterBitsToken_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("metFilterBits"))),
   //hbheNoiseFilterToken_(consumes<bool>(iConfig.getParameter<edm::InputTag>("hbheNoiseFilter"))),
   //hbheTightNoiseFilterToken_(consumes<bool>(iConfig.getParameter<edm::InputTag>("hbheTightNoiseFilter"))),
   //hbheIsoNoiseFilterToken_(consumes<bool>(iConfig.getParameter<edm::InputTag>("hbheIsoNoiseFilter"))),
@@ -61,29 +62,29 @@ llp_ntupler::llp_ntupler(const edm::ParameterSet& iConfig):
   //badMuonFilterToken_(consumes<bool>(iConfig.getParameter<edm::InputTag>("BadMuonFilter"))),
 //  lheRunInfoTag_(iConfig.getParameter<edm::InputTag>("lheInfo")),
 //  lheRunInfoToken_(consumes<LHERunInfoProduct,edm::InRun>(lheRunInfoTag_)),
-//  lheInfoToken_(consumes<LHEEventProduct>(iConfig.getParameter<edm::InputTag>("lheInfo"))),
-  genInfoToken_(consumes<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("genInfo"))),
-  genLumiHeaderToken_(consumes<GenLumiInfoHeader,edm::InLumi>(edm::InputTag("generator",""))),
-  puInfoToken_(consumes<std::vector<PileupSummaryInfo> >(iConfig.getParameter<edm::InputTag>("puInfo"))),
+  //lheInfoToken_(consumes<LHEEventProduct>(iConfig.getParameter<edm::InputTag>("lheInfo"))),
+  //genInfoToken_(consumes<GenEventInfoProduct>(iConfig.getParameter<edm::InputTag>("genInfo"))),
+  genLumiHeaderToken_(consumes<GenLumiInfoHeader,edm::InLumi>(edm::InputTag("generator","")))
+  //puInfoToken_(consumes<std::vector<PileupSummaryInfo> >(iConfig.getParameter<edm::InputTag>("puInfo"))),
   //hcalNoiseInfoToken_(consumes<HcalNoiseSummary>(iConfig.getParameter<edm::InputTag>("hcalNoiseInfo"))),
-  secondaryVerticesToken_(consumes<vector<reco::VertexCompositePtrCandidate> >(iConfig.getParameter<edm::InputTag>("secondaryVertices"))),
-  rhoAllToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoAll"))),
-  rhoFastjetAllToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoFastjetAll"))),
-  rhoFastjetAllCaloToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoFastjetAllCalo"))),
-  rhoFastjetCentralCaloToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoFastjetCentralCalo"))),
-  rhoFastjetCentralChargedPileUpToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoFastjetCentralChargedPileUp"))),
-  rhoFastjetCentralNeutralToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoFastjetCentralNeutral"))),
-  beamSpotToken_(consumes<reco::BeamSpot>(iConfig.getParameter<edm::InputTag>("beamSpot"))),
-  ebRecHitsToken_(consumes<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >(iConfig.getParameter<edm::InputTag>("ebRecHits"))),
-  eeRecHitsToken_(consumes<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >(iConfig.getParameter<edm::InputTag>("eeRecHits"))),
-  esRecHitsToken_(consumes<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >(iConfig.getParameter<edm::InputTag>("esRecHits"))),
-  ebeeClustersToken_(consumes<vector<reco::CaloCluster> >(iConfig.getParameter<edm::InputTag>("ebeeClusters"))),
-  esClustersToken_(consumes<vector<reco::CaloCluster> >(iConfig.getParameter<edm::InputTag>("esClusters"))),
-  conversionsToken_(consumes<vector<reco::Conversion> >(iConfig.getParameter<edm::InputTag>("conversions"))),
-  singleLegConversionsToken_(consumes<vector<reco::Conversion> >(iConfig.getParameter<edm::InputTag>("singleLegConversions"))),
-  gedGsfElectronCoresToken_(consumes<vector<reco::GsfElectronCore> >(iConfig.getParameter<edm::InputTag>("gedGsfElectronCores"))),
-  gedPhotonCoresToken_(consumes<vector<reco::PhotonCore> >(iConfig.getParameter<edm::InputTag>("gedPhotonCores"))),
-  generalTrackToken_(consumes<std::vector<reco::Track>>(edm::InputTag("generalTracks")))
+  //secondaryVerticesToken_(consumes<vector<reco::VertexCompositePtrCandidate> >(iConfig.getParameter<edm::InputTag>("secondaryVertices"))),
+  //rhoAllToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoAll"))),
+  //rhoFastjetAllToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoFastjetAll"))),
+  //rhoFastjetAllCaloToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoFastjetAllCalo"))),
+  //rhoFastjetCentralCaloToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoFastjetCentralCalo"))),
+  //rhoFastjetCentralChargedPileUpToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoFastjetCentralChargedPileUp"))),
+  //rhoFastjetCentralNeutralToken_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoFastjetCentralNeutral"))),
+  //beamSpotToken_(consumes<reco::BeamSpot>(iConfig.getParameter<edm::InputTag>("beamSpot"))),
+  //ebRecHitsToken_(consumes<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >(iConfig.getParameter<edm::InputTag>("ebRecHits"))),
+  //eeRecHitsToken_(consumes<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >(iConfig.getParameter<edm::InputTag>("eeRecHits"))),
+  //esRecHitsToken_(consumes<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >(iConfig.getParameter<edm::InputTag>("esRecHits"))),
+  //ebeeClustersToken_(consumes<vector<reco::CaloCluster> >(iConfig.getParameter<edm::InputTag>("ebeeClusters"))),
+  //esClustersToken_(consumes<vector<reco::CaloCluster> >(iConfig.getParameter<edm::InputTag>("esClusters"))),
+  //conversionsToken_(consumes<vector<reco::Conversion> >(iConfig.getParameter<edm::InputTag>("conversions"))),
+  //singleLegConversionsToken_(consumes<vector<reco::Conversion> >(iConfig.getParameter<edm::InputTag>("singleLegConversions"))),
+  //gedGsfElectronCoresToken_(consumes<vector<reco::GsfElectronCore> >(iConfig.getParameter<edm::InputTag>("gedGsfElectronCores"))),
+  //gedPhotonCoresToken_(consumes<vector<reco::PhotonCore> >(iConfig.getParameter<edm::InputTag>("gedPhotonCores"))),
+  //generalTrackToken_(consumes<std::vector<reco::Track>>(edm::InputTag("generalTracks")))
   //superClustersToken_(consumes<vector<reco::SuperCluster> >(iConfig.getParameter<edm::InputTag>("superClusters"))),
   //  lostTracksToken_(consumes<vector<reco::PFCandidate> >(iConfig.getParameter<edm::InputTag>("lostTracks")))
   // mvaGeneralPurposeValuesMapToken_(consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaGeneralPurposeValuesMap"))),
@@ -758,6 +759,8 @@ void llp_ntupler::enableGenParticleBranches()
    llpTree->Branch("gLLP_travel_time", gLLP_travel_time, "gLLP_travel_time[2]/F");
 
    llpTree->Branch("gLLP_daughter_travel_time", gLLP_daughter_travel_time, "gLLP_daughter_travel_time[4]/F");
+   llpTree->Branch("gLLP_daughter_travel_time_ETL", gLLP_daughter_travel_time_ETL, "gLLP_daughter_travel_time_ETL[4]/F");
+   llpTree->Branch("gLLP_daughter_pid", gLLP_daughter_pid, "gLLP_daughter_pid[4]/I");
    llpTree->Branch("gLLP_daughter_pt", gLLP_daughter_pt, "gLLP_daughter_pt[4]/F");
    llpTree->Branch("gLLP_daughter_eta", gLLP_daughter_eta, "gLLP_daughter_eta[4]/F");
    llpTree->Branch("gLLP_daughter_phi", gLLP_daughter_phi, "gLLP_daughter_phi[4]/F");
@@ -765,10 +768,14 @@ void llp_ntupler::enableGenParticleBranches()
    llpTree->Branch("gLLP_daughter_phi_ecalcorr", gLLP_daughter_phi_ecalcorr, "gLLP_daughter_phi_ecalcorr[4]/F");
 
    llpTree->Branch("gLLP_daughter_e", gLLP_daughter_e, "gLLP_daughter_e[4]/F");
+   llpTree->Branch("gLLP_daughter_mass", gLLP_daughter_mass, "gLLP_daughter_mass[4]/F");
    llpTree->Branch("photon_travel_time", photon_travel_time, "photon_travel_time[4]/F");
    llpTree->Branch("gen_time", gen_time, "gen_time[4]/F");
+   llpTree->Branch("gen_time_ETL", gen_time_ETL, "gen_time_ETL[4]/F");
    llpTree->Branch("gen_time_pv", gen_time_pv, "gen_time_pv[4]/F");
 
+   llpTree->Branch("gLLP_daughter_EB", gLLP_daughter_EB, "gLLP_daughter_EB[4]/O");
+   llpTree->Branch("gLLP_daughter_ETL", gLLP_daughter_ETL, "gLLP_daughter_ETL[4]/O");
    llpTree->Branch("gLLP_min_delta_r_match_calojet", gLLP_min_delta_r_match_calojet, "gLLP_min_delta_r_match_calojet[4]/F");
  llpTree->Branch("gLLP_daughter_match_calojet_index", gLLP_daughter_match_calojet_index, "gLLP_daughter_match_calojet_index[4]/i");
    llpTree->Branch("gLLP_daughter_match_jet_index", gLLP_daughter_match_jet_index, "gLLP_daughter_match_jet_index[4]/i");
@@ -780,49 +787,49 @@ void llp_ntupler::enableGenParticleBranches()
 void llp_ntupler::loadEvent(const edm::Event& iEvent)//load all miniAOD objects for the current event
 {
   iEvent.getByToken(triggerBitsToken_, triggerBits);
-  iEvent.getByToken(hepMCToken_, hepMC);
-  iEvent.getByToken(triggerBitsToken_, triggerBits);
-  iEvent.getByToken(metFilterBitsToken_, metFilterBits);
-  iEvent.getByToken(verticesToken_, vertices);
-  iEvent.getByToken(cscSegmentInputToken_,cscSegments);
-  iEvent.getByToken(dtSegmentInputToken_,dtSegments);
-  iEvent.getByToken(rpcRecHitInputToken_,rpcRecHits);
-  iEvent.getByToken(tracksTag_,tracks);
-  iEvent.getByToken(PFCandsToken_, pfCands);
-  iEvent.getByToken(PFClustersToken_, pfClusters);
-  iEvent.getByToken(muonsToken_, muons);
-  iEvent.getByToken(electronsToken_, electrons);
-  iEvent.getByToken(photonsToken_, photons);
-  iEvent.getByToken(tausToken_, taus);
-  iEvent.getByToken(jetsCaloToken_, jetsCalo);
+  //iEvent.getByToken(hepMCToken_, hepMC);
+  //iEvent.getByToken(triggerBitsToken_, triggerBits);
+  //iEvent.getByToken(metFilterBitsToken_, metFilterBits);
+  //iEvent.getByToken(verticesToken_, vertices);
+  //iEvent.getByToken(cscSegmentInputToken_,cscSegments);
+  //iEvent.getByToken(dtSegmentInputToken_,dtSegments);
+  //iEvent.getByToken(rpcRecHitInputToken_,rpcRecHits);
+  //iEvent.getByToken(tracksTag_,tracks);
+  //iEvent.getByToken(PFCandsToken_, pfCands);
+  //iEvent.getByToken(PFClustersToken_, pfClusters);
+  //iEvent.getByToken(muonsToken_, muons);
+  //iEvent.getByToken(electronsToken_, electrons);
+  //iEvent.getByToken(photonsToken_, photons);
+  //iEvent.getByToken(tausToken_, taus);
+  //iEvent.getByToken(jetsCaloToken_, jetsCalo);
   // iEvent.getByToken(jetsPFToken_, jetsPF);
-  iEvent.getByToken(jetsToken_, jets);
-  iEvent.getByToken(jetsPuppiToken_, jetsPuppi);
-  iEvent.getByToken(jetsAK8Token_, jetsAK8);
+  //iEvent.getByToken(jetsToken_, jets);
+  //iEvent.getByToken(jetsPuppiToken_, jetsPuppi);
+  //iEvent.getByToken(jetsAK8Token_, jetsAK8);
   iEvent.getByToken(genMetCaloToken_, genMetsCalo);
   iEvent.getByToken(genMetTrueToken_, genMetsTrue);
-  iEvent.getByToken(metToken_, mets);
+  //iEvent.getByToken(metToken_, mets);
   //iEvent.getByToken(metNoHFToken_, metsNoHF);
-  iEvent.getByToken(metPuppiToken_, metsPuppi);
+  //iEvent.getByToken(metPuppiToken_, metsPuppi);
 //  iEvent.getByToken(hcalNoiseInfoToken_,hcalNoiseInfo);
-  iEvent.getByToken(secondaryVerticesToken_,secondaryVertices);
-  iEvent.getByToken(rhoAllToken_,rhoAll);
-  iEvent.getByToken(rhoFastjetAllToken_,rhoFastjetAll);
-  iEvent.getByToken(rhoFastjetAllCaloToken_,rhoFastjetAllCalo);
-  iEvent.getByToken(rhoFastjetCentralCaloToken_,rhoFastjetCentralCalo);
-  iEvent.getByToken(rhoFastjetCentralChargedPileUpToken_,rhoFastjetCentralChargedPileUp);
-  iEvent.getByToken(rhoFastjetCentralNeutralToken_,rhoFastjetCentralNeutral);
-  iEvent.getByToken(beamSpotToken_,beamSpot);
-  iEvent.getByToken(ebRecHitsToken_,ebRecHits);
-  iEvent.getByToken(eeRecHitsToken_,eeRecHits);
-  iEvent.getByToken(esRecHitsToken_,esRecHits);
-  iEvent.getByToken(ebeeClustersToken_,ebeeClusters);
-  iEvent.getByToken(esClustersToken_,esClusters);
-  iEvent.getByToken(conversionsToken_,conversions);
-  iEvent.getByToken(singleLegConversionsToken_,singleLegConversions);
-  iEvent.getByToken(gedGsfElectronCoresToken_,gedGsfElectronCores);
-  iEvent.getByToken(gedPhotonCoresToken_, gedPhotonCores);
-  iEvent.getByToken(generalTrackToken_,generalTracks);
+  //iEvent.getByToken(secondaryVerticesToken_,secondaryVertices);
+  //iEvent.getByToken(rhoAllToken_,rhoAll);
+  //iEvent.getByToken(rhoFastjetAllToken_,rhoFastjetAll);
+  //iEvent.getByToken(rhoFastjetAllCaloToken_,rhoFastjetAllCalo);
+  //iEvent.getByToken(rhoFastjetCentralCaloToken_,rhoFastjetCentralCalo);
+  //iEvent.getByToken(rhoFastjetCentralChargedPileUpToken_,rhoFastjetCentralChargedPileUp);
+  //iEvent.getByToken(rhoFastjetCentralNeutralToken_,rhoFastjetCentralNeutral);
+  //iEvent.getByToken(beamSpotToken_,beamSpot);
+  //iEvent.getByToken(ebRecHitsToken_,ebRecHits);
+  //iEvent.getByToken(eeRecHitsToken_,eeRecHits);
+  //iEvent.getByToken(esRecHitsToken_,esRecHits);
+  //iEvent.getByToken(ebeeClustersToken_,ebeeClusters);
+  //iEvent.getByToken(esClustersToken_,esClusters);
+  //iEvent.getByToken(conversionsToken_,conversions);
+  //iEvent.getByToken(singleLegConversionsToken_,singleLegConversions);
+  //iEvent.getByToken(gedGsfElectronCoresToken_,gedGsfElectronCores);
+  //iEvent.getByToken(gedPhotonCoresToken_, gedPhotonCores);
+  //iEvent.getByToken(generalTrackToken_,generalTracks);
 //  iEvent.getByToken(superClustersToken_,superClusters);
 //  iEvent.getByToken(lostTracksToken_,lostTracks);
 //  iEvent.getByToken(hbheNoiseFilterToken_, hbheNoiseFilter);
@@ -837,10 +844,10 @@ void llp_ntupler::loadEvent(const edm::Event& iEvent)//load all miniAOD objects 
     iEvent.getByToken(genJetsToken_,genJets);
 
     //for Spring16 fastsim, this has been changed and removed
-//    if (!isFastsim_) iEvent.getByToken(lheInfoToken_, lheInfo);
+    //if (!isFastsim_) iEvent.getByToken(lheInfoToken_, lheInfo);
 
-    iEvent.getByToken(genInfoToken_,genInfo);
-    iEvent.getByToken(puInfoToken_,puInfo);
+    //iEvent.getByToken(genInfoToken_,genInfo);
+    //iEvent.getByToken(puInfoToken_,puInfo);
   }
 
 
@@ -1414,16 +1421,23 @@ void llp_ntupler::resetGenParticleBranches()
 
   for ( int i = 0; i < LLP_DAUGHTER_ARRAY_SIZE; i++ )
   {
+    gLLP_daughter_pid[i] = -666;
     gLLP_daughter_pt[i] = -666.;
     gLLP_daughter_eta[i] = -666.;
     gLLP_daughter_phi[i] = -666.;
     gLLP_daughter_eta_ecalcorr[i] = -666.;
     gLLP_daughter_phi_ecalcorr[i] = -666.;
     gLLP_daughter_e[i] = -666.;
+    gLLP_daughter_mass[i] = -666.;
     gLLP_daughter_travel_time[i] = -666.;
+    gLLP_daughter_travel_time_ETL[i] = -666.;
     gen_time[i] = -666.;
+    gen_time_ETL[i] = -666.;
     gen_time_pv[i] = -666.;
+    gLLP_daughter_EB[i] = false;
+    gLLP_daughter_ETL[i] = false;
     photon_travel_time[i] = -666.;
+    photon_travel_time_ETL[i] = -666.;
     photon_travel_time_pv[i] = -666.;
     gLLP_daughter_match_calojet_index[i] = 666;
     gLLP_daughter_match_jet_index[i] = 666;
@@ -1487,6 +1501,17 @@ void llp_ntupler::beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup) 
 
 //------ Method called for each lumi block ------//
 void llp_ntupler::beginLuminosityBlock(edm::LuminosityBlock const& iLumi, edm::EventSetup const&) {
+  if (useGen_) {  
+    iLumi.getByToken(genLumiHeaderToken_,genLumiHeader);
+  }
+  
+  //fill lhe comment lines with SUSY model parameter information
+  lheComments = "";
+  if (genLumiHeader.isValid() && isFastsim_) {
+	lheComments = genLumiHeader->configDescription();    
+  }    
+  
+ std::cout <<"lhe comments : " << lheComments << std::endl;
 
 }
 
@@ -1497,28 +1522,36 @@ void llp_ntupler::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   using namespace edm;
 
   //initialize
+  //std::cout << "***initialize***\n";
   loadEvent(iEvent); //loads objects and resets tree branches
+  //std::cout << "***loadEvent***\n";
   NEvents->Fill(0); //increment event count
+  //std::cout << "***fillEvent***\n";
 
   //resetting output tree branches
 
   resetBranches();
+  //std::cout << "***resetBranches***\n";
   fillEventInfo(iEvent);
+  //std::cout << "***fillEventInfo***\n";
   // fillPVAll();
   // fillPVTracks();
   // fillMuons(iEvent);
-  fillMuonSystem(iEvent, iSetup);
+  //fillMuonSystem(iEvent, iSetup);
   // fillElectrons(iEvent);
   // fillPhotons(iEvent, iSetup);
   // fillTaus();
-  fillJets(iSetup);
-  fillMet(iEvent);
-  if ( enableTriggerInfo_ ) fillTrigger( iEvent );
-  if ( enableCaloJet_ ) fillCaloJets( iSetup );
+  //fillJets(iSetup);
+  //fillMet(iEvent);
+  //if ( enableTriggerInfo_ ) fillTrigger( iEvent );
+  //std::cout << "***fillTrigger***\n";
+  //if ( enableCaloJet_ ) fillCaloJets( iSetup );
   if (!isData) {
-    fillPileUp();
+    //fillPileUp();
     fillMC();
+    //std::cout << "***fillMC***\n";
     fillGenParticles();
+    //std::cout << "***fillGenParticles***\n";
   }
 
   llpTree->Fill();
@@ -1545,7 +1578,7 @@ bool llp_ntupler::fillEventInfo(const edm::Event& iEvent)
   lumiNum = iEvent.luminosityBlock();
   eventNum = iEvent.id().event();
   eventTime = iEvent.eventAuxiliary().time().unixTime();
-
+/*
   //number of slimmedSecondaryVertices
   nSlimmedSecondV = secondaryVertices->size();
 
@@ -1577,7 +1610,7 @@ bool llp_ntupler::fillEventInfo(const edm::Event& iEvent)
   fixedGridRhoFastjetCentralCalo = *rhoFastjetCentralCalo;
   fixedGridRhoFastjetCentralChargedPileUp = *rhoFastjetCentralChargedPileUp;
   fixedGridRhoFastjetCentralNeutral = *rhoFastjetCentralNeutral;
-
+*/
   return true;
 };
 
@@ -3234,6 +3267,7 @@ bool llp_ntupler::fillMC()
           genVertexX = dau->vx();
           genVertexY = dau->vy();
           genVertexZ = dau->vz();
+  	  //if(readGenVertexTime_)  std::cout << "***t0***" << *genParticles_t0<< "\n";
           if(readGenVertexTime_) genVertexT = *genParticles_t0;
 	  else genVertexT = 0.; 
           foundGenVertex = true;
@@ -3242,13 +3276,13 @@ bool llp_ntupler::fillMC()
       }
     }
   }
-
+/*
   genWeight = genInfo->weight();
   genSignalProcessID = genInfo->signalProcessID();
   genQScale = genInfo->qScale();
   genAlphaQCD = genInfo->alphaQCD();
   genAlphaQED = genInfo->alphaQED();
-  /*
+*/  /*
   for ( int i_genJet = 0; i_genJet < nGenJets; i_genJet++ )
   {
 
@@ -3568,10 +3602,14 @@ bool llp_ntupler::fillGenParticles(){
                                     +pow(gLLP_decay_vertex_y[0]-gLLP_prod_vertex_y[0],2)
                                     +pow(gLLP_decay_vertex_z[0]-gLLP_prod_vertex_z[0],2))/(30. * gLLP_beta[0]);//1/30 is to convert cm to ns
             double radius = sqrt( pow(gLLP_decay_vertex_x[0],2) + pow(gLLP_decay_vertex_y[0],2) );
+            double z = gLLP_decay_vertex_z[0] ;
             double ecal_radius = 129.0;
             // double hcal_radius = 179.0;
             double EB_z = 268.36447217; // 129*sinh(1.479)
             double EE_z = 298.5; //where Ecal Endcap starts in z direction
+            double ETL_rmin = 30.54540032; //Eta = 3.0, Z = 306cm
+            double ETL_rmax = 128.81130156; //Eta = 1.6, Z = 306cm
+            double ETL_z = 306.0;
 
             for (unsigned int id = 0; id < tmpParticle->numberOfDaughters(); id++ )
             {
@@ -3581,10 +3619,12 @@ bool llp_ntupler::fillGenParticles(){
               TLorentzVector tmp;
               tmp.SetPxPyPzE(tmpParticle->daughter(id)->px(), tmpParticle->daughter(id)->py(), tmpParticle->daughter(id)->pz(), tmpParticle->daughter(id)->energy());
               if(tmp.Pt()<pt_cut) continue;
+              gLLP_daughter_pid[id] = tmpParticle->daughter(id)->pdgId();
               gLLP_daughter_pt[id] = tmp.Pt();
               gLLP_daughter_eta[id] = tmp.Eta();
               gLLP_daughter_phi[id] = tmp.Phi();
               gLLP_daughter_e[id]  = tmp.E();
+              gLLP_daughter_mass[id]  = tmp.M();
 
               // double gLLP_daughter_travel_time_hcal= (1./30.)*(hcal_radius-radius)/(tmp.Pt()/tmp.E());// - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
 
@@ -3596,7 +3636,7 @@ bool llp_ntupler::fillGenParticles(){
               // double x_hcal = gLLP_decay_vertex_x[0] + 30. * (tmp.Px()/tmp.E())*gLLP_daughter_travel_time_hcal;
               // double y_hcal = gLLP_decay_vertex_y[0] + 30. * (tmp.Py()/tmp.E())*gLLP_daughter_travel_time_hcal;
               // double z_hcal = gLLP_decay_vertex_z[0] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time_hcal;
-
+/*
               if( fabs(z_ecal) < EB_z && radius <= ecal_radius &&  fabs(gLLP_decay_vertex_z[0]) < EE_z)
               {
                 photon_travel_time[id] = (1./30) * sqrt(pow(ecal_radius,2)+pow(z_ecal,2));
@@ -3613,6 +3653,51 @@ bool llp_ntupler::fillGenParticles(){
                 photon_travel_time[id] = -666.;
                 photon_travel_time_pv[id] = -666.;
               }
+*/
+
+	    if(tmp.Eta()>=0)
+            {
+            gLLP_daughter_travel_time_ETL[id] = (1./30.)*fabs(ETL_z-z)/fabs(tmp.Pz()/tmp.E());// - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
+            }
+	    else
+            {
+            gLLP_daughter_travel_time_ETL[id] = (1./30.)*fabs(ETL_z+z)/fabs(tmp.Pz()/tmp.E());// - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
+            }
+          //Calculate dt from generation point to ETL face
+            double x_etl = gLLP_decay_vertex_x[0] + 30. * (tmp.Px()/tmp.E())*gLLP_daughter_travel_time_ETL[id];
+            double y_etl = gLLP_decay_vertex_y[0] + 30. * (tmp.Py()/tmp.E())*gLLP_daughter_travel_time_ETL[id];
+            double z_etl = gLLP_decay_vertex_z[0] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time_ETL[id];
+            double r_etl = sqrt( pow(x_etl,2) + pow(y_etl,2) );
+
+      //if( fabs(z_ecal) < 10 && radius <= 1)
+            if( fabs(z_ecal) < EB_z && radius <= ecal_radius && fabs(z) < EE_z)
+    	    {
+	      gLLP_daughter_EB[id] = true;
+    	      photon_travel_time[id] = (1./30) * sqrt(pow(ecal_radius,2)+pow(z_ecal,2));
+              photon_travel_time_pv[id] = (1./30) * sqrt(pow(x_ecal-genVertexX,2) + pow(y_ecal-genVertexY,2) + pow(z_ecal-genVertexZ,2));
+              gen_time_pv[id] =  gLLP_travel_time[0] + gLLP_daughter_travel_time[id] - photon_travel_time_pv[id] + genVertexT;
+              gen_time[id] = gLLP_travel_time[0] + gLLP_daughter_travel_time[id] - photon_travel_time[id] + genVertexT;
+
+            }
+            else if( r_etl > ETL_rmin && r_etl < ETL_rmax && radius <= ecal_radius && fabs(z) < ETL_z )
+    	    {
+    	      //std::cout <<" z_etl = "<< z_etl  <<std::endl;
+    	      //std::cout << " gLLP_daughter_travel time ETL = " << gLLP_daughter_travel_time_ETL[id] << " , z = " << z << " , Pz = " << tmp.Pz() <<std::endl;
+	      gLLP_daughter_ETL[id] = true;
+    	      //std::cout << " gLLP_daughter_ETL = " << gLLP_daughter_ETL[id] << "travel time" << gLLP_daughter_travel_time_ETL[id] << "z" << z << "Pz" << tmp.Pz() <<std::endl;
+    	      photon_travel_time_ETL[id] = (1./30) * sqrt(pow(r_etl,2)+pow(ETL_z,2));
+    	      //std::cout << " gLLP_daughter_ETL = " << gLLP_daughter_ETL[id] << "photon travel time" << photon_travel_time_ETL[id] << " ,  ETL_z =  " << ETL_z << ", r_etl = " << r_etl <<std::endl;
+              gen_time_ETL[id] = gLLP_travel_time[0] + gLLP_daughter_travel_time_ETL[id] - photon_travel_time_ETL[id] + genVertexT;
+
+            }
+            else
+            {
+              gLLP_daughter_travel_time[id] = -666;
+              gen_time_pv[id] = -666.;
+              gen_time[id] = -666.;
+              photon_travel_time[id] = -666.;
+              photon_travel_time_pv[id] = -666.;
+            }
               double min_delta_r = 666.;
               double min_delta_r_calo = 666.;
               unsigned int match_jet_index = 666;
@@ -3687,10 +3772,14 @@ bool llp_ntupler::fillGenParticles(){
                     +pow(gLLP_decay_vertex_y[1]-gLLP_prod_vertex_y[1],2)
                     +pow(gLLP_decay_vertex_z[1]-gLLP_prod_vertex_z[1],2))/(30. * gLLP_beta[1]);//1/30 is to convert cm to ns
             double radius = sqrt( pow(gLLP_decay_vertex_x[1],2) + pow(gLLP_decay_vertex_y[1],2) );
+            double z = gLLP_decay_vertex_z[1] ;
             double ecal_radius = 129.0;
             // double hcal_radius = 179.0;
             double EB_z = 268.36447217; // 129*sinh(1.479)
             double EE_z = 298.5; //where Ecal Endcap starts in z direction
+            double ETL_rmin = 30.54540032; //Eta = 3.0, Z = 306cm
+            double ETL_rmax = 128.81130156; //Eta = 1.6, Z = 306cm
+            double ETL_z = 306.0;
             //--------------------------------------------------
             //Second two LLP daughters belong to LLP->pdgID()=36
             //--------------------------------------------------
@@ -3701,10 +3790,12 @@ bool llp_ntupler::fillGenParticles(){
               TLorentzVector tmp;
               tmp.SetPxPyPzE(tmpParticle->daughter(id)->px(), tmpParticle->daughter(id)->py(), tmpParticle->daughter(id)->pz(), tmpParticle->daughter(id)->energy());
               if(tmp.Pt()<pt_cut) continue;
+              gLLP_daughter_pid[id+2] = tmpParticle->daughter(id)->pdgId();
               gLLP_daughter_pt[id+2] = tmp.Pt();
               gLLP_daughter_eta[id+2] = tmp.Eta();
               gLLP_daughter_phi[id+2] = tmp.Phi();
               gLLP_daughter_e[id+2]  = tmp.E();
+              gLLP_daughter_mass[id+2]  = tmp.M();
               //gLLP_daughter_travel_time[id+2] = (1./30.)*(ecal_radius-radius)/(tmp.Pt()/tmp.E()) - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
               // double gLLP_daughter_travel_time_hcal = (1./30.)*(hcal_radius-radius)/(tmp.Pt()/tmp.E());// - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
               gLLP_daughter_travel_time[id+2] = (1./30.)*(ecal_radius-radius)/(tmp.Pt()/tmp.E());// - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
@@ -3717,7 +3808,8 @@ bool llp_ntupler::fillGenParticles(){
               // double x_hcal = gLLP_decay_vertex_x[1] + 30. * (tmp.Px()/tmp.E())*gLLP_daughter_travel_time_hcal;
               // double y_hcal = gLLP_decay_vertex_y[1] + 30. * (tmp.Py()/tmp.E())*gLLP_daughter_travel_time_hcal;
               // double z_hcal = gLLP_decay_vertex_z[1] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time_hcal;
-              if( fabs(z_ecal) < EB_z && radius <= ecal_radius && fabs(gLLP_decay_vertex_z[1]) < EE_z)
+/* 
+             if( fabs(z_ecal) < EB_z && radius <= ecal_radius && fabs(gLLP_decay_vertex_z[1]) < EE_z)
               // if( fabs(z_ecal) < 10 && radius <= 0.1)
               {
                 photon_travel_time[id+2] = (1./30) * sqrt(pow(ecal_radius,2)+pow(z_ecal,2));
@@ -3734,6 +3826,46 @@ bool llp_ntupler::fillGenParticles(){
                 photon_travel_time[id+2] = -666.;
                 photon_travel_time_pv[id+2] = -666.;
               }
+*/
+
+	      if(tmp.Eta()>=0)
+              {
+              gLLP_daughter_travel_time_ETL[id+2] = (1./30.)*fabs(ETL_z-z)/fabs(tmp.Pz()/tmp.E());// - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
+              }
+	      else
+              {
+              gLLP_daughter_travel_time_ETL[id+2] = (1./30.)*fabs(ETL_z+z)/fabs(tmp.Pz()/tmp.E());// - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
+              }
+              //Calculate dt from generation point to ETL face
+              double x_etl = gLLP_decay_vertex_x[1] + 30. * (tmp.Px()/tmp.E())*gLLP_daughter_travel_time_ETL[id+2];
+              double y_etl = gLLP_decay_vertex_y[1] + 30. * (tmp.Py()/tmp.E())*gLLP_daughter_travel_time_ETL[id+2];
+              double z_etl = gLLP_decay_vertex_z[1] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time_ETL[id+2];
+              double r_etl = sqrt( pow(x_etl,2) + pow(y_etl,2) );
+
+    	      if( fabs(z_ecal) < EB_z && radius <= ecal_radius && fabs(z) < EE_z)
+    	      // if( fabs(z_ecal) < 10 && radius <= 0.1)
+    	      {
+    	      gLLP_daughter_EB[id+2] = true;
+              photon_travel_time[id+2] = (1./30) * sqrt(pow(ecal_radius,2)+pow(z_ecal,2));
+              photon_travel_time_pv[id+2] = (1./30) * sqrt(pow(x_ecal-genVertexX,2) + pow(y_ecal-genVertexY,2) + pow(z_ecal-genVertexZ,2));
+              gen_time_pv[id+2] =  gLLP_travel_time[1] + gLLP_daughter_travel_time[id+2] - photon_travel_time_pv[id+2] + genVertexT;
+              gen_time[id+2] = gLLP_travel_time[1] + gLLP_daughter_travel_time[id+2] - photon_travel_time[id+2] + genVertexT;
+    	      }
+              else if( r_etl > ETL_rmin && r_etl < ETL_rmax && radius <= ecal_radius && fabs(z) < ETL_z )
+    	      {
+	        gLLP_daughter_ETL[id+2] = true;
+    	        photon_travel_time_ETL[id+2] = (1./30) * sqrt(pow(r_etl,2)+pow(ETL_z,2));
+                gen_time_ETL[id+2] = gLLP_travel_time[1] + gLLP_daughter_travel_time_ETL[id+2] - photon_travel_time_ETL[id+2] + genVertexT;
+
+              }
+    	      else
+    	      {
+    	      gLLP_daughter_travel_time[id+2] = -666;
+              gen_time_pv[id+2] = -666.;
+              gen_time[id+2] = -666.;
+              photon_travel_time[id+2] = -666.;
+              photon_travel_time_pv[id+2] = -666.;
+    	      }
 
               double min_delta_r = 666.;
               double min_delta_r_calo = 666.;
