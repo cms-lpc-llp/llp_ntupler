@@ -569,7 +569,8 @@ void displacedJetTiming_ntupler::enableJetBranches()
   llpTree->Branch("jet_sig_et1",jet_sig_et1,"jet_sig_et1[nJets]/F");
   llpTree->Branch("jet_sig_et2",jet_sig_et2,"jet_sig_et2[nJets]/F");
   llpTree->Branch("jet_energy_frac",jet_energy_frac,"jet_energy_frac[nJets]/F");
-  llpTree->Branch("jet_matched",jet_matched,"jet_matched[nJets]/O");//matched to gen particles
+  llpTree->Branch("jet_matched_gLLP_daughter",jet_matched_gLLP_daughter,"jet_matched_gLLP_daughter[nJets]/O");//matched to gen particles as llp daughters
+  llpTree->Branch("jet_matched_gLLP_grandaughter",jet_matched_gLLP_grandaughter,"jet_matched_gLLP_grandaughter[nJets]/O");//matched to gen particles as llp grandaughters
 
 
 
@@ -755,14 +756,14 @@ void displacedJetTiming_ntupler::enableGenParticleBranches()
    llpTree->Branch("gLLP_pt", gLLP_pt, "gLLP_pt[2]/F");
    llpTree->Branch("gLLP_eta", gLLP_eta, "gLLP_eta[2]/F");
    llpTree->Branch("gLLP_phi", gLLP_phi, "gLLP_phi[2]/F");
-
+   llpTree->Branch("gLLP_travel_time", gLLP_travel_time, "gLLP_travel_time[2]/F");
+/*
    llpTree->Branch("gLLP_daughter_travel_time_ETL", gLLP_daughter_travel_time_ETL, "gLLP_daughter_travel_time_ETL[4]/F");
    llpTree->Branch("gLLP_daughter_mass", gLLP_daughter_mass, "gLLP_daughter_mass[4]/F");
    llpTree->Branch("gen_time_ETL", gen_time_ETL, "gen_time_ETL[4]/F");
    llpTree->Branch("gLLP_daughter_EB", gLLP_daughter_EB, "gLLP_daughter_EB[4]/O");
    llpTree->Branch("gLLP_daughter_ETL", gLLP_daughter_ETL, "gLLP_daughter_ETL[4]/O");
 
-   llpTree->Branch("gLLP_travel_time", gLLP_travel_time, "gLLP_travel_time[2]/F");
 
    llpTree->Branch("gLLP_daughter_travel_time", gLLP_daughter_travel_time, "gLLP_daughter_travel_time[4]/F");
    llpTree->Branch("gLLP_daughter_id", gLLP_daughter_id, "gLLP_daughter_id[4]/I");
@@ -781,6 +782,61 @@ void displacedJetTiming_ntupler::enableGenParticleBranches()
    llpTree->Branch("gLLP_daughter_match_calojet_index", gLLP_daughter_match_calojet_index, "gLLP_daughter_match_calojet_index[4]/i");
    llpTree->Branch("gLLP_daughter_match_jet_index", gLLP_daughter_match_jet_index, "gLLP_daughter_match_jet_index[4]/i");
    llpTree->Branch("gLLP_min_delta_r_match_jet", gLLP_min_delta_r_match_jet, "gLLP_min_delta_r_match_jet[4]/F");
+*/
+   //daughters
+   llpTree->Branch("gLLP_daughter_EB", gLLP_daughter_EB, "gLLP_daughter_EB[4]/O");
+   llpTree->Branch("gLLP_daughter_ETL", gLLP_daughter_ETL, "gLLP_daughter_ETL[4]/O");
+
+   llpTree->Branch("gLLP_daughter_photon_travel_time_EB", gLLP_daughter_photon_travel_time_EB, "gLLP_daughter_photon_travel_time_EB[4]/F");
+   llpTree->Branch("gLLP_daughter_photon_travel_time_ETL", gLLP_daughter_photon_travel_time_ETL, "gLLP_daughter_photon_travel_time_ETL[4]/F");
+
+   llpTree->Branch("gLLP_daughter_travel_time_EB", gLLP_daughter_travel_time_EB, "gLLP_daughter_travel_time_EB[4]/F");
+   llpTree->Branch("gLLP_daughter_travel_time_ETL", gLLP_daughter_travel_time_ETL, "gLLP_daughter_travel_time_ETL[4]/F");
+
+   llpTree->Branch("gen_time_daughter_EB", gen_time_daughter_EB, "gen_time_daughter_EB[4]/F");
+   llpTree->Branch("gen_time_daughter_ETL", gen_time_daughter_ETL, "gen_time_daughter_ETL[4]/F");
+
+   llpTree->Branch("gLLP_daughter_id", gLLP_daughter_id, "gLLP_daughter_id[4]/I");
+   llpTree->Branch("gLLP_daughter_pt", gLLP_daughter_pt, "gLLP_daughter_pt[4]/F");
+   llpTree->Branch("gLLP_daughter_eta", gLLP_daughter_eta, "gLLP_daughter_eta[4]/F");
+   llpTree->Branch("gLLP_daughter_phi", gLLP_daughter_phi, "gLLP_daughter_phi[4]/F");
+   llpTree->Branch("gLLP_daughter_eta_ecalcorr", gLLP_daughter_eta_ecalcorr, "gLLP_daughter_eta_ecalcorr[4]/F");
+   llpTree->Branch("gLLP_daughter_phi_ecalcorr", gLLP_daughter_phi_ecalcorr, "gLLP_daughter_phi_ecalcorr[4]/F");
+   llpTree->Branch("gLLP_daughter_e", gLLP_daughter_e, "gLLP_daughter_e[4]/F");
+   llpTree->Branch("gLLP_daughter_mass", gLLP_daughter_mass, "gLLP_daughter_mass[4]/F");
+
+   llpTree->Branch("gLLP_daughter_min_delta_r_match_calojet", gLLP_daughter_min_delta_r_match_calojet, "gLLP_daughter_min_delta_r_match_calojet[4]/F");
+   llpTree->Branch("gLLP_daughter_match_calojet_index", gLLP_daughter_match_calojet_index, "gLLP_daughter_match_calojet_index[4]/i");
+   llpTree->Branch("gLLP_daughter_match_jet_index", gLLP_daughter_match_jet_index, "gLLP_daughter_match_jet_index[4]/i");
+   llpTree->Branch("gLLP_daughter_min_delta_r_match_jet", gLLP_daughter_min_delta_r_match_jet, "gLLP_daughter_min_delta_r_match_jet[4]/F");
+
+   //grandaughters
+   llpTree->Branch("gLLP_grandaughter_EB", gLLP_grandaughter_EB, "gLLP_grandaughter_EB[4]/O");
+   llpTree->Branch("gLLP_grandaughter_ETL", gLLP_grandaughter_ETL, "gLLP_grandaughter_ETL[4]/O");
+
+   llpTree->Branch("gLLP_grandaughter_photon_travel_time_EB", gLLP_grandaughter_photon_travel_time_EB, "gLLP_grandaughter_photon_travel_time_EB[4]/F");
+   llpTree->Branch("gLLP_grandaughter_photon_travel_time_ETL", gLLP_grandaughter_photon_travel_time_ETL, "gLLP_grandaughter_photon_travel_time_ETL[4]/F");
+
+   llpTree->Branch("gLLP_grandaughter_travel_time_EB", gLLP_grandaughter_travel_time_EB, "gLLP_grandaughter_travel_time_EB[4]/F");
+   llpTree->Branch("gLLP_grandaughter_travel_time_ETL", gLLP_grandaughter_travel_time_ETL, "gLLP_grandaughter_travel_time_ETL[4]/F");
+
+   llpTree->Branch("gen_time_grandaughter_EB", gen_time_grandaughter_EB, "gen_time_grandaughter_EB[4]/F");
+   llpTree->Branch("gen_time_grandaughter_ETL", gen_time_grandaughter_ETL, "gen_time_grandaughter_ETL[4]/F");
+
+   llpTree->Branch("gLLP_grandaughter_id", gLLP_grandaughter_id, "gLLP_grandaughter_id[4]/I");
+   llpTree->Branch("gLLP_grandaughter_pt", gLLP_grandaughter_pt, "gLLP_grandaughter_pt[4]/F");
+   llpTree->Branch("gLLP_grandaughter_eta", gLLP_grandaughter_eta, "gLLP_grandaughter_eta[4]/F");
+   llpTree->Branch("gLLP_grandaughter_phi", gLLP_grandaughter_phi, "gLLP_grandaughter_phi[4]/F");
+   llpTree->Branch("gLLP_grandaughter_eta_ecalcorr", gLLP_grandaughter_eta_ecalcorr, "gLLP_grandaughter_eta_ecalcorr[4]/F");
+   llpTree->Branch("gLLP_grandaughter_phi_ecalcorr", gLLP_grandaughter_phi_ecalcorr, "gLLP_grandaughter_phi_ecalcorr[4]/F");
+   llpTree->Branch("gLLP_grandaughter_e", gLLP_grandaughter_e, "gLLP_grandaughter_e[4]/F");
+   llpTree->Branch("gLLP_grandaughter_mass", gLLP_grandaughter_mass, "gLLP_grandaughter_mass[4]/F");
+
+   llpTree->Branch("gLLP_grandaughter_min_delta_r_match_calojet", gLLP_grandaughter_min_delta_r_match_calojet, "gLLP_grandaughter_min_delta_r_match_calojet[4]/F");
+   llpTree->Branch("gLLP_grandaughter_match_calojet_index", gLLP_grandaughter_match_calojet_index, "gLLP_grandaughter_match_calojet_index[4]/i");
+   llpTree->Branch("gLLP_grandaughter_match_jet_index", gLLP_grandaughter_match_jet_index, "gLLP_grandaughter_match_jet_index[4]/i");
+   llpTree->Branch("gLLP_grandaughter_min_delta_r_match_jet", gLLP_grandaughter_min_delta_r_match_jet, "gLLP_grandaughter_min_delta_r_match_jet[4]/F");
+
 
 };
 
@@ -1221,7 +1277,8 @@ void displacedJetTiming_ntupler::resetJetBranches()
     jet_sig_et1[i] = -99.0;
     jet_sig_et2[i] = -99.0;
     jet_energy_frac[i] = 0.0;
-    jet_matched[i] = false;
+    jet_matched_gLLP_daughter[i] = false;
+    jet_matched_gLLP_grandaughter[i] = false;
 
   }
   return;
@@ -1420,8 +1477,10 @@ void displacedJetTiming_ntupler::resetGenParticleBranches()
     gLLP_travel_time[i] = -666.;
   }
 
+ //daughters
   for ( int i = 0; i < LLP_DAUGHTER_ARRAY_SIZE; i++ )
   {
+/*
     gLLP_daughter_id[i] = 0;
     gLLP_daughter_pt[i] = -666.;
     gLLP_daughter_eta[i] = -666.;
@@ -1431,9 +1490,9 @@ void displacedJetTiming_ntupler::resetGenParticleBranches()
     gLLP_daughter_e[i] = -666.;
     gLLP_daughter_travel_time[i] = -666.;
     gen_time[i] = -666.;
-    gen_time_pv[i] = -666.;
+    //gen_time_pv[i] = -666.;
     photon_travel_time[i] = -666.;
-    photon_travel_time_pv[i] = -666.;
+    //photon_travel_time_pv[i] = -666.;
     gLLP_daughter_match_calojet_index[i] = 666;
     gLLP_daughter_match_jet_index[i] = 666;
     gLLP_min_delta_r_match_calojet[i] = -666.;
@@ -1445,7 +1504,62 @@ void displacedJetTiming_ntupler::resetGenParticleBranches()
     gLLP_daughter_EB[i] = false;
     gLLP_daughter_ETL[i] = false;
     photon_travel_time_ETL[i] = -666.;
+*/
+    gLLP_daughter_EB[i] = false;
+    gLLP_daughter_ETL[i] = false;
 
+    gLLP_daughter_photon_travel_time_EB[i] = -666.;
+    gLLP_daughter_photon_travel_time_ETL[i] = -666.;
+
+    gLLP_daughter_travel_time_EB[i] = -666.;
+    gLLP_daughter_travel_time_ETL[i] = -666.;
+
+    gen_time_daughter_EB[i] = -666.;
+    gen_time_daughter_ETL[i] = -666.;
+
+    gLLP_daughter_id[i] = 0;
+    gLLP_daughter_pt[i] = -666.;
+    gLLP_daughter_eta[i] = -666.;
+    gLLP_daughter_phi[i] = -666.;
+    gLLP_daughter_eta_ecalcorr[i] = -666.;
+    gLLP_daughter_phi_ecalcorr[i] = -666.;
+    gLLP_daughter_e[i] = -666.;
+    gLLP_daughter_mass[i] = -666.;
+
+    gLLP_daughter_match_calojet_index[i] = 666;
+    gLLP_daughter_match_jet_index[i] = 666;
+    gLLP_daughter_min_delta_r_match_calojet[i] = -666.;
+    gLLP_daughter_min_delta_r_match_jet[i] = -666.;
+
+}
+ //grandaughters
+  for ( int i = 0; i < LLP_GRAND_DAUGHTER_ARRAY_SIZE; i++ )
+  {
+    gLLP_grandaughter_EB[i] = false;
+    gLLP_grandaughter_ETL[i] = false;
+
+    gLLP_grandaughter_photon_travel_time_EB[i] = -666.;
+    gLLP_grandaughter_photon_travel_time_ETL[i] = -666.;
+
+    gLLP_grandaughter_travel_time_EB[i] = -666.;
+    gLLP_grandaughter_travel_time_ETL[i] = -666.;
+
+    gen_time_grandaughter_EB[i] = -666.;
+    gen_time_grandaughter_ETL[i] = -666.;
+
+    gLLP_grandaughter_id[i] = 0;
+    gLLP_grandaughter_pt[i] = -666.;
+    gLLP_grandaughter_eta[i] = -666.;
+    gLLP_grandaughter_phi[i] = -666.;
+    gLLP_grandaughter_eta_ecalcorr[i] = -666.;
+    gLLP_grandaughter_phi_ecalcorr[i] = -666.;
+    gLLP_grandaughter_e[i] = -666.;
+    gLLP_grandaughter_mass[i] = -666.;
+
+    gLLP_grandaughter_match_calojet_index[i] = 666;
+    gLLP_grandaughter_match_jet_index[i] = 666;
+    gLLP_grandaughter_min_delta_r_match_calojet[i] = -666.;
+    gLLP_grandaughter_min_delta_r_match_jet[i] = -666.;
 
 }
   return;
@@ -1502,6 +1616,7 @@ void displacedJetTiming_ntupler::beginRun(const edm::Run& iRun, const edm::Event
 
 //------ Method called for each lumi block ------//
 void displacedJetTiming_ntupler::beginLuminosityBlock(edm::LuminosityBlock const& iLumi, edm::EventSetup const&) {
+/*
   if (useGen_) {  
     iLumi.getByToken(genLumiHeaderToken_,genLumiHeader);
   }
@@ -1513,7 +1628,7 @@ void displacedJetTiming_ntupler::beginLuminosityBlock(edm::LuminosityBlock const
   }    
   
  std::cout <<"lhe comments : " << lheComments << std::endl;
-
+*/
 }
 
 
@@ -3594,6 +3709,7 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
             gLLP_travel_time[0] = sqrt(pow(gLLP_decay_vertex_x[0]-gLLP_prod_vertex_x[0],2)
                                     +pow(gLLP_decay_vertex_y[0]-gLLP_prod_vertex_y[0],2)
                                     +pow(gLLP_decay_vertex_z[0]-gLLP_prod_vertex_z[0],2))/(30. * gLLP_beta[0]);//1/30 is to convert cm to ns
+
             double radius = sqrt( pow(gLLP_decay_vertex_x[0],2) + pow(gLLP_decay_vertex_y[0],2) );
             double z = gLLP_decay_vertex_z[0] ;
             double ecal_radius = 129.0;
@@ -3608,6 +3724,7 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
             {
             //std::cout << "====================" << std::endl;
             //std::cout << " -> "<< tmpParticle->daughter(id)->pdgId() << std::endl;
+            //std::cout <<"id " << id << " -> "<< tmpParticle->daughter(id)->numberOfDaughters() << std::endl;
               if( id > 1 ) break;
               TLorentzVector tmp;
               tmp.SetPxPyPzE(tmpParticle->daughter(id)->px(), tmpParticle->daughter(id)->py(), tmpParticle->daughter(id)->pz(), tmpParticle->daughter(id)->energy());
@@ -3619,34 +3736,23 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
               gLLP_daughter_e[id]  = tmp.E();
               gLLP_daughter_mass[id]  = tmp.M();
 
-              // double gLLP_daughter_travel_time_hcal= (1./30.)*(hcal_radius-radius)/(tmp.Pt()/tmp.E());// - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
-
+/*
               gLLP_daughter_travel_time[id] = (1./30.)*(ecal_radius-radius)/(tmp.Pt()/tmp.E());// - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
             //Calculate dt from generation point to ECAL face
               double x_ecal = gLLP_decay_vertex_x[0] + 30. * (tmp.Px()/tmp.E())*gLLP_daughter_travel_time[id];
               double y_ecal = gLLP_decay_vertex_y[0] + 30. * (tmp.Py()/tmp.E())*gLLP_daughter_travel_time[id];
               double z_ecal = gLLP_decay_vertex_z[0] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time[id];
+*/
+              // double gLLP_daughter_travel_time_hcal= (1./30.)*(hcal_radius-radius)/(tmp.Pt()/tmp.E());// - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
               // double x_hcal = gLLP_decay_vertex_x[0] + 30. * (tmp.Px()/tmp.E())*gLLP_daughter_travel_time_hcal;
               // double y_hcal = gLLP_decay_vertex_y[0] + 30. * (tmp.Py()/tmp.E())*gLLP_daughter_travel_time_hcal;
               // double z_hcal = gLLP_decay_vertex_z[0] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time_hcal;
-/*
-              if( fabs(z_ecal) < EB_z && radius <= ecal_radius &&  fabs(gLLP_decay_vertex_z[0]) < EE_z)
-              {
-                photon_travel_time[id] = (1./30) * sqrt(pow(ecal_radius,2)+pow(z_ecal,2));
-                photon_travel_time_pv[id] = (1./30) * sqrt(pow(x_ecal-genVertexX,2) + pow(y_ecal-genVertexY,2) + pow(z_ecal-genVertexZ,2));
-                gen_time_pv[id] =  gLLP_travel_time[0] + gLLP_daughter_travel_time[id] - photon_travel_time_pv[id] + genVertexT;
-                gen_time[id] = gLLP_travel_time[0] + gLLP_daughter_travel_time[id] - photon_travel_time[id] + genVertexT;
 
-              }
-              else
-              {
-                gLLP_daughter_travel_time[id] = -666;
-                gen_time_pv[id] = -666.;
-                gen_time[id] = -666.;
-                photon_travel_time[id] = -666.;
-                photon_travel_time_pv[id] = -666.;
-              }
-*/
+              gLLP_daughter_travel_time_EB[id] = (1./30.)*(ecal_radius-radius)/(tmp.Pt()/tmp.E());// - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
+            //Calculate dt from generation point to ECAL face
+              double x_ecal = gLLP_decay_vertex_x[0] + 30. * (tmp.Px()/tmp.E())*gLLP_daughter_travel_time_EB[id];
+              double y_ecal = gLLP_decay_vertex_y[0] + 30. * (tmp.Py()/tmp.E())*gLLP_daughter_travel_time_EB[id];
+              double z_ecal = gLLP_decay_vertex_z[0] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time_EB[id];
 
 	    if(tmp.Eta()>=0)
             {
@@ -3662,13 +3768,13 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
             double z_etl = gLLP_decay_vertex_z[0] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time_ETL[id];
             double r_etl = sqrt( pow(x_etl,2) + pow(y_etl,2) );
 
-      //if( fabs(z_ecal) < 10 && radius <= 1)
+/*
             if( fabs(z_ecal) < EB_z && radius <= ecal_radius && fabs(z) < EE_z)
     	    {
 	      gLLP_daughter_EB[id] = true;
     	      photon_travel_time[id] = (1./30) * sqrt(pow(ecal_radius,2)+pow(z_ecal,2));
-              photon_travel_time_pv[id] = (1./30) * sqrt(pow(x_ecal-genVertexX,2) + pow(y_ecal-genVertexY,2) + pow(z_ecal-genVertexZ,2));
-              gen_time_pv[id] =  gLLP_travel_time[0] + gLLP_daughter_travel_time[id] - photon_travel_time_pv[id] + genVertexT;
+              //photon_travel_time_pv[id] = (1./30) * sqrt(pow(x_ecal-genVertexX,2) + pow(y_ecal-genVertexY,2) + pow(z_ecal-genVertexZ,2));
+              //gen_time_pv[id] =  gLLP_travel_time[0] + gLLP_daughter_travel_time[id] - photon_travel_time_pv[id] + genVertexT;
               gen_time[id] = gLLP_travel_time[0] + gLLP_daughter_travel_time[id] - photon_travel_time[id] + genVertexT;
 
             }
@@ -3686,11 +3792,28 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
             else
             {
               gLLP_daughter_travel_time[id] = -666;
-              gen_time_pv[id] = -666.;
+              //gen_time_pv[id] = -666.;
               gen_time[id] = -666.;
               photon_travel_time[id] = -666.;
-              photon_travel_time_pv[id] = -666.;
+              //photon_travel_time_pv[id] = -666.;
             }
+*/
+
+            if( fabs(z_ecal) < EB_z && radius <= ecal_radius && fabs(z) < EE_z)
+    	    {
+	      gLLP_daughter_EB[id] = true;
+    	      gLLP_daughter_photon_travel_time_EB[id] = (1./30) * sqrt(pow(ecal_radius,2)+pow(z_ecal,2));
+              gen_time_daughter_EB[id] = gLLP_travel_time[0] + gLLP_daughter_travel_time_EB[id] - gLLP_daughter_photon_travel_time_EB[id] + genVertexT;
+
+            }
+            else if( r_etl > ETL_rmin && r_etl < ETL_rmax && radius <= ecal_radius && fabs(z) < ETL_z )
+    	    {
+	      gLLP_daughter_ETL[id] = true;
+    	      gLLP_daughter_photon_travel_time_ETL[id] = (1./30) * sqrt(pow(r_etl,2)+pow(ETL_z,2));
+              gen_time_daughter_ETL[id] = gLLP_travel_time[0] + gLLP_daughter_travel_time_ETL[id] - gLLP_daughter_photon_travel_time_ETL[id] + genVertexT;
+
+            }
+
               double min_delta_r = 666.;
               double min_delta_r_calo = 666.;
               unsigned int match_jet_index = 666;
@@ -3729,8 +3852,8 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
                 }
               }//end matching to jets using ECAL radius
               // std::cout<<"min delta r "<<min_delta_r<<std::endl;
-
-              if ( min_delta_r < 0.3 )
+/*
+              if ( min_delta_r < 0.4 )
               {
                 gLLP_daughter_match_jet_index[id] = match_jet_index;
                 gLLP_min_delta_r_match_jet[id] = min_delta_r;
@@ -3740,16 +3863,137 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
                 // std::cout<<"matched "<<jet_matched[match_jet_index]<<std::endl;
               }
 
-              if (min_delta_r_calo < 0.3)
+              if (min_delta_r_calo < 0.4)
               {
                 gLLP_daughter_match_calojet_index[id] = match_calojet_index;
                 gLLP_min_delta_r_match_calojet[id] = min_delta_r_calo;
 
               }
 
+*/
+              if ( min_delta_r < 0.4 )
+              {
+                gLLP_daughter_match_jet_index[id] = match_jet_index;
+                gLLP_daughter_min_delta_r_match_jet[id] = min_delta_r;
+                jet_matched_gLLP_daughter[match_jet_index] = true;
+              }
+
+              if (min_delta_r_calo < 0.4)
+              {
+                gLLP_daughter_match_calojet_index[id] = match_calojet_index;
+                gLLP_daughter_min_delta_r_match_calojet[id] = min_delta_r_calo;
+
+              }
+
+            //grandaughters
+            if(tmpParticle->daughter(id)->numberOfDaughters() > 0)
+	    {
+            const reco::Candidate *tmpDauParticle = tmpParticle->daughter(id);
+            for (unsigned int index = 0; index < tmpDauParticle->numberOfDaughters(); index++ )
+            {
+              if( index > 1 ) break;
+              //std::cout <<"index " << index << " -> "<< tmpDauParticle->daughter(index)->pdgId() << std::endl;
+              TLorentzVector tmpdau;
+              tmpdau.SetPxPyPzE(tmpDauParticle->daughter(index)->px(), tmpDauParticle->daughter(index)->py(), tmpDauParticle->daughter(index)->pz(), tmpDauParticle->daughter(index)->energy());
+              if(tmpdau.Pt()<pt_cut) continue;
+	      gLLP_grandaughter_id[index] = tmpDauParticle->daughter(index)->pdgId();
+              gLLP_grandaughter_pt[index] = tmpdau.Pt();
+              gLLP_grandaughter_eta[index] = tmpdau.Eta();
+              gLLP_grandaughter_phi[index] = tmpdau.Phi();
+              gLLP_grandaughter_e[index]  = tmpdau.E();
+              gLLP_grandaughter_mass[index]  = tmpdau.M();
+
+
+              gLLP_grandaughter_travel_time_EB[index] = (1./30.)*(ecal_radius-radius)/(tmpdau.Pt()/tmpdau.E());// - (1./30.) * ecal_radius * cosh(tmpdau.Eta());//1/30 is to convert cm to ns
+            //Calculate dt from generation point to ECAL face
+              double x_ecal = gLLP_decay_vertex_x[0] + 30. * (tmpdau.Px()/tmpdau.E())*gLLP_grandaughter_travel_time_EB[index];
+              double y_ecal = gLLP_decay_vertex_y[0] + 30. * (tmpdau.Py()/tmpdau.E())*gLLP_grandaughter_travel_time_EB[index];
+              double z_ecal = gLLP_decay_vertex_z[0] + 30. * (tmpdau.Pz()/tmpdau.E())*gLLP_grandaughter_travel_time_EB[index];
+
+	    if(tmpdau.Eta()>=0)
+            {
+            gLLP_grandaughter_travel_time_ETL[index] = (1./30.)*fabs(ETL_z-z)/fabs(tmpdau.Pz()/tmpdau.E());// - (1./30.) * ecal_radius * cosh(tmpdau.Eta());//1/30 is to convert cm to ns
+            }
+	    else
+            {
+            gLLP_grandaughter_travel_time_ETL[index] = (1./30.)*fabs(ETL_z+z)/fabs(tmpdau.Pz()/tmpdau.E());// - (1./30.) * ecal_radius * cosh(tmpdau.Eta());//1/30 is to convert cm to ns
+            }
+          //Calculate dt from generation point to ETL face
+            double x_etl = gLLP_decay_vertex_x[0] + 30. * (tmpdau.Px()/tmpdau.E())*gLLP_grandaughter_travel_time_ETL[index];
+            double y_etl = gLLP_decay_vertex_y[0] + 30. * (tmpdau.Py()/tmpdau.E())*gLLP_grandaughter_travel_time_ETL[index];
+            double z_etl = gLLP_decay_vertex_z[0] + 30. * (tmpdau.Pz()/tmpdau.E())*gLLP_grandaughter_travel_time_ETL[index];
+            double r_etl = sqrt( pow(x_etl,2) + pow(y_etl,2) );
+
+
+            if( fabs(z_ecal) < EB_z && radius <= ecal_radius && fabs(z) < EE_z)
+    	    {
+	      gLLP_grandaughter_EB[index] = true;
+    	      gLLP_grandaughter_photon_travel_time_EB[index] = (1./30) * sqrt(pow(ecal_radius,2)+pow(z_ecal,2));
+              gen_time_grandaughter_EB[index] = gLLP_travel_time[0] + gLLP_grandaughter_travel_time_EB[index] - gLLP_grandaughter_photon_travel_time_EB[index] + genVertexT;
 
             }
-          }
+            else if( r_etl > ETL_rmin && r_etl < ETL_rmax && radius <= ecal_radius && fabs(z) < ETL_z )
+    	    {
+	      gLLP_grandaughter_ETL[index] = true;
+    	      gLLP_grandaughter_photon_travel_time_ETL[index] = (1./30) * sqrt(pow(r_etl,2)+pow(ETL_z,2));
+              gen_time_grandaughter_ETL[index] = gLLP_travel_time[0] + gLLP_grandaughter_travel_time_ETL[index] - gLLP_grandaughter_photon_travel_time_ETL[index] + genVertexT;
+
+            }
+
+              double min_delta_r = 666.;
+              double min_delta_r_calo = 666.;
+              unsigned int match_jet_index = 666;
+              unsigned int match_calojet_index = 666;
+
+
+          // Correction of eta and phi based on ecal points
+              double phi = atan((y_ecal-genVertexY)/(x_ecal-genVertexX));
+              if  (x_ecal < 0.0){
+                phi = TMath::Pi() + phi;
+              }
+              phi = deltaPhi(phi,0.0);
+              double theta = atan(sqrt(pow(x_ecal-genVertexX,2)+pow(y_ecal-genVertexY,2))/abs(z_ecal-genVertexZ));
+              double eta = -1.0*TMath::Sign(1.0, z_ecal-genVertexZ)*log(tan(theta/2));
+              gLLP_grandaughter_eta_ecalcorr[index] = eta;
+              gLLP_grandaughter_phi_ecalcorr[index] = phi;
+              for ( int i_jet = 0; i_jet < nCaloJets; i_jet++ )
+              {
+                double current_delta_r = deltaR(gLLP_grandaughter_eta_ecalcorr[index], gLLP_grandaughter_phi_ecalcorr[index], calojetEta[i_jet], calojetPhi[i_jet]);
+                if ( current_delta_r < min_delta_r_calo )
+                {
+                  min_delta_r_calo = current_delta_r;
+                  match_calojet_index = i_jet;
+                }
+              }
+              for ( int i_jet = 0; i_jet < nJets; i_jet++ )
+              {
+                double current_delta_r = deltaR(gLLP_grandaughter_eta_ecalcorr[index], gLLP_grandaughter_phi_ecalcorr[index], jetEta[i_jet], jetPhi[i_jet]);
+                if ( current_delta_r < min_delta_r )
+                {
+                  min_delta_r = current_delta_r;
+                  match_jet_index = i_jet;
+                }
+              }//end matching to jets using ECAL radius
+               
+              if ( min_delta_r < 0.4 )
+              {
+                gLLP_grandaughter_match_jet_index[index] = match_jet_index;
+                gLLP_grandaughter_min_delta_r_match_jet[index] = min_delta_r;
+                jet_matched_gLLP_grandaughter[match_jet_index] = true;
+              }
+
+              if (min_delta_r_calo < 0.4)
+              {
+                gLLP_grandaughter_match_calojet_index[index] = match_calojet_index;
+                gLLP_grandaughter_min_delta_r_match_calojet[index] = min_delta_r_calo;
+
+              }
+	    }
+            }//loop of all gLLP granddaughters 
+	    
+
+            }//loop of all gLLP daughters 
+          }//llp 1 is done here, the following is llp 2
 	  else
           {
             gLLP_decay_vertex_x[1] = dau->vx();
@@ -3763,6 +4007,7 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
             gLLP_travel_time[1] = sqrt(pow(gLLP_decay_vertex_x[1]-gLLP_prod_vertex_x[1],2)
                     +pow(gLLP_decay_vertex_y[1]-gLLP_prod_vertex_y[1],2)
                     +pow(gLLP_decay_vertex_z[1]-gLLP_prod_vertex_z[1],2))/(30. * gLLP_beta[1]);//1/30 is to convert cm to ns
+
             double radius = sqrt( pow(gLLP_decay_vertex_x[1],2) + pow(gLLP_decay_vertex_y[1],2) );
             double z = gLLP_decay_vertex_z[1] ;
             double ecal_radius = 129.0;
@@ -3788,37 +4033,25 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
               gLLP_daughter_phi[id+2] = tmp.Phi();
               gLLP_daughter_e[id+2]  = tmp.E();
               gLLP_daughter_mass[id+2]  = tmp.M();
-              //gLLP_daughter_travel_time[id+2] = (1./30.)*(ecal_radius-radius)/(tmp.Pt()/tmp.E()) - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
-              // double gLLP_daughter_travel_time_hcal = (1./30.)*(hcal_radius-radius)/(tmp.Pt()/tmp.E());// - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
+/*
               gLLP_daughter_travel_time[id+2] = (1./30.)*(ecal_radius-radius)/(tmp.Pt()/tmp.E());// - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
 
               //Calculate dt from generation point to ECAL face
               double x_ecal = gLLP_decay_vertex_x[1] + 30. * (tmp.Px()/tmp.E())*gLLP_daughter_travel_time[id+2];
               double y_ecal = gLLP_decay_vertex_y[1] + 30. * (tmp.Py()/tmp.E())*gLLP_daughter_travel_time[id+2];
               double z_ecal = gLLP_decay_vertex_z[1] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time[id+2];
-              //
+*/
+              // double gLLP_daughter_travel_time_hcal = (1./30.)*(hcal_radius-radius)/(tmp.Pt()/tmp.E());// - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
               // double x_hcal = gLLP_decay_vertex_x[1] + 30. * (tmp.Px()/tmp.E())*gLLP_daughter_travel_time_hcal;
               // double y_hcal = gLLP_decay_vertex_y[1] + 30. * (tmp.Py()/tmp.E())*gLLP_daughter_travel_time_hcal;
               // double z_hcal = gLLP_decay_vertex_z[1] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time_hcal;
-/*
-              if( fabs(z_ecal) < EB_z && radius <= ecal_radius && fabs(gLLP_decay_vertex_z[1]) < EE_z)
-              // if( fabs(z_ecal) < 10 && radius <= 0.1)
-              {
-                photon_travel_time[id+2] = (1./30) * sqrt(pow(ecal_radius,2)+pow(z_ecal,2));
-                photon_travel_time_pv[id+2] = (1./30) * sqrt(pow(x_ecal-genVertexX,2) + pow(y_ecal-genVertexY,2) + pow(z_ecal-genVertexZ,2));
-                gen_time_pv[id+2] =  gLLP_travel_time[1] + gLLP_daughter_travel_time[id+2] - photon_travel_time_pv[id+2] + genVertexT;
-                gen_time[id+2] = gLLP_travel_time[1] + gLLP_daughter_travel_time[id+2] - photon_travel_time[id+2] + genVertexT;
+              
+              gLLP_daughter_travel_time_EB[id+2] = (1./30.)*(ecal_radius-radius)/(tmp.Pt()/tmp.E());// - (1./30.) * ecal_radius * cosh(tmp.Eta());//1/30 is to convert cm to ns
 
-              }
-              else
-              {
-                gLLP_daughter_travel_time[id+2] = -666;
-                gen_time_pv[id+2] = -666.;
-                gen_time[id+2] = -666.;
-                photon_travel_time[id+2] = -666.;
-                photon_travel_time_pv[id+2] = -666.;
-              }
-*/
+              //Calculate dt from generation point to ECAL face
+              double x_ecal = gLLP_decay_vertex_x[1] + 30. * (tmp.Px()/tmp.E())*gLLP_daughter_travel_time_EB[id+2];
+              double y_ecal = gLLP_decay_vertex_y[1] + 30. * (tmp.Py()/tmp.E())*gLLP_daughter_travel_time_EB[id+2];
+              double z_ecal = gLLP_decay_vertex_z[1] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time_EB[id+2];
 
 	      if(tmp.Eta()>=0)
               {
@@ -3833,14 +4066,14 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
               double y_etl = gLLP_decay_vertex_y[1] + 30. * (tmp.Py()/tmp.E())*gLLP_daughter_travel_time_ETL[id+2];
               double z_etl = gLLP_decay_vertex_z[1] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time_ETL[id+2];
               double r_etl = sqrt( pow(x_etl,2) + pow(y_etl,2) );
-
+/*
     	      if( fabs(z_ecal) < EB_z && radius <= ecal_radius && fabs(z) < EE_z)
     	      // if( fabs(z_ecal) < 10 && radius <= 0.1)
     	      {
     	      gLLP_daughter_EB[id+2] = true;
               photon_travel_time[id+2] = (1./30) * sqrt(pow(ecal_radius,2)+pow(z_ecal,2));
-              photon_travel_time_pv[id+2] = (1./30) * sqrt(pow(x_ecal-genVertexX,2) + pow(y_ecal-genVertexY,2) + pow(z_ecal-genVertexZ,2));
-              gen_time_pv[id+2] =  gLLP_travel_time[1] + gLLP_daughter_travel_time[id+2] - photon_travel_time_pv[id+2] + genVertexT;
+              //photon_travel_time_pv[id+2] = (1./30) * sqrt(pow(x_ecal-genVertexX,2) + pow(y_ecal-genVertexY,2) + pow(z_ecal-genVertexZ,2));
+              //gen_time_pv[id+2] =  gLLP_travel_time[1] + gLLP_daughter_travel_time[id+2] - photon_travel_time_pv[id+2] + genVertexT;
               gen_time[id+2] = gLLP_travel_time[1] + gLLP_daughter_travel_time[id+2] - photon_travel_time[id+2] + genVertexT;
     	      }
               else if( r_etl > ETL_rmin && r_etl < ETL_rmax && radius <= ecal_radius && fabs(z) < ETL_z )
@@ -3853,11 +4086,25 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
     	      else
     	      {
     	      gLLP_daughter_travel_time[id+2] = -666;
-              gen_time_pv[id+2] = -666.;
+              //gen_time_pv[id+2] = -666.;
               gen_time[id+2] = -666.;
               photon_travel_time[id+2] = -666.;
-              photon_travel_time_pv[id+2] = -666.;
+              //photon_travel_time_pv[id+2] = -666.;
     	      }
+*/
+    	      if( fabs(z_ecal) < EB_z && radius <= ecal_radius && fabs(z) < EE_z)
+    	      {
+    	      gLLP_daughter_EB[id+2] = true;
+              gLLP_daughter_photon_travel_time_EB[id+2] = (1./30) * sqrt(pow(ecal_radius,2)+pow(z_ecal,2));
+              gen_time_daughter_EB[id+2] = gLLP_travel_time[1] + gLLP_daughter_travel_time_EB[id+2] - gLLP_daughter_photon_travel_time_EB[id+2] + genVertexT;
+    	      }
+              else if( r_etl > ETL_rmin && r_etl < ETL_rmax && radius <= ecal_radius && fabs(z) < ETL_z )
+    	      {
+	        gLLP_daughter_ETL[id+2] = true;
+    	        gLLP_daughter_photon_travel_time_ETL[id+2] = (1./30) * sqrt(pow(r_etl,2)+pow(ETL_z,2));
+                gen_time_daughter_ETL[id+2] = gLLP_travel_time[1] + gLLP_daughter_travel_time_ETL[id+2] - gLLP_daughter_photon_travel_time_ETL[id+2] + genVertexT;
+
+              }
 
               double min_delta_r = 666.;
               double min_delta_r_calo = 666.;
@@ -3894,8 +4141,8 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
                   match_jet_index = i_jet;
                 }
               }//end matching to jets ecal
-
-              if ( min_delta_r < 0.3 )
+/*
+              if ( min_delta_r < 0.4 )
               {
                 gLLP_daughter_match_jet_index[id+2] = match_jet_index;
                 gLLP_min_delta_r_match_jet[id+2] = min_delta_r;
@@ -3904,12 +4151,131 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
 
                 // std::cout<<"matched "<<jet_matched[match_jet_index]<<std::endl;
               }
-              if ( min_delta_r_calo < 0.3 )
+              if ( min_delta_r_calo < 0.4 )
               {
                 gLLP_daughter_match_calojet_index[id+2] = match_calojet_index;
                 gLLP_min_delta_r_match_calojet[id+2] = min_delta_r_calo;
               }
+*/
+              if ( min_delta_r < 0.4 )
+              {
+                gLLP_daughter_match_jet_index[id+2] = match_jet_index;
+                gLLP_daughter_min_delta_r_match_jet[id+2] = min_delta_r;
+                jet_matched_gLLP_daughter[match_jet_index] = true;
+              }
+              if ( min_delta_r_calo < 0.4 )
+              {
+                gLLP_daughter_match_calojet_index[id+2] = match_calojet_index;
+                gLLP_daughter_min_delta_r_match_calojet[id+2] = min_delta_r_calo;
+              }
 
+
+            //grandaughters
+            if(tmpParticle->daughter(id)->numberOfDaughters() > 0)
+	    {
+            const reco::Candidate *tmpDauParticle = tmpParticle->daughter(id);
+            for (unsigned int index = 0; index < tmpDauParticle->numberOfDaughters(); index++ )
+            {
+              if( index > 1 ) break;
+              //std::cout <<"index " << index << " -> "<< tmpDauParticle->daughter(index)->pdgId() << std::endl;
+              TLorentzVector tmpdau;
+              tmpdau.SetPxPyPzE(tmpDauParticle->daughter(index)->px(), tmpDauParticle->daughter(index)->py(), tmpDauParticle->daughter(index)->pz(), tmpDauParticle->daughter(index)->energy());
+              if(tmpdau.Pt()<pt_cut) continue;
+	      gLLP_grandaughter_id[index+2] = tmpDauParticle->daughter(index)->pdgId();
+              gLLP_grandaughter_pt[index+2] = tmpdau.Pt();
+              gLLP_grandaughter_eta[index+2] = tmpdau.Eta();
+              gLLP_grandaughter_phi[index+2] = tmpdau.Phi();
+              gLLP_grandaughter_e[index+2]  = tmpdau.E();
+              gLLP_grandaughter_mass[index+2]  = tmpdau.M();
+
+
+              gLLP_grandaughter_travel_time_EB[index+2] = (1./30.)*(ecal_radius-radius)/(tmpdau.Pt()/tmpdau.E());// - (1./30.) * ecal_radius * cosh(tmpdau.Eta());//1/30 is to convert cm to ns
+            //Calculate dt from generation point to ECAL face
+              double x_ecal = gLLP_decay_vertex_x[0] + 30. * (tmpdau.Px()/tmpdau.E())*gLLP_grandaughter_travel_time_EB[index+2];
+              double y_ecal = gLLP_decay_vertex_y[0] + 30. * (tmpdau.Py()/tmpdau.E())*gLLP_grandaughter_travel_time_EB[index+2];
+              double z_ecal = gLLP_decay_vertex_z[0] + 30. * (tmpdau.Pz()/tmpdau.E())*gLLP_grandaughter_travel_time_EB[index+2];
+
+	    if(tmpdau.Eta()>=0)
+            {
+            gLLP_grandaughter_travel_time_ETL[index+2] = (1./30.)*fabs(ETL_z-z)/fabs(tmpdau.Pz()/tmpdau.E());// - (1./30.) * ecal_radius * cosh(tmpdau.Eta());//1/30 is to convert cm to ns
+            }
+	    else
+            {
+            gLLP_grandaughter_travel_time_ETL[index+2] = (1./30.)*fabs(ETL_z+z)/fabs(tmpdau.Pz()/tmpdau.E());// - (1./30.) * ecal_radius * cosh(tmpdau.Eta());//1/30 is to convert cm to ns
+            }
+          //Calculate dt from generation point to ETL face
+            double x_etl = gLLP_decay_vertex_x[0] + 30. * (tmpdau.Px()/tmpdau.E())*gLLP_grandaughter_travel_time_ETL[index+2];
+            double y_etl = gLLP_decay_vertex_y[0] + 30. * (tmpdau.Py()/tmpdau.E())*gLLP_grandaughter_travel_time_ETL[index+2];
+            double z_etl = gLLP_decay_vertex_z[0] + 30. * (tmpdau.Pz()/tmpdau.E())*gLLP_grandaughter_travel_time_ETL[index+2];
+            double r_etl = sqrt( pow(x_etl,2) + pow(y_etl,2) );
+
+
+            if( fabs(z_ecal) < EB_z && radius <= ecal_radius && fabs(z) < EE_z)
+    	    {
+	      gLLP_grandaughter_EB[index+2] = true;
+    	      gLLP_grandaughter_photon_travel_time_EB[index+2] = (1./30) * sqrt(pow(ecal_radius,2)+pow(z_ecal,2));
+              gen_time_grandaughter_EB[index+2] = gLLP_travel_time[0] + gLLP_grandaughter_travel_time_EB[index+2] - gLLP_grandaughter_photon_travel_time_EB[index+2] + genVertexT;
+
+            }
+            else if( r_etl > ETL_rmin && r_etl < ETL_rmax && radius <= ecal_radius && fabs(z) < ETL_z )
+    	    {
+	      gLLP_grandaughter_ETL[index+2] = true;
+    	      gLLP_grandaughter_photon_travel_time_ETL[index+2] = (1./30) * sqrt(pow(r_etl,2)+pow(ETL_z,2));
+              gen_time_grandaughter_ETL[index+2] = gLLP_travel_time[0] + gLLP_grandaughter_travel_time_ETL[index+2] - gLLP_grandaughter_photon_travel_time_ETL[index+2] + genVertexT;
+
+            }
+
+              double min_delta_r = 666.;
+              double min_delta_r_calo = 666.;
+              unsigned int match_jet_index = 666;
+              unsigned int match_calojet_index = 666;
+
+
+          // Correction of eta and phi based on ecal points
+              double phi = atan((y_ecal-genVertexY)/(x_ecal-genVertexX));
+              if  (x_ecal < 0.0){
+                phi = TMath::Pi() + phi;
+              }
+              phi = deltaPhi(phi,0.0);
+              double theta = atan(sqrt(pow(x_ecal-genVertexX,2)+pow(y_ecal-genVertexY,2))/abs(z_ecal-genVertexZ));
+              double eta = -1.0*TMath::Sign(1.0, z_ecal-genVertexZ)*log(tan(theta/2));
+              gLLP_grandaughter_eta_ecalcorr[index+2] = eta;
+              gLLP_grandaughter_phi_ecalcorr[index+2] = phi;
+              for ( int i_jet = 0; i_jet < nCaloJets; i_jet++ )
+              {
+                double current_delta_r = deltaR(gLLP_grandaughter_eta_ecalcorr[index+2], gLLP_grandaughter_phi_ecalcorr[index+2], calojetEta[i_jet], calojetPhi[i_jet]);
+                if ( current_delta_r < min_delta_r_calo )
+                {
+                  min_delta_r_calo = current_delta_r;
+                  match_calojet_index = i_jet;
+                }
+              }
+              for ( int i_jet = 0; i_jet < nJets; i_jet++ )
+              {
+                double current_delta_r = deltaR(gLLP_grandaughter_eta_ecalcorr[index+2], gLLP_grandaughter_phi_ecalcorr[index+2], jetEta[i_jet], jetPhi[i_jet]);
+                if ( current_delta_r < min_delta_r )
+                {
+                  min_delta_r = current_delta_r;
+                  match_jet_index = i_jet;
+                }
+              }//end matching to jets using ECAL radius
+               
+              if ( min_delta_r < 0.4 )
+              {
+                gLLP_grandaughter_match_jet_index[index+2] = match_jet_index;
+                gLLP_grandaughter_min_delta_r_match_jet[index+2] = min_delta_r;
+                jet_matched_gLLP_grandaughter[match_jet_index+2] = true;
+              }
+
+              if (min_delta_r_calo < 0.4)
+              {
+                gLLP_grandaughter_match_calojet_index[index+2] = match_calojet_index;
+                gLLP_grandaughter_min_delta_r_match_calojet[index+2] = min_delta_r_calo;
+
+              }
+	    }
+            }//loop of all gLLP granddaughters 
+	    
             }//for daughters loop
           }//if particle ID = 36
         }//if found daughters

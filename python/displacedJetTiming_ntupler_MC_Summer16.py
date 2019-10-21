@@ -13,7 +13,8 @@ process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
 #'root://cmsxrootd.fnal.gov//store/mc/RunIISummer16DR80Premix/WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/50000/D67E96A0-F9BE-E611-A03B-F45214939090.root',
 #'file:/eos/cms//store/group/dpg_bril/comm_bril/lumi/test/MC_test/ggHdddd_AODSIM/ggHdddd_2017/ggHdddd_M55_100mm_CP2_AODSIM/190819_150120/0002/XXTo4J_AODSIM_2757.root'
-'root://cmsxrootd.fnal.gov//store/mc/RunIISummer16DR80Premix/HTo2ZdTo2mu2x_MZd-60_Epsilon-7e-09_TuneCUETP8M1_13TeV_madgraph_pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/70000/1A62E7AD-B8A4-E911-991E-0025901AC3F8.root'
+#'root://cmsxrootd.fnal.gov//store/mc/RunIISummer16DR80Premix/HTo2ZdTo2mu2x_MZd-60_Epsilon-7e-09_TuneCUETP8M1_13TeV_madgraph_pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/70000/1A62E7AD-B8A4-E911-991E-0025901AC3F8.root'
+'file:/mnt/hadoop/store/group/phys_exotica/jmao/aodsim/RunIISummer16/AODSIM/MSSM-1d-prod/n3n2-n1-hbb-hbb_mh200_pl100_ev100000/crab_CMSSW_8_0_21_n3n2-n1-hbb-hbb_mchi200_pl100_ev100000_AODSIM_CaltechT2/190912_202259/0000/n3n2-n1-hbb-hbb_step2_10.root',
 )
 )
 
