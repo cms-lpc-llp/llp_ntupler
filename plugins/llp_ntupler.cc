@@ -2837,7 +2837,7 @@ bool llp_ntupler::fillCaloJets(const edm::EventSetup& iSetup)
     calojet_HadronicEnergyFraction[nCaloJets] = j.energyFractionHadronic();
     calojet_EMEnergyFraction[nCaloJets] = j.emEnergyFraction();
 
-    std::cout << "***fill Calo basic***\n";
+    //std::cout << "***fill Calo basic***\n";
     TLorentzVector thisJet;
     thisJet.SetPtEtaPhiE(calojetPt[nCaloJets], calojetEta[nCaloJets], calojetPhi[nCaloJets], calojetE[nCaloJets]);
     //calojetCISV = j.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
