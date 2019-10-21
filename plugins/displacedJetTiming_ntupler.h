@@ -6,8 +6,8 @@ Description: Base class for miniAOD analysis with CRAB
 //         Author:  FNAL/Caltech LLP Team
 //         Created:  Wed, 13 Geb 2019 15:00:06 GMT
 
-#ifndef RAZORTUPLIZER_H
-#define RAZORTUPLIZER_H
+#ifndef DISPLACEDJETTIMING_NTUPLER_H
+#define DISPLACEDJETTIMING_NTUPLER_H
 
 // system include files
 #include <memory>
@@ -137,11 +137,11 @@ using namespace std;
 
 //------ Class declaration ------//
 
-class llp_ntupler : public edm::EDAnalyzer {
+class displacedJetTiming_ntupler : public edm::EDAnalyzer {
 public:
   //analyzer constructor and destructor
-  explicit llp_ntupler(const edm::ParameterSet&);
-  ~llp_ntupler();
+  explicit displacedJetTiming_ntupler(const edm::ParameterSet&);
+  ~displacedJetTiming_ntupler();
 
   void loadEvent(const edm::Event& iEvent); //call at the beginning of each event to get input handles from the python config
 
@@ -235,6 +235,7 @@ protected:
   bool enableEcalRechits_;
   bool readGenVertexTime_;
   bool enableAK8Jets_;
+  int  llpId_;
   //bool isFourJet_;
   //bool isQCD_;
 
@@ -989,6 +990,9 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
  float gLLP_eta[LLP_ARRAY_SIZE];
  float gLLP_phi[LLP_ARRAY_SIZE];
 
+ bool gLLP_daughter_EB[LLP_DAUGHTER_ARRAY_SIZE]; 
+ bool gLLP_daughter_ETL[LLP_DAUGHTER_ARRAY_SIZE];
+
  float photon_travel_time[LLP_DAUGHTER_ARRAY_SIZE];
  float photon_travel_time_ETL[LLP_DAUGHTER_ARRAY_SIZE];
  float photon_travel_time_pv[LLP_DAUGHTER_ARRAY_SIZE];
@@ -996,16 +1000,14 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
  float gen_time[LLP_DAUGHTER_ARRAY_SIZE];
  float gen_time_ETL[LLP_DAUGHTER_ARRAY_SIZE];
  float gen_time_pv[LLP_DAUGHTER_ARRAY_SIZE];
+ int   gLLP_daughter_id[LLP_DAUGHTER_ARRAY_SIZE];
  float gLLP_daughter_travel_time[LLP_DAUGHTER_ARRAY_SIZE];
  float gLLP_daughter_travel_time_ETL[LLP_DAUGHTER_ARRAY_SIZE];
- int gLLP_daughter_pid[LLP_DAUGHTER_ARRAY_SIZE];
  float gLLP_daughter_pt[LLP_DAUGHTER_ARRAY_SIZE];
  float gLLP_daughter_eta[LLP_DAUGHTER_ARRAY_SIZE];
  float gLLP_daughter_phi[LLP_DAUGHTER_ARRAY_SIZE];
  float gLLP_daughter_eta_ecalcorr[LLP_DAUGHTER_ARRAY_SIZE];
  float gLLP_daughter_phi_ecalcorr[LLP_DAUGHTER_ARRAY_SIZE];
- bool gLLP_daughter_EB[LLP_DAUGHTER_ARRAY_SIZE]; 
- bool gLLP_daughter_ETL[LLP_DAUGHTER_ARRAY_SIZE];
  float gLLP_daughter_e[LLP_DAUGHTER_ARRAY_SIZE];
  float gLLP_daughter_mass[LLP_DAUGHTER_ARRAY_SIZE];
  unsigned int gLLP_daughter_match_jet_index[LLP_DAUGHTER_ARRAY_SIZE];
@@ -1013,6 +1015,9 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
  unsigned int gLLP_daughter_match_calojet_index[LLP_DAUGHTER_ARRAY_SIZE];
  float gLLP_min_delta_r_match_calojet[LLP_DAUGHTER_ARRAY_SIZE];
 
+/////////////////
+//>  int gLLP_daughter_pid[LLP_DAUGHTER_ARRAY_SIZE];
+/////////////////
 
  //razor variables
  float HLTMR, HLTRSQ;
