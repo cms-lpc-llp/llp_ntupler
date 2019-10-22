@@ -765,8 +765,10 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
  float jet_energy_frac[OBJECTARRAYSIZE];
  float jet_sig_et1[OBJECTARRAYSIZE];
  float jet_sig_et2[OBJECTARRAYSIZE];
- bool jet_matched_gLLP_daughter[OBJECTARRAYSIZE];
- bool jet_matched_gLLP_grandaughter[OBJECTARRAYSIZE];
+ bool jet_matched_gLLP0_daughter[OBJECTARRAYSIZE];
+ bool jet_matched_gLLP1_daughter[OBJECTARRAYSIZE];
+ bool jet_matched_gLLP0_grandaughter[OBJECTARRAYSIZE];
+ bool jet_matched_gLLP1_grandaughter[OBJECTARRAYSIZE];
 
  //Calo Jets
  int nCaloJets;

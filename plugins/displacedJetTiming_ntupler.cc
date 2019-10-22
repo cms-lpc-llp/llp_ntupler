@@ -569,8 +569,10 @@ void displacedJetTiming_ntupler::enableJetBranches()
   llpTree->Branch("jet_sig_et1",jet_sig_et1,"jet_sig_et1[nJets]/F");
   llpTree->Branch("jet_sig_et2",jet_sig_et2,"jet_sig_et2[nJets]/F");
   llpTree->Branch("jet_energy_frac",jet_energy_frac,"jet_energy_frac[nJets]/F");
-  llpTree->Branch("jet_matched_gLLP_daughter",jet_matched_gLLP_daughter,"jet_matched_gLLP_daughter[nJets]/O");//matched to gen particles as llp daughters
-  llpTree->Branch("jet_matched_gLLP_grandaughter",jet_matched_gLLP_grandaughter,"jet_matched_gLLP_grandaughter[nJets]/O");//matched to gen particles as llp grandaughters
+  llpTree->Branch("jet_matched_gLLP0_daughter",jet_matched_gLLP0_daughter,"jet_matched_gLLP0_daughter[nJets]/O");//matched to gen particles as llp daughters
+  llpTree->Branch("jet_matched_gLLP1_daughter",jet_matched_gLLP1_daughter,"jet_matched_gLLP1_daughter[nJets]/O");//matched to gen particles as llp daughters
+  llpTree->Branch("jet_matched_gLLP0_grandaughter",jet_matched_gLLP0_grandaughter,"jet_matched_gLLP0_grandaughter[nJets]/O");//matched to gen particles as llp grandaughters
+  llpTree->Branch("jet_matched_gLLP1_grandaughter",jet_matched_gLLP1_grandaughter,"jet_matched_gLLP1_grandaughter[nJets]/O");//matched to gen particles as llp grandaughters
 
 
 
@@ -1277,8 +1279,10 @@ void displacedJetTiming_ntupler::resetJetBranches()
     jet_sig_et1[i] = -99.0;
     jet_sig_et2[i] = -99.0;
     jet_energy_frac[i] = 0.0;
-    jet_matched_gLLP_daughter[i] = false;
-    jet_matched_gLLP_grandaughter[i] = false;
+    jet_matched_gLLP0_daughter[i] = false;
+    jet_matched_gLLP1_daughter[i] = false;
+    jet_matched_gLLP0_grandaughter[i] = false;
+    jet_matched_gLLP1_grandaughter[i] = false;
 
   }
   return;
@@ -3875,7 +3879,7 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
               {
                 gLLP_daughter_match_jet_index[id] = match_jet_index;
                 gLLP_daughter_min_delta_r_match_jet[id] = min_delta_r;
-                jet_matched_gLLP_daughter[match_jet_index] = true;
+                jet_matched_gLLP0_daughter[match_jet_index] = true;
               }
 
               if (min_delta_r_calo < 0.4)
@@ -3979,7 +3983,7 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
               {
                 gLLP_grandaughter_match_jet_index[index] = match_jet_index;
                 gLLP_grandaughter_min_delta_r_match_jet[index] = min_delta_r;
-                jet_matched_gLLP_grandaughter[match_jet_index] = true;
+                jet_matched_gLLP0_grandaughter[match_jet_index] = true;
               }
 
               if (min_delta_r_calo < 0.4)
@@ -4161,7 +4165,7 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
               {
                 gLLP_daughter_match_jet_index[id+2] = match_jet_index;
                 gLLP_daughter_min_delta_r_match_jet[id+2] = min_delta_r;
-                jet_matched_gLLP_daughter[match_jet_index] = true;
+                jet_matched_gLLP1_daughter[match_jet_index] = true;
               }
               if ( min_delta_r_calo < 0.4 )
               {
@@ -4264,7 +4268,7 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
               {
                 gLLP_grandaughter_match_jet_index[index+2] = match_jet_index;
                 gLLP_grandaughter_min_delta_r_match_jet[index+2] = min_delta_r;
-                jet_matched_gLLP_grandaughter[match_jet_index] = true;
+                jet_matched_gLLP1_grandaughter[match_jet_index] = true;
               }
 
               if (min_delta_r_calo < 0.4)
