@@ -43,7 +43,7 @@ process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
 #------ Analyzer ------#
 
 #list input collections
-process.ntuples = cms.EDAnalyzer('llp_ntupler',
+process.ntuples = cms.EDAnalyzer('displacedJetTiming_ntupler',
     isData = cms.bool(False),
     useGen = cms.bool(True),
     isFastsim = cms.bool(False),
@@ -52,13 +52,16 @@ process.ntuples = cms.EDAnalyzer('llp_ntupler',
     enableCaloJet = cms.bool(True),
     enableGenLLPInfo = cms.bool(True),
     readGenVertexTime = cms.bool(True),#need to be false for displaced samples
+    llpId = cms.int32(1023),
+
     genParticles_t0 = cms.InputTag("genParticles", "t0", ""),
     triggerPathNamesFile = cms.string("cms_lpc_llp/llp_ntupler/data/trigger_names_llp_v1.dat"),
     eleHLTFilterNamesFile = cms.string("SUSYBSMAnalysis/RazorTuplizer/data/RazorElectronHLTFilterNames.dat"),
     muonHLTFilterNamesFile = cms.string("SUSYBSMAnalysis/RazorTuplizer/data/RazorMuonHLTFilterNames.dat"),
     photonHLTFilterNamesFile = cms.string("SUSYBSMAnalysis/RazorTuplizer/data/RazorPhotonHLTFilterNames.dat"),
 
-    vertices = cms.InputTag("offlinePrimaryVerticesWithBS"),  # for non-timing case
+    #vertices = cms.InputTag("offlinePrimaryVerticesWithBS"),  # for non-timing case
+    vertices = cms.InputTag("offlinePrimaryVertices", "", "RECO"),
     muons = cms.InputTag("muons"),
     electrons = cms.InputTag("gedGsfElectrons"),
     taus = cms.InputTag("hpsPFTauProducer"),
@@ -109,7 +112,8 @@ process.ntuples = cms.EDAnalyzer('llp_ntupler',
     #puInfo = cms.InputTag("mixData", "", "HLT"), #uncomment for samples with pre-mixed pileup
     #hcalNoiseInfo = cms.InputTag("hcalnoise", "", "RECO"),
 
-    secondaryVertices = cms.InputTag("inclusiveSecondaryVertices", "", "RECO"),
+    #secondaryVertices = cms.InputTag("inclusiveSecondaryVertices", "", "RECO"),
+    secondaryVertices = cms.InputTag("inclusiveCandidateSecondaryVertices","", "RECO"),
 
     rhoAll = cms.InputTag("fixedGridRhoAll", "", "RECO"),
 

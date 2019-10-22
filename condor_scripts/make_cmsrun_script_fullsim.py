@@ -31,7 +31,7 @@ for i,m in enumerate(model):
 		list_dir = pwd.replace('condor_scripts','lists/')+m+'/'
 		os.system('mkdir -p '+list_dir)
 		list_name = str2+'_fullsim.list'
-		#list_name = 'x1n2-n1-wlv-hbb_mchi200_mlsp150_pl1000_ev100000_fullsim.list'
+		list_name = 'x1n2-n1-wlv-hbb_mchi200_mlsp150_pl1000_ev100000_fullsim.list'
 		#list_name = 'n3n2-n1-zll-hbb_mh200_pl100_ev100000_fullsim.list'
 
 	
