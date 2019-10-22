@@ -4264,7 +4264,7 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
               {
                 gLLP_grandaughter_match_jet_index[index+2] = match_jet_index;
                 gLLP_grandaughter_min_delta_r_match_jet[index+2] = min_delta_r;
-                jet_matched_gLLP_grandaughter[match_jet_index+2] = true;
+                jet_matched_gLLP_grandaughter[match_jet_index] = true;
               }
 
               if (min_delta_r_calo < 0.4)

@@ -764,6 +764,8 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
  float jet_sig_et1[OBJECTARRAYSIZE];
  float jet_sig_et2[OBJECTARRAYSIZE];
  bool jet_matched[OBJECTARRAYSIZE];
+ bool jet_matched_gLLP_daughter[OBJECTARRAYSIZE];
+ bool jet_matched_gLLP_grandaughter[OBJECTARRAYSIZE];
 
  //Calo Jets
  int nCaloJets;
