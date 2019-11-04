@@ -33,6 +33,34 @@ using namespace std;
 #include "TrackingTools/Records/interface/TransientTrackRecord.h"
 #include "TrackingTools/TransientTrack/interface/TransientTrack.h"
 
+//tracking and vertex
+#include "TrackingTools/TrajectoryState/interface/FreeTrajectoryState.h"
+#include "TrackingTools/TrajectoryState/interface/TrajectoryStateOnSurface.h"
+#include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
+#include "RecoTracker/DebugTools/interface/GetTrackTrajInfo.h"
+
+#include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
+
+#include "TrackingTools/GeomPropagators/interface/Propagator.h"
+#include "TrackingTools/GeomPropagators/interface/StateOnTrackerBound.h"
+#include "TrackingTools/Records/interface/TrackingComponentsRecord.h"
+#include "TrackingTools/Records/interface/TransientTrackRecord.h"
+#include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
+#include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
+
+#include "PhysicsTools/RecoUtils/interface/CheckHitPattern.h"
+#include "RecoVertex/ConfigurableVertexReco/interface/ConfigurableVertexReconstructor.h"
+#include "RecoVertex/VertexTools/interface/VertexCompatibleWithBeam.h"
+#include "RecoVertex/VertexTools/interface/VertexDistanceXY.h"
+#include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
+#include "RecoVertex/KinematicFit/interface/KinematicParticleVertexFitter.h"
+#include "RecoVertex/KinematicFit/interface/KinematicParticleFitter.h"
+#include "RecoVertex/KinematicFitPrimitives/interface/KinematicParticle.h"
+#include "RecoVertex/KinematicFitPrimitives/interface/KinematicParticleFactoryFromTransientTrack.h"
+#include "RecoVertex/KinematicFitPrimitives/interface/RefCountedKinematicParticle.h"
+#include "RecoVertex/VertexPrimitives/interface/ConvertToFromReco.h"
+#include "RecoVertex/VertexPrimitives/interface/ConvertError.h"
+
 
 //CMSSW package includes
 #include "FWCore/Framework/interface/LuminosityBlock.h"
@@ -263,6 +291,8 @@ protected:
   edm::EDGetTokenT<edm::ValueMap<float> > trackTimeTag_;
   edm::EDGetTokenT<edm::ValueMap<float>> trackTimeResoTag_;
 
+  const MagneticField* magneticField_;
+
   edm::EDGetTokenT<CSCSegmentCollection> cscSegmentInputToken_;
   edm::EDGetTokenT<DTRecSegment4DCollection> dtSegmentInputToken_;
   edm::EDGetTokenT<RPCRecHitCollection> rpcRecHitInputToken_;
@@ -330,6 +360,7 @@ protected:
   edm::EDGetTokenT<edm::ValueMap<float> > mvaHZZValuesMapToken_;
   edm::EDGetTokenT<edm::ValueMap<int> > mvaHZZCategoriesMapToken_;
 
+
   //EDM handles for each miniAOD input object
   edm::Handle<edm::TriggerResults> triggerBits;
   edm::Handle<edm::HepMCProduct> hepMC;
@@ -395,6 +426,8 @@ protected:
   edm::Handle<DTRecSegment4DCollection> dtSegments;
   edm::Handle<RPCRecHitCollection> rpcRecHits;
 
+  edm::ESHandle<MagneticField> magneticField;
+  //edm::ESHandle<Propagator> thePropagator_;
 
 
 
