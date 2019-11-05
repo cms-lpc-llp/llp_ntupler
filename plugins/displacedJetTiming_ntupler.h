@@ -46,6 +46,7 @@ using namespace std;
 #include "TrackingTools/Records/interface/TrackingComponentsRecord.h"
 #include "TrackingTools/Records/interface/TransientTrackRecord.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
+#include "TrackingTools/MaterialEffects/interface/PropagatorWithMaterial.h"
 #include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
 
 #include "PhysicsTools/RecoUtils/interface/CheckHitPattern.h"
@@ -179,6 +180,8 @@ public:
   void enableEventInfoBranches();
   void enablePVAllBranches();
   void enablePVTracksBranches();
+  void enableTracksBranches();
+  void enableTracksPVBranches();
   void enablePileUpBranches();
   void enableMuonBranches();
   void enableElectronBranches();
@@ -201,6 +204,8 @@ public:
   void resetEventInfoBranches();
   void resetPVAllBranches();
   void resetPVTracksBranches();
+  void resetTracksBranches();
+  void resetTracksPVBranches();
   void resetPileUpBranches();
   void resetMuonBranches();
   void resetElectronBranches();
@@ -229,6 +234,8 @@ public:
   bool fillEventInfo(const edm::Event& iEvent);
   bool fillPVAll();
   bool fillPVTracks();
+  bool fillTracks(const edm::EventSetup& iSetup);
+  bool fillTracksPV(const edm::EventSetup& iSetup);
   bool fillPileUp();
   bool fillMuons(const edm::Event& iEvent);
   bool fillMuonSystem(const edm::Event& iEvent, const edm::EventSetup& iSetup);
@@ -427,7 +434,7 @@ protected:
   edm::Handle<RPCRecHitCollection> rpcRecHits;
 
   edm::ESHandle<MagneticField> magneticField;
-  //edm::ESHandle<Propagator> thePropagator_;
+  edm::ESHandle<Propagator> thePropagator_;
 
 
 
@@ -485,6 +492,24 @@ int   nPVTracks;
 float pvTrackPt[OBJECTARRAYSIZE];
 float pvTrackEta[OBJECTARRAYSIZE];
 float pvTrackPhi[OBJECTARRAYSIZE];
+
+ //Tacks (list of tracks)
+ int   nTracks;
+ float TrackX[OBJECTARRAYSIZE];
+ float TrackY[OBJECTARRAYSIZE];
+ float TrackZ[OBJECTARRAYSIZE];
+ float TrackPt[OBJECTARRAYSIZE];
+ float TrackEta[OBJECTARRAYSIZE];
+ float TrackPhi[OBJECTARRAYSIZE];
+
+ //Tacks PV (list of PV tracks)
+ int   npvTracks;
+ float PVTrackX[OBJECTARRAYSIZE];
+ float PVTrackY[OBJECTARRAYSIZE];
+ float PVTrackZ[OBJECTARRAYSIZE];
+ float PVTrackPt[OBJECTARRAYSIZE];
+ float PVTrackEta[OBJECTARRAYSIZE];
+ float PVTrackPhi[OBJECTARRAYSIZE];
 
  //PU
  int nBunchXing;

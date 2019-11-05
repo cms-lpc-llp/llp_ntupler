@@ -197,6 +197,8 @@ void displacedJetTiming_ntupler::setBranches()
   enableEventInfoBranches();
   enablePVAllBranches();
   enablePVTracksBranches();
+  enableTracksBranches();
+  enableTracksPVBranches();
   enablePileUpBranches();
   enableMuonBranches();
   enableElectronBranches();
@@ -251,6 +253,28 @@ void displacedJetTiming_ntupler::enablePVTracksBranches()
   llpTree->Branch("pvTrackPt", pvTrackPt,"pvTrackPt[nPVTracks]/F");
   llpTree->Branch("pvTrackEta", pvTrackEta,"pvTrackEta[nPVTracks]/F");
   llpTree->Branch("pvTrackPhi", pvTrackPhi,"pvTrackPhi[nPVTracks]/F");
+};
+
+void displacedJetTiming_ntupler::enableTracksBranches()
+{
+  llpTree->Branch("nTracks", &nTracks,"nTracks/I");
+  llpTree->Branch("TrackX", TrackX,"TrackX[nTracks]/F");
+  llpTree->Branch("TrackY", TrackY,"TrackY[nTracks]/F");
+  llpTree->Branch("TrackZ", TrackZ,"TrackZ[nTracks]/F");
+  llpTree->Branch("TrackPt", TrackPt,"TrackPt[nTracks]/F");
+  llpTree->Branch("TrackEta", TrackEta,"TrackEta[nTracks]/F");
+  llpTree->Branch("TrackPhi", TrackPhi,"TrackPhi[nTracks]/F");
+};
+
+void displacedJetTiming_ntupler::enableTracksPVBranches()
+{
+  llpTree->Branch("npvTracks", &npvTracks,"npvTracks/I");
+  llpTree->Branch("PVTrackX", PVTrackX,"PVTrackX[npvTracks]/F");
+  llpTree->Branch("PVTrackY", PVTrackY,"PVTrackY[npvTracks]/F");
+  llpTree->Branch("PVTrackZ", PVTrackZ,"PVTrackZ[npvTracks]/F");
+  llpTree->Branch("PVTrackPt", PVTrackPt,"PVTrackPt[npvTracks]/F");
+  llpTree->Branch("PVTrackEta", PVTrackEta,"PVTrackEta[npvTracks]/F");
+  llpTree->Branch("PVTrackPhi", PVTrackPhi,"PVTrackPhi[npvTracks]/F");
 };
 
 void displacedJetTiming_ntupler::enablePileUpBranches()
@@ -919,6 +943,8 @@ void displacedJetTiming_ntupler::resetBranches()
     resetEventInfoBranches();
     resetPVAllBranches();
     resetPVTracksBranches();
+    resetTracksBranches();
+    resetTracksPVBranches();
     resetPileUpBranches();
     resetMuonBranches();
     resetElectronBranches();
@@ -978,6 +1004,34 @@ void displacedJetTiming_ntupler::resetPVTracksBranches()
     pvTrackPt[i]  = -999.;
     pvTrackEta[i] = -999.;
     pvTrackPhi[i] = -999.;
+  }
+};
+
+void displacedJetTiming_ntupler::resetTracksBranches()
+{
+  nTracks = 0;
+  for(int i = 0; i < OBJECTARRAYSIZE; i++)
+  {
+    TrackX[i]  = -999.;
+    TrackY[i]  = -999.;
+    TrackZ[i]  = -999.;
+    TrackPt[i]  = -999.;
+    TrackEta[i] = -999.;
+    TrackPhi[i] = -999.;
+  }
+};
+
+void displacedJetTiming_ntupler::resetTracksPVBranches()
+{
+  npvTracks = 0;
+  for(int i = 0; i < OBJECTARRAYSIZE; i++)
+  {
+    PVTrackX[i]  = -999.;
+    PVTrackY[i]  = -999.;
+    PVTrackZ[i]  = -999.;
+    PVTrackPt[i]  = -999.;
+    PVTrackEta[i] = -999.;
+    PVTrackPhi[i] = -999.;
   }
 };
 
@@ -1647,21 +1701,12 @@ void displacedJetTiming_ntupler::analyze(const edm::Event& iEvent, const edm::Ev
 
   //resetting output tree branches
 
-// MagneticField
-iSetup.get<IdealMagneticFieldRecord>().get(magneticField); 
-magneticField_ = &*magneticField; 
-std::cout << "B " << magneticField_ << " tracks size " << tracks->size() << std::endl;
-/*
-// propagator
-edm::ESHandle<Propagator> thePropagator_;
-std::string thePropagatorName_ = "PropagatorWithMaterial";
-iSetup.get<TrackingComponentsRecord>().get(thePropagatorName_,thePropagator_);
-StateOnTrackerBound stateOnTracker(thePropagator_.product());
-*/
   resetBranches();
   fillEventInfo(iEvent);
   // fillPVAll();
   // fillPVTracks();
+  fillTracks(iSetup);
+  fillTracksPV(iSetup);
   fillMuons(iEvent);
   fillMuonSystem(iEvent, iSetup);
   fillElectrons(iEvent);
@@ -1813,7 +1858,7 @@ bool displacedJetTiming_ntupler::fillPVTracks()
   //   }
   // }
   //
-	for (auto vertex = vertices->begin(); vertex != vertices->end(); vertex++){
+  for (auto vertex = vertices->begin(); vertex != vertices->end(); vertex++){
     if(vertex->isValid() && !vertex->isFake())
     {
       for(auto pvTrack = vertex->tracks_begin(); pvTrack != vertex->tracks_end(); pvTrack++)
@@ -1828,6 +1873,95 @@ bool displacedJetTiming_ntupler::fillPVTracks()
       }
     }
   }
+  return true;
+};
+
+bool displacedJetTiming_ntupler::fillTracks(const edm::EventSetup& iSetup)
+{
+  // propagator
+  //edm::ESHandle<Propagator> thePropagator_;
+  std::string thePropagatorName_ = "PropagatorWithMaterial";
+  iSetup.get<TrackingComponentsRecord>().get(thePropagatorName_,thePropagator_);
+  StateOnTrackerBound stateOnTracker(thePropagator_.product());
+  
+  iSetup.get<IdealMagneticFieldRecord>().get(magneticField); 
+  magneticField_ = &*magneticField; 
+  vector<TVector3> AODallTrackPositions;
+  //std::cout << "B " << magneticField_ << " tracks size " << tracks->size() << std::endl;
+  
+  nTracks = tracks->size(); 
+  for (unsigned int j = 0; j < tracks->size(); j ++){
+    FreeTrajectoryState fts = trajectoryStateTransform::initialFreeState (tracks->at(j),magneticField_); 
+    TrajectoryStateOnSurface outer = stateOnTracker(fts); 
+    if(!outer.isValid()) continue; 
+    GlobalPoint outerPos = outer.globalPosition();
+    TVector3 trackPos(outerPos.x(),outerPos.y(),outerPos.z()); 
+    AODallTrackPositions.push_back(trackPos);
+    
+    float tracketa = trackPos.Eta(); 
+    
+    //if(j<3 && j<tracks->size()) std::cout << "x " << outerPos.x() << " y " << outerPos.y() << " z " << outerPos.z() << " eta " << trackPos.Eta() << std::endl;
+ 
+    TrackX[j] = outerPos.x(); 
+    TrackY[j] = outerPos.y(); 
+    TrackZ[j] = outerPos.z(); 
+
+    TrackEta[j] = outerPos.eta(); 
+    TrackPhi[j] = outerPos.phi(); 
+
+    TrackPt[j] = (tracks->at(j)).pt(); 
+    //if(j<3 && j<tracks->size()) std::cout << "pt " << (tracks->at(j)).pt() << std::endl;
+  }
+  //std::cout << "x " << AODallTrackPositions[0].x() << " eta " << AODallTrackPositions[0].Eta() << std::endl;
+
+  return true;
+};
+
+bool displacedJetTiming_ntupler::fillTracksPV(const edm::EventSetup& iSetup)
+{
+  // propagator
+  //edm::ESHandle<Propagator> thePropagator_;
+  std::string thePropagatorName_ = "PropagatorWithMaterial";
+  iSetup.get<TrackingComponentsRecord>().get(thePropagatorName_,thePropagator_);
+  StateOnTrackerBound stateOnTracker(thePropagator_.product());
+  
+  iSetup.get<IdealMagneticFieldRecord>().get(magneticField); 
+  magneticField_ = &*magneticField; 
+  vector<TVector3> AODPVTrackPositions;
+  
+  for (auto vertex = vertices->begin(); vertex != vertices->end(); vertex++){
+    if(vertex->isValid() && !vertex->isFake())
+    {
+      for(auto pvTrack = vertex->tracks_begin(); pvTrack != vertex->tracks_end(); pvTrack++)
+      //for(reco::Vertex::trackRef_iterator pvTrack = vertex->tracks_begin(); pvTrack != vertex->tracks_end(); pvTrack++)
+      {
+        //if(npvTracks<3) std::cout << " pv track " << (*pvTrack)->pt() << std::endl;
+      //FreeTrajectoryState fts = trajectoryStateTransform::initialFreeState (tracks->at(j),magneticField_); 
+        FreeTrajectoryState fts = trajectoryStateTransform::initialFreeState (**pvTrack, magneticField_); 
+        TrajectoryStateOnSurface outer = stateOnTracker(fts); 
+        if(!outer.isValid()) continue; 
+        GlobalPoint outerPos = outer.globalPosition();
+        TVector3 trackPos(outerPos.x(),outerPos.y(),outerPos.z()); 
+        AODPVTrackPositions.push_back(trackPos);
+        
+        PVTrackX[npvTracks] = outerPos.x(); 
+        PVTrackY[npvTracks] = outerPos.y(); 
+        PVTrackZ[npvTracks] = outerPos.z(); 
+
+        PVTrackEta[npvTracks] = outerPos.eta(); 
+        PVTrackPhi[npvTracks] = outerPos.phi(); 
+
+        PVTrackPt[npvTracks] = (*pvTrack)->pt(); 
+
+        //if(npvTracks<3) std::cout << "x " << outerPos.x() << " y " << outerPos.y() << " z " << outerPos.z() << " eta " << trackPos.Eta() << std::endl;
+	npvTracks ++;
+      }
+      //std::cout << "npvTracks " << npvTracks << std::endl;
+      //std::cout << "npvTracks size " << vertex->tracksSize() << std::endl;
+    }
+  }
+
+
   return true;
 };
 
@@ -2803,32 +2937,7 @@ bool displacedJetTiming_ntupler::fillJets(const edm::EventSetup& iSetup)
     //---------------------------
     float alphaMax(0.0),medianTheta2D(0.0),medianIP(0.0),minDeltaRAllTracks(0.0),minDeltaRPVTracks(0.0),ptAllTracks(0.0), ptAllPVTracks(0.0);
     int nTracksPV(0);
-/*
-// propagator
-edm::ESHandle<Propagator> thePropagator_;
-std::string thePropagatorName_ = "PropagatorWithMaterial";
-iSetup.get<TrackingComponentsRecord>().get(thePropagatorName_,thePropagator_);
-StateOnTrackerBound stateOnTracker(thePropagator_.product());
 
-iSetup.get<IdealMagneticFieldRecord>().get(magneticField); 
-magneticField_ = &*magneticField; 
-vector<TVector3> AODallTrackPositions;
-std::cout << "B " << magneticField_ << " tracks size " << tracks->size() << std::endl;
-
-for (unsigned int j = 0; j < tracks->size(); j ++){
-FreeTrajectoryState fts = trajectoryStateTransform::initialFreeState (tracks->at(j),magneticField_); 
-TrajectoryStateOnSurface outer = stateOnTracker(fts); 
-if(!outer.isValid()) continue; 
-GlobalPoint outerPos = outer.globalPosition();
-TVector3 trackPos(outerPos.x(),outerPos.y(),outerPos.z()); 
-AODallTrackPositions.push_back(trackPos);
-
-float tracketa = trackPos.Eta(); 
-
-if(j<3 && j<tracks->size()) std::cout << "x " << outerPos.x() << " y " << outerPos.y() << " z " << outerPos.z() << " eta " << trackPos.Eta() << std::endl;
-
-}
-*/
     findTrackingVariables(thisJet,iSetup,alphaMax,medianTheta2D,medianIP,nTracksPV,ptAllPVTracks,ptAllTracks, minDeltaRAllTracks, minDeltaRPVTracks);
     //jetCISV = j.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
     jetAlphaMax[nJets] = alphaMax;
@@ -3280,54 +3389,7 @@ void displacedJetTiming_ntupler::findTrackingVariables(const TLorentzVector &jet
   reco::Vertex primaryVertex = vertices->at(0);
   std::vector<double> theta2Ds;
   std::vector<double> IP2Ds;
-/*
-edm::ESHandle<MagneticField> magneticField; 
-es.get<IdealMagneticFieldRecord>().get(magneticField); 
-magneticField_ = &*magneticField; 
-FreeTrajectoryState fts = trajectoryStateTransform::initialFreeState (AODTrackHandle->at(j),magneticField_); 
-TrajectoryStateOnSurface outer = stateOnTracker(fts); 
-if(!outer.isValid()) continue; 
-GlobalPoint outerPos = outer.globalPosition(); 
-TVector3 trackPos(outerPos.x(),outerPos.y(),outerPos.z()); 
-float tracketa = AODallTrackPositions[i].Eta(); 
-float trackphi = AODallTrackPositions[i].Phi();
-*/
-// propagator
-//  std::string thePropagatorName_ = "PropagatorWithMaterial";
-//   es.get<TrackingComponentsRecord>().get(thePropagatorName_,thePropagator_);
-//   StateOnTrackerBound stateOnTracker(thePropagator_.product());
-/*
-// propagator
-std::string thePropagatorName_ = "RungeKuttaPropagator";
-//std::string thePropagatorName_ = "SteppingHelixPropagatorAny";
-//std::string thePropagatorName_ = "SteppingHelixPropagator";
-//std::string thePropagatorName_ = "PropagatorWithMaterial";
-
-iSetup.get<TrackingComponentsRecord>().get(thePropagatorName_,thePropagator_);
-StateOnTrackerBound stateOnTracker(thePropagator_.product());
-
-iSetup.get<IdealMagneticFieldRecord>().get(magneticField); 
-magneticField_ = &*magneticField; 
-vector<TVector3> AODallTrackPositions;
-std::cout << "B " << magneticField_ << " tracks size " << tracks->size() << std::endl;
-
-for (unsigned int j = 0; j < tracks->size(); j ++){
-FreeTrajectoryState fts = trajectoryStateTransform::initialFreeState (tracks->at(j),magneticField_); 
-TrajectoryStateOnSurface outer = stateOnTracker(fts); 
-if(!outer.isValid()) continue; 
-GlobalPoint outerPos = outer.globalPosition();
-TVector3 trackPos(outerPos.x(),outerPos.y(),outerPos.z()); 
-AODallTrackPositions.push_back(trackPos);
-
-float tracketa = trackPos.Eta(); 
-
-if(j<3 && j<tracks->size()) std::cout << "x " << outerPos.x() << " y " << outerPos.y() << " z " << outerPos.z() << " eta " << trackPos.Eta() << std::endl;
-
-}
-*/
-//float tracketa = AODallTrackPositions[i].Eta(); 
-//float trackphi = AODallTrackPositions[i].Phi();
- 
+/* 
   for (unsigned int iTrack = 0; iTrack < generalTracks->size(); iTrack ++){
   	reco::Track generalTrack = generalTracks->at(iTrack);
   	TLorentzVector generalTrackVecTemp;
@@ -3393,6 +3455,49 @@ if(j<3 && j<tracks->size()) std::cout << "x " << outerPos.x() << " y " << outerP
       }
       alphaMax = ptPVTracksMax/ptAllTracks;
   	}
+  }
+*/
+  for (int iTrack = 0; iTrack < nTracks; iTrack ++){
+  	TLorentzVector generalTrackVecTemp;
+  	generalTrackVecTemp.SetPtEtaPhiM(TrackPt[iTrack], TrackEta[iTrack], TrackPhi[iTrack], 0);
+
+  	if (TrackPt[iTrack] > 1) {
+	    if (minDeltaRAllTracks > generalTrackVecTemp.DeltaR(jetVec))
+	    {
+		    minDeltaRAllTracks =  generalTrackVecTemp.DeltaR(jetVec);
+	    }
+	    if (generalTrackVecTemp.DeltaR(jetVec) < 0.4){
+    		nTracksAll ++;
+    		//tot pt for alpha
+    		ptAllTracks += TrackPt[iTrack];
+
+      	     }
+         }
+  }
+  if (ptAllTracks > 0.9){
+    //No matched jets
+    for (int ipvTrack = 0; ipvTrack < npvTracks; ipvTrack++){
+      double ptPVTracks = 0.;
+      int nTracksPVTemp = 0;
+      TLorentzVector pvTrackVecTemp;
+      pvTrackVecTemp.SetPtEtaPhiM(PVTrackPt[ipvTrack], PVTrackEta[ipvTrack], PVTrackPhi[ipvTrack], 0);
+      if (PVTrackPt[ipvTrack] > 1) {
+    	    if (minDeltaRPVTracks > pvTrackVecTemp.DeltaR(jetVec))
+    	    {
+    		     minDeltaRPVTracks =  pvTrackVecTemp.DeltaR(jetVec);
+    	    }
+    	    if (pvTrackVecTemp.DeltaR(jetVec) < 0.4){
+        		ptPVTracks += PVTrackPt[ipvTrack];
+        		ptAllPVTracks += PVTrackPt[ipvTrack];
+        		nTracksPVTemp++;
+    	    }
+    	}
+      if (ptPVTracks > ptPVTracksMax) {
+      	ptPVTracksMax = ptPVTracks;
+      	nTracksPV = nTracksPVTemp;
+      }
+      alphaMax = ptPVTracksMax/ptAllTracks;
+    }
   }
   std::sort(IP2Ds.begin(),IP2Ds.end());
   if (IP2Ds.size() > 0){
