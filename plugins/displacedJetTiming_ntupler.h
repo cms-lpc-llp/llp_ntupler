@@ -228,6 +228,7 @@ public:
   double deltaPhi(double phi1, double phi2);
   double deltaR(double eta1, double phi1, double eta2, double phi2);
   void findTrackingVariables(const TLorentzVector &jetVec,const edm::EventSetup& iSetup,float &alphaMax,float &medianTheta2D,float &medianIP, int &nTracksPV,float &ptAllPVTracks,float &ptAllTracks,float &minDeltaRAllTracks, float &minDeltaRPVTracks);
+  void findTrackingVariablesWithoutPropagator(const TLorentzVector &jetVec,const edm::EventSetup& iSetup,float &alphaMax,float &medianTheta2D,float &medianIP, int &nTracksPV,float &ptAllPVTracks,float &ptAllTracks,float &minDeltaRAllTracks, float &minDeltaRPVTracks);
   void jet_second_moments(std::vector<double> &et,std::vector<double> &eta,std::vector<double> &phi,double &sig1,double &sig2);
 
   //bool fill_fat_jet(const edm::EventSetup& iSetup);
@@ -827,6 +828,20 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
  bool jet_matched_gLLP1_daughter[OBJECTARRAYSIZE];
  bool jet_matched_gLLP0_grandaughter[OBJECTARRAYSIZE];
  bool jet_matched_gLLP1_grandaughter[OBJECTARRAYSIZE];
+
+ float jetGammaMax_wp[OBJECTARRAYSIZE];
+ float jetGammaMax_ET_wp[OBJECTARRAYSIZE];
+ float jetGammaMax_EM_wp[OBJECTARRAYSIZE];
+ float jetGammaMax_Hadronic_wp[OBJECTARRAYSIZE];
+ float jetAlphaMax_wp[OBJECTARRAYSIZE];
+ float jetBetaMax_wp[OBJECTARRAYSIZE];
+
+ float jetPtAllTracks_wp[OBJECTARRAYSIZE];
+ float jetPtAllPVTracks_wp[OBJECTARRAYSIZE];
+ float jetMedianTheta2D_wp[OBJECTARRAYSIZE];
+ float jetMedianIP_wp[OBJECTARRAYSIZE];
+ float jetMinDeltaRAllTracks_wp[OBJECTARRAYSIZE];
+ float jetMinDeltaRPVTracks_wp[OBJECTARRAYSIZE];
 
  //Calo Jets
  int nCaloJets;

@@ -599,6 +599,18 @@ void displacedJetTiming_ntupler::enableJetBranches()
   llpTree->Branch("jet_matched_gLLP1_grandaughter",jet_matched_gLLP1_grandaughter,"jet_matched_gLLP1_grandaughter[nJets]/O");//matched to gen particles as llp grandaughters
 
 
+  llpTree->Branch("jetAlphaMax_wp",jetAlphaMax_wp,"jetAlphaMax_wp[nJets]/F");
+  llpTree->Branch("jetBetaMax_wp",jetBetaMax_wp,"jetBetaMax_wp[nJets]/F");
+  llpTree->Branch("jetGammaMax_ET_wp",jetGammaMax_ET_wp,"jetGammaMax_ET_wp[nJets]/F");
+  llpTree->Branch("jetGammaMax_EM_wp",jetGammaMax_EM_wp,"jetGammaMax_EM_wp[nJets]/F");
+  llpTree->Branch("jetGammaMax_Hadronic_wp",jetGammaMax_Hadronic_wp,"jetGammaMax_Hadronic_wp[nJets]/F");
+  llpTree->Branch("jetGammaMax_wp",jetGammaMax_wp,"jetGammaMax_wp[nJets]/F");
+  llpTree->Branch("jetPtAllTracks_wp",jetPtAllTracks_wp,"jetPtAllTracks_wp[nJets]/F");
+  llpTree->Branch("jetPtAllPVTracks_wp",jetPtAllPVTracks_wp,"jetPtAllPVTracks_wp[nJets]/F");
+  llpTree->Branch("jetMedianTheta2D_wp",jetMedianTheta2D_wp,"jetMedianTheta2D_wp[nJets]/F");
+  llpTree->Branch("jetMedianIP_wp",jetMedianIP_wp,"jetMedianIP_wp[nJets]/F");
+  llpTree->Branch("jetMinDeltaRAllTracks_wp",jetMinDeltaRAllTracks_wp,"jetMinDeltaRAllTracks_wp[nJets]/F");
+  llpTree->Branch("jetMinDeltaRPVTracks_wp",jetMinDeltaRPVTracks_wp,"jetMinDeltaRPVTracks_wp[nJets]/F");
 
 };
 
@@ -1338,6 +1350,18 @@ void displacedJetTiming_ntupler::resetJetBranches()
     jet_matched_gLLP0_grandaughter[i] = false;
     jet_matched_gLLP1_grandaughter[i] = false;
 
+    jetGammaMax_wp[i] = -99.0;
+    jetGammaMax_EM_wp[i] = -99.0;
+    jetGammaMax_Hadronic_wp[i] = -99.0;
+    jetGammaMax_ET_wp[i] = -99.0;
+    jetAlphaMax_wp[i] = -99.0;
+    jetBetaMax_wp[i] = -99.0;
+    jetPtAllTracks_wp[i] = -99.0;
+    jetPtAllPVTracks_wp[i] = -99.0;
+    jetMedianTheta2D_wp[i] = -99.0;
+    jetMedianIP_wp[i] = -99.0;
+    jetMinDeltaRAllTracks_wp[i] =-99.0;
+    jetMinDeltaRPVTracks_wp[i] = -99.0;
   }
   return;
 };
@@ -1898,7 +1922,7 @@ bool displacedJetTiming_ntupler::fillTracks(const edm::EventSetup& iSetup)
     TVector3 trackPos(outerPos.x(),outerPos.y(),outerPos.z()); 
     AODallTrackPositions.push_back(trackPos);
     
-    float tracketa = trackPos.Eta(); 
+    //float tracketa = trackPos.Eta(); 
     
     //if(j<3 && j<tracks->size()) std::cout << "x " << outerPos.x() << " y " << outerPos.y() << " z " << outerPos.z() << " eta " << trackPos.Eta() << std::endl;
  
@@ -2939,6 +2963,11 @@ bool displacedJetTiming_ntupler::fillJets(const edm::EventSetup& iSetup)
     int nTracksPV(0);
 
     findTrackingVariables(thisJet,iSetup,alphaMax,medianTheta2D,medianIP,nTracksPV,ptAllPVTracks,ptAllTracks, minDeltaRAllTracks, minDeltaRPVTracks);
+
+    float alphaMax_wp(0.0),medianTheta2D_wp(0.0),medianIP_wp(0.0),minDeltaRAllTracks_wp(0.0),minDeltaRPVTracks_wp(0.0),ptAllTracks_wp(0.0), ptAllPVTracks_wp(0.0);
+    int nTracksPV_wp(0);
+    findTrackingVariablesWithoutPropagator(thisJet,iSetup,alphaMax_wp,medianTheta2D_wp,medianIP_wp,nTracksPV_wp,ptAllPVTracks_wp,ptAllTracks_wp, minDeltaRAllTracks_wp, minDeltaRPVTracks_wp);
+
     //jetCISV = j.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
     jetAlphaMax[nJets] = alphaMax;
     jetBetaMax[nJets] = alphaMax * ptAllTracks/(j.pt());
@@ -2952,6 +2981,19 @@ bool displacedJetTiming_ntupler::fillJets(const edm::EventSetup& iSetup)
     jetPtAllTracks[nJets] = ptAllTracks;
     jetMinDeltaRAllTracks[nJets] = minDeltaRAllTracks;
     jetMinDeltaRPVTracks[nJets] = minDeltaRPVTracks;
+
+    jetAlphaMax_wp[nJets] = alphaMax_wp;
+    jetBetaMax_wp[nJets] = alphaMax_wp * ptAllTracks_wp/(j.pt());
+    jetGammaMax_wp[nJets] = alphaMax_wp * ptAllTracks_wp/(j.energy());
+    jetGammaMax_EM_wp[nJets] = alphaMax_wp * ptAllTracks_wp/(j.energy()*(j.chargedEmEnergyFraction()+j.neutralEmEnergyFraction()));
+    jetGammaMax_Hadronic_wp[nJets] = alphaMax_wp * ptAllTracks_wp/(j.energy()*(j.chargedHadronEnergyFraction()+j.neutralHadronEnergyFraction()));
+    jetGammaMax_ET_wp[nJets] = alphaMax_wp * ptAllTracks_wp/j.et();
+    jetMedianTheta2D_wp[nJets] = medianTheta2D_wp;
+    jetMedianIP_wp[nJets] = medianIP_wp;
+    jetPtAllPVTracks_wp[nJets] = ptAllPVTracks_wp;
+    jetPtAllTracks_wp[nJets] = ptAllTracks_wp;
+    jetMinDeltaRAllTracks_wp[nJets] = minDeltaRAllTracks_wp;
+    jetMinDeltaRPVTracks_wp[nJets] = minDeltaRPVTracks_wp;
 
     //---------------------------
     //find photons inside the jet
@@ -3379,6 +3421,137 @@ double displacedJetTiming_ntupler::deltaR(double eta1, double phi1, double eta2,
   double deta = eta1 - eta2;
   return sqrt( dphi*dphi + deta*deta);
 };
+void displacedJetTiming_ntupler::findTrackingVariablesWithoutPropagator(const TLorentzVector &jetVec,const edm::EventSetup& iSetup,float &alphaMax,float &medianTheta2D,float &medianIP, int &nTracksPV,float &ptAllPVTracks,float &ptAllTracks,float &minDeltaRAllTracks, float &minDeltaRPVTracks)
+{
+  int nTracksAll = 0;
+  //Displaced jet stuff
+  double ptPVTracksMax = 0.;
+  minDeltaRAllTracks = 15;
+  minDeltaRPVTracks = 15;
+  reco::Vertex primaryVertex = vertices->at(0);
+  std::vector<double> theta2Ds;
+  std::vector<double> IP2Ds;
+ 
+  for (unsigned int iTrack = 0; iTrack < generalTracks->size(); iTrack ++){
+  	reco::Track generalTrack = generalTracks->at(iTrack);
+  	TLorentzVector generalTrackVecTemp;
+  	generalTrackVecTemp.SetPtEtaPhiM(generalTrack.pt(),generalTrack.eta(),generalTrack.phi(),0);
+
+  	if (generalTrack.pt() > 1) {
+	    if (minDeltaRAllTracks > generalTrackVecTemp.DeltaR(jetVec))
+	    {
+		    minDeltaRAllTracks =  generalTrackVecTemp.DeltaR(jetVec);
+	    }
+	    if (generalTrackVecTemp.DeltaR(jetVec) < 0.4){
+    		nTracksAll ++;
+    		//tot pt for alpha
+    		ptAllTracks += generalTrack.pt();
+
+    		// theta 2d
+    		// ROOT::Math::XYZPoint innerPos = generalTrack.innerPosition();
+    		// ROOT::Math::XYZPoint vertexPos = primaryVertex.position();
+    		// ROOT::Math::XYZVector deltaPos = innerPos - vertexPos;
+    		// ROOT::Math::XYZVector momentum = generalTrack.innerMomentum();
+    		// double mag2DeltaPos = TMath::Sqrt((deltaPos.x()*deltaPos.x()) + (deltaPos.y()*deltaPos.y()));
+    		// double mag2Mom = TMath::Sqrt((momentum.x()*momentum.x()) + (momentum.y()*momentum.y()));
+    		// double theta2D = TMath::ACos((deltaPos.x()*momentum.x()+deltaPos.y()*momentum.y())/(mag2Mom*mag2DeltaPos));
+    		// theta2Ds.push_back(theta2D);
+
+    		//IP sig
+    		edm::ESHandle<TransientTrackBuilder> theB;
+    		iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder",theB);
+    		reco::TransientTrack transTrack = theB->build(generalTrack);
+    		TrajectoryStateClosestToBeamLine traj = transTrack.stateAtBeamLine();
+    		Measurement1D meas = traj.transverseImpactParameter();
+    		std::pair<bool, Measurement1D> ip2d = IPTools::absoluteTransverseImpactParameter(transTrack,primaryVertex);
+    		IP2Ds.push_back(ip2d.second.value()/ip2d.second.error());
+      }
+    }
+  }
+  if (ptAllTracks > 0.9){
+	//No matched jets
+  	for (auto vertex = vertices->begin(); vertex != vertices->end(); vertex++){
+      double ptPVTracks = 0.;
+      int nTracksPVTemp = 0;
+      if(!vertex->isValid())continue;
+      if (vertex->isFake())continue;
+      for(auto pvTrack=vertex->tracks_begin(); pvTrack!=vertex->tracks_end(); pvTrack++){
+    		TLorentzVector pvTrackVecTemp;
+    		pvTrackVecTemp.SetPtEtaPhiM((*pvTrack)->pt(),(*pvTrack)->eta(),(*pvTrack)->phi(),0);
+  		//If pv track associated with jet add pt to ptPVTracks
+    		if ((*pvTrack)->pt() > 1) {
+    	    if (minDeltaRPVTracks > pvTrackVecTemp.DeltaR(jetVec))
+    	    {
+    		     minDeltaRPVTracks =  pvTrackVecTemp.DeltaR(jetVec);
+    	    }
+    	    if (pvTrackVecTemp.DeltaR(jetVec) < 0.4){
+        		ptPVTracks += (*pvTrack)->pt();
+        		ptAllPVTracks += (*pvTrack)->pt();
+        		nTracksPVTemp++;
+    	    }
+    		}
+      }
+      if (ptPVTracks > ptPVTracksMax) {
+      	ptPVTracksMax = ptPVTracks;
+      	nTracksPV = nTracksPVTemp;
+      }
+      alphaMax = ptPVTracksMax/ptAllTracks;
+  	}
+  }
+/*
+  for (int iTrack = 0; iTrack < nTracks; iTrack ++){
+  	TLorentzVector generalTrackVecTemp;
+  	generalTrackVecTemp.SetPtEtaPhiM(TrackPt[iTrack], TrackEta[iTrack], TrackPhi[iTrack], 0);
+
+  	if (TrackPt[iTrack] > 1) {
+	    if (minDeltaRAllTracks > generalTrackVecTemp.DeltaR(jetVec))
+	    {
+		    minDeltaRAllTracks =  generalTrackVecTemp.DeltaR(jetVec);
+	    }
+	    if (generalTrackVecTemp.DeltaR(jetVec) < 0.4){
+    		nTracksAll ++;
+    		//tot pt for alpha
+    		ptAllTracks += TrackPt[iTrack];
+
+      	     }
+         }
+  }
+  if (ptAllTracks > 0.9){
+    //No matched jets
+    for (int ipvTrack = 0; ipvTrack < npvTracks; ipvTrack++){
+      double ptPVTracks = 0.;
+      int nTracksPVTemp = 0;
+      TLorentzVector pvTrackVecTemp;
+      pvTrackVecTemp.SetPtEtaPhiM(PVTrackPt[ipvTrack], PVTrackEta[ipvTrack], PVTrackPhi[ipvTrack], 0);
+      if (PVTrackPt[ipvTrack] > 1) {
+    	    if (minDeltaRPVTracks > pvTrackVecTemp.DeltaR(jetVec))
+    	    {
+    		     minDeltaRPVTracks =  pvTrackVecTemp.DeltaR(jetVec);
+    	    }
+    	    if (pvTrackVecTemp.DeltaR(jetVec) < 0.4){
+        		ptPVTracks += PVTrackPt[ipvTrack];
+        		ptAllPVTracks += PVTrackPt[ipvTrack];
+        		nTracksPVTemp++;
+    	    }
+    	}
+      if (ptPVTracks > ptPVTracksMax) {
+      	ptPVTracksMax = ptPVTracks;
+      	nTracksPV = nTracksPVTemp;
+      }
+      alphaMax = ptPVTracksMax/ptAllTracks;
+    }
+  }
+*/
+  std::sort(IP2Ds.begin(),IP2Ds.end());
+  if (IP2Ds.size() > 0){
+	   medianIP = IP2Ds[IP2Ds.size()/2];
+  }
+  std::sort(theta2Ds.begin(),theta2Ds.end());
+  if (theta2Ds.size() > 0){
+    medianTheta2D = theta2Ds[theta2Ds.size()/2];
+  }
+};
+
 void displacedJetTiming_ntupler::findTrackingVariables(const TLorentzVector &jetVec,const edm::EventSetup& iSetup,float &alphaMax,float &medianTheta2D,float &medianIP, int &nTracksPV,float &ptAllPVTracks,float &ptAllTracks,float &minDeltaRAllTracks, float &minDeltaRPVTracks)
 {
   int nTracksAll = 0;
@@ -3959,7 +4132,7 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
           //Calculate dt from generation point to ETL face
             double x_etl = gLLP_decay_vertex_x[0] + 30. * (tmp.Px()/tmp.E())*gLLP_daughter_travel_time_ETL[id];
             double y_etl = gLLP_decay_vertex_y[0] + 30. * (tmp.Py()/tmp.E())*gLLP_daughter_travel_time_ETL[id];
-            double z_etl = gLLP_decay_vertex_z[0] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time_ETL[id];
+            //double z_etl = gLLP_decay_vertex_z[0] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time_ETL[id];
             double r_etl = sqrt( pow(x_etl,2) + pow(y_etl,2) );
 
 /*
@@ -4115,7 +4288,7 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
           //Calculate dt from generation point to ETL face
             double x_etl = gLLP_decay_vertex_x[0] + 30. * (tmpdau.Px()/tmpdau.E())*gLLP_grandaughter_travel_time_ETL[index];
             double y_etl = gLLP_decay_vertex_y[0] + 30. * (tmpdau.Py()/tmpdau.E())*gLLP_grandaughter_travel_time_ETL[index];
-            double z_etl = gLLP_decay_vertex_z[0] + 30. * (tmpdau.Pz()/tmpdau.E())*gLLP_grandaughter_travel_time_ETL[index];
+            //double z_etl = gLLP_decay_vertex_z[0] + 30. * (tmpdau.Pz()/tmpdau.E())*gLLP_grandaughter_travel_time_ETL[index];
             double r_etl = sqrt( pow(x_etl,2) + pow(y_etl,2) );
 
 
@@ -4258,7 +4431,7 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
               //Calculate dt from generation point to ETL face
               double x_etl = gLLP_decay_vertex_x[1] + 30. * (tmp.Px()/tmp.E())*gLLP_daughter_travel_time_ETL[id+2];
               double y_etl = gLLP_decay_vertex_y[1] + 30. * (tmp.Py()/tmp.E())*gLLP_daughter_travel_time_ETL[id+2];
-              double z_etl = gLLP_decay_vertex_z[1] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time_ETL[id+2];
+              //double z_etl = gLLP_decay_vertex_z[1] + 30. * (tmp.Pz()/tmp.E())*gLLP_daughter_travel_time_ETL[id+2];
               double r_etl = sqrt( pow(x_etl,2) + pow(y_etl,2) );
 /*
     	      if( fabs(z_ecal) < EB_z && radius <= ecal_radius && fabs(z) < EE_z)
@@ -4400,7 +4573,7 @@ bool displacedJetTiming_ntupler::fillGenParticles(){
           //Calculate dt from generation point to ETL face
             double x_etl = gLLP_decay_vertex_x[0] + 30. * (tmpdau.Px()/tmpdau.E())*gLLP_grandaughter_travel_time_ETL[index+2];
             double y_etl = gLLP_decay_vertex_y[0] + 30. * (tmpdau.Py()/tmpdau.E())*gLLP_grandaughter_travel_time_ETL[index+2];
-            double z_etl = gLLP_decay_vertex_z[0] + 30. * (tmpdau.Pz()/tmpdau.E())*gLLP_grandaughter_travel_time_ETL[index+2];
+            //double z_etl = gLLP_decay_vertex_z[0] + 30. * (tmpdau.Pz()/tmpdau.E())*gLLP_grandaughter_travel_time_ETL[index+2];
             double r_etl = sqrt( pow(x_etl,2) + pow(y_etl,2) );
 
 
