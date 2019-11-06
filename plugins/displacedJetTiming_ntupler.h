@@ -33,6 +33,12 @@ using namespace std;
 #include "TrackingTools/Records/interface/TransientTrackRecord.h"
 #include "TrackingTools/TransientTrack/interface/TransientTrack.h"
 
+#include "FWCore/Framework/interface/EventSetup.h"
+#include "FWCore/Framework/interface/ESTransientHandle.h"
+#include "FWCore/Framework/interface/ESHandle.h"
+#include "FWCore/Framework/interface/ModuleFactory.h"
+#include "FWCore/Framework/interface/ESProducer.h"
+
 //tracking and vertex
 #include "TrackingTools/TrajectoryState/interface/FreeTrajectoryState.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateOnSurface.h"
@@ -155,6 +161,7 @@ using namespace std;
 
 //------ Array Size Constants ------//
 #define OBJECTARRAYSIZE 1000
+#define TRACKARRAYSIZE 3000
 #define RECHITARRAYSIZE 2000
 #define GENPARTICLEARRAYSIZE 2000
 #define MAX_NPV 1000
@@ -299,7 +306,6 @@ protected:
   edm::EDGetTokenT<edm::ValueMap<float> > trackTimeTag_;
   edm::EDGetTokenT<edm::ValueMap<float>> trackTimeResoTag_;
 
-  const MagneticField* magneticField_;
 
   edm::EDGetTokenT<CSCSegmentCollection> cscSegmentInputToken_;
   edm::EDGetTokenT<DTRecSegment4DCollection> dtSegmentInputToken_;
@@ -434,11 +440,6 @@ protected:
   edm::Handle<DTRecSegment4DCollection> dtSegments;
   edm::Handle<RPCRecHitCollection> rpcRecHits;
 
-  edm::ESHandle<MagneticField> magneticField;
-  edm::ESHandle<Propagator> thePropagator_;
-
-
-
 
   //MVAs for triggering and non-triggering electron ID
   EGammaMvaEleEstimatorCSA14* myMVATrig;
@@ -496,12 +497,12 @@ float pvTrackPhi[OBJECTARRAYSIZE];
 
  //Tacks (list of tracks)
  int   nTracks;
- float TrackX[OBJECTARRAYSIZE];
- float TrackY[OBJECTARRAYSIZE];
- float TrackZ[OBJECTARRAYSIZE];
- float TrackPt[OBJECTARRAYSIZE];
- float TrackEta[OBJECTARRAYSIZE];
- float TrackPhi[OBJECTARRAYSIZE];
+ float TrackX[TRACKARRAYSIZE];
+ float TrackY[TRACKARRAYSIZE];
+ float TrackZ[TRACKARRAYSIZE];
+ float TrackPt[TRACKARRAYSIZE];
+ float TrackEta[TRACKARRAYSIZE];
+ float TrackPhi[TRACKARRAYSIZE];
 
  //Tacks PV (list of PV tracks)
  int   npvTracks;
@@ -1294,7 +1295,7 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
 
 
 
-  //All Photons Match To the Jet (Take Seed RecHit as a reference)
+ 3//All Photons Match To the Jet (Take Seed RecHit as a reference)
   Int_t                   fJetNPhotons;
   Float_t                 fJetPhotonPt[OBJECTARRAYSIZE];
   Float_t                 fJetPhotonEta[OBJECTARRAYSIZE];
