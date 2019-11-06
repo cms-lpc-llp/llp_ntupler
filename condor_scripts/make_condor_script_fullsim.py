@@ -4,11 +4,11 @@ import fileinput
 
 
 #model = ['n3n2-n1-hbb-hbb', 'n3n2-n1-zll-hbb']
-model = ['n3n2-n1-zll-hbb']
-#model = ['x1n2-n1-wlv-hbb']
+#model = ['n3n2-n1-zll-hbb']
+model = ['x1n2-n1-wlv-hbb']
 mh = [200]
 ctau = ['pl1000']
-filePerJob = 4
+filePerJob = 1
 
 pwd = os.getcwd()
 home_dir = '/mnt/hadoop/store/group/phys_exotica/jmao/aodsim/RunIISummer16/AODSIM/'
@@ -30,7 +30,7 @@ for i,m in enumerate(model):
 		list_dir = pwd.replace('condor_scripts','lists/')+m+'/'
 		os.system('mkdir -p '+list_dir)
 		list_name = str2+'_fullsim.list'
-		#list_name = 'WplusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-1000_fullsim.list'
+		list_name = 'WplusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-1000_fullsim.list'
 		#list_name = 'WminusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-1000_fullsim.list'  
 		#list_name = 'x1n2-n1-wlv-hbb_mchi200_mlsp150_pl1000_ev100000_fullsim.list'
 		#list_name = 'n3n2-n1-zll-hbb_mh200_pl100_ev100000_fullsim.list'
@@ -91,12 +91,14 @@ for i,m in enumerate(model):
 		        			elif 'gfal-copy bbbb_ggh_mh125_mx50_pl500_signal_aod_test.py' in line:
 		        				new_line = line.replace('gfal-copy','gfal-copy -f').replace('bbbb_ggh_mh125_mx50_pl500_signal_aod_test.py',script_dir+script_name)
 		        			elif 'cmsRun bbbb_ggh_mh125_mx50_pl500_signal_aod_test.py' in line:
+		        				#new_line = ''
 		        				new_line = line.replace('bbbb_ggh_mh125_mx50_pl500_signal_aod_test.py',script_name)
 		        			elif '/store/group/phys_exotica/jmao/jet_timing_studies/samples/signal/' in line:
 		        				new_line = line.replace('/store/group/phys_exotica/jmao/jet_timing_studies/samples/signal/',output_dir)
 		        			elif 'bbbb_ggh_mh125_mx50_pl500.root' in line:
 						#gfal-copy -f ntuple_RunIISummer16_bbbb_ggh_mh125_mx50_pl500.root gsiftp://transfer.ultralight.org//store/user/jmao/output_test.root
 		        				new_line = line.replace('RunIISummer16_bbbb_ggh_mh125_mx50_pl500.root','RunIIFall17_'+output_name).replace('/store/user/jmao/output_test.root',output_dir+'ntuple_RunIIFall17_'+output_name)
+		        				#new_line = ''
 							print(new_line)
 		        			else: 
 		        				new_line = line

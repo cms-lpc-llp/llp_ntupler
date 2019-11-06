@@ -42,6 +42,17 @@ process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
 
 #------ Analyzer ------#
 
+# For AOD Track variables
+process.MaterialPropagator = cms.ESProducer('PropagatorWithMaterialESProducer',
+    ComponentName = cms.string('PropagatorWithMaterial'),
+    Mass = cms.double(0.105),
+    MaxDPhi = cms.double(1.6),
+    PropagationDirection = cms.string('alongMomentum'),
+    SimpleMagneticField = cms.string(''),
+    ptMin = cms.double(-1.0),
+    useRungeKutta = cms.bool(False)
+)
+
 #list input collections
 process.ntuples = cms.EDAnalyzer('displacedJetTiming_ntupler',
     isData = cms.bool(False),
@@ -51,7 +62,7 @@ process.ntuples = cms.EDAnalyzer('displacedJetTiming_ntupler',
     enableEcalRechits = cms.bool(False),
     enableCaloJet = cms.bool(True),
     enableGenLLPInfo = cms.bool(True),
-    readGenVertexTime = cms.bool(True),#need to be false for displaced samples
+    readGenVertexTime = cms.bool(False),#need to be false for displaced samples
     llpId = cms.int32(1023),
 
     genParticles_t0 = cms.InputTag("genParticles", "t0", ""),

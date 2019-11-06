@@ -3,10 +3,10 @@ import subprocess, time, sys, shlex
 import fileinput
 
 
-filePerJob = 4
+filePerJob = 1
 #model = ['n3n2-n1-hbb-hbb', 'n3n2-n1-zll-hbb']
-model = [ 'n3n2-n1-zll-hbb']
-#model = ['x1n2-n1-wlv-hbb']
+#model = [ 'n3n2-n1-zll-hbb']
+model = ['x1n2-n1-wlv-hbb']
 mh = [200]
 ctau = ['pl1000']
 
@@ -32,7 +32,7 @@ for i,m in enumerate(model):
 		os.system('mkdir -p '+list_dir)
 		list_name = str2+'_fullsim.list'
 		#list_name = 'WplusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-1000_fullsim.list'
-		#list_name = 'WminusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-1000_fullsim.list'  
+		list_name = 'WminusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-1000_fullsim.list'  
 		#list_name = 'x1n2-n1-wlv-hbb_mchi200_mlsp150_pl1000_ev100000_fullsim.list'
 		#list_name = 'n3n2-n1-zll-hbb_mh200_pl100_ev100000_fullsim.list'
 

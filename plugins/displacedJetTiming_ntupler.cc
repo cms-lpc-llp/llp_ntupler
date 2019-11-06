@@ -1729,7 +1729,7 @@ void displacedJetTiming_ntupler::analyze(const edm::Event& iEvent, const edm::Ev
   fillEventInfo(iEvent);
   // fillPVAll();
   // fillPVTracks();
-  fillTracks(iSetup);
+  //fillTracks(iSetup);
   fillTracksPV(iSetup);
   fillMuons(iEvent);
   fillMuonSystem(iEvent, iSetup);
