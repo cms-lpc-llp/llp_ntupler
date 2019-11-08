@@ -3527,7 +3527,7 @@ void displacedJetTiming_ntupler::findTrackingVariables(const TLorentzVector &jet
       	     }
          }
   }
-  if (ptAllTracks > 0.9){
+  //if (ptAllTracks > 0.9){
     //No matched jets
     for (int ipvTrack = 0; ipvTrack < npvTracks; ipvTrack++){
       double ptPVTracks = 0.;
@@ -3551,7 +3551,7 @@ void displacedJetTiming_ntupler::findTrackingVariables(const TLorentzVector &jet
       }
       alphaMax = ptPVTracksMax/ptAllTracks;
     }
-  }
+  //}
   std::sort(IP2Ds.begin(),IP2Ds.end());
   if (IP2Ds.size() > 0){
 	   medianIP = IP2Ds[IP2Ds.size()/2];
