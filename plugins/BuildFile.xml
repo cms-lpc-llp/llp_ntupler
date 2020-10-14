@@ -26,6 +26,8 @@
 <use name="MagneticField/Records"/>
 <use name="MagneticField/Engine"/>
 <use name="cms_lpc_llp/llp_ntupler"/>
+<use name="RecoMuon/Records"/>
+<use name="RecoMuon/DetLayers"/>
 <flags EDM_PLUGIN="1"/>
 
 

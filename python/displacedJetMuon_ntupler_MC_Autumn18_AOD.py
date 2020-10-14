@@ -33,6 +33,8 @@ process.TFileService = cms.Service("TFileService",
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 #process.load('Configuration.Geometry.GeometryIdeal_cff')
 #process.load('Configuration.StandardSequences.MagneticField_38T_cff')
+# process.load('Configuration.StandardSequences.Reconstruction_cff')
+process.load("TrackPropagation.SteppingHelixPropagator.SteppingHelixPropagatorAny_cfi")
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff')
 
@@ -138,7 +140,7 @@ process.ntuples = cms.EDAnalyzer('displacedJetMuon_ntupler',
     #triggerBits = cms.InputTag("TriggerResults","","RECO"),
     hepMC = cms.InputTag("generatorSmeared", "", "SIM"),
 
-    #triggerPrescales = cms.InputTag("patTrigger"),
+    triggerPrescales = cms.InputTag("patTrigger"),
     #triggerObjects = cms.InputTag("selectedPatTrigger"),
 
     metFilterBits = cms.InputTag("TriggerResults", "", "RECO"),

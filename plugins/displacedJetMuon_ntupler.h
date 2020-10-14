@@ -69,6 +69,17 @@ using namespace std;
 #include "RecoVertex/VertexPrimitives/interface/ConvertError.h"
 
 
+// TrackFinder and specific GLB Trajectory Builder
+#include "RecoMuon/GlobalMuonProducer/src/GlobalMuonProducer.h"
+#include "RecoMuon/GlobalTrackFinder/interface/GlobalMuonTrajectoryBuilder.h"
+#include "RecoMuon/TrackingTools/interface/MuonTrackFinder.h"
+#include "RecoMuon/TrackingTools/interface/MuonTrackLoader.h"
+#include "RecoMuon/Records/interface/MuonRecoGeometryRecord.h"
+#include "RecoMuon/TrackingTools/interface/MuonServiceProxy.h"
+
+#include "TrackingTools/DetLayers/interface/DetLayer.h"
+#include "RecoMuon/DetLayers/interface/MuonDetLayerGeometry.h"
+
 //CMSSW package includes
 #include "FWCore/Framework/interface/LuminosityBlock.h"
 #include "DataFormats/Math/interface/deltaR.h"
@@ -330,7 +341,11 @@ protected:
   edm::EDGetTokenT<edm::DetSetVector<StripDigiSimLink> > MuonCSCStripDigiSimLinksToken_;
   edm::EDGetTokenT<edm::DetSetVector<StripDigiSimLink>> MuonCSCWireDigiSimLinksToken_;
 
-
+  //Muon propagation stuff
+  edm::ESHandle<Propagator> muonPropagatorHandle_;
+  const BoundCylinder *barrelCylinder[4];
+  const BoundDisk *endcapDiskPos_[3], *endcapDiskNeg_[3];
+  double barrelHalfLength[4];
 
   edm::EDGetTokenT<reco::MuonCollection> muonsToken_;
   edm::EDGetTokenT<reco::GsfElectronCollection> electronsToken_;
@@ -603,6 +618,8 @@ protected:
  float muonPt[OBJECTARRAYSIZE];
  float muonEta[OBJECTARRAYSIZE];
  float muonPhi[OBJECTARRAYSIZE];
+ float muonDtIntersectionEta[OBJECTARRAYSIZE][4];
+ float muonDtIntersectionPhi[OBJECTARRAYSIZE][4];
  int muonCharge[OBJECTARRAYSIZE];//muon charge
  bool muonIsLoose[OBJECTARRAYSIZE];
  bool muonIsMedium[OBJECTARRAYSIZE];

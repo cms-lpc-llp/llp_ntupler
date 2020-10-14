@@ -77,7 +77,7 @@ displacedJetMuon_ntupler::displacedJetMuon_ntupler(const edm::ParameterSet& iCon
   triggerBitsToken_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("triggerBits"))),
   hepMCToken_(consumes<edm::HepMCProduct>(iConfig.getParameter<edm::InputTag>("hepMC"))),
   //triggerObjectsToken_(consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("triggerObjects"))),
-  triggerPrescalesToken_(consumes<pat::PackedTriggerPrescales>(iConfig.getParameter<edm::InputTag>("triggerPrescales"))),
+  // triggerPrescalesToken_(consumes<pat::PackedTriggerPrescales>(iConfig.getParameter<edm::InputTag>("triggerPrescales"))),
   genMetCaloToken_(consumes<reco::GenMETCollection>(iConfig.getParameter<edm::InputTag>("genMetsCalo"))),
   genMetTrueToken_(consumes<reco::GenMETCollection>(iConfig.getParameter<edm::InputTag>("genMetsTrue"))),
   //metToken_(consumes<reco::PFMETCollection>(iConfig.getParameter<edm::InputTag>("mets"))),
@@ -110,7 +110,7 @@ displacedJetMuon_ntupler::displacedJetMuon_ntupler(const edm::ParameterSet& iCon
   ebRecHitsToken_(consumes<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >(iConfig.getParameter<edm::InputTag>("ebRecHits"))),
   eeRecHitsToken_(consumes<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >(iConfig.getParameter<edm::InputTag>("eeRecHits"))),
   esRecHitsToken_(consumes<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit> > >(iConfig.getParameter<edm::InputTag>("esRecHits"))),
-  hcalRecHitsHOToken_(consumes<edm::SortedCollection<HORecHit,edm::StrictWeakOrdering<HORecHit>>>(edm::InputTag("reducedHcalRecHits","horeco"))),
+  hcalRecHitsHOToken_(consumes<edm::SortedCollection<HORecHit,edm::StrictWeakOrdering<HORecHit>>>(edm::InputTag("horeco"))),
   hcalRecHitsHBHEToken_(consumes<edm::SortedCollection<HBHERecHit,edm::StrictWeakOrdering<HBHERecHit>>>(edm::InputTag("reducedHcalRecHits","hbhereco"))),
   ebeeClustersToken_(consumes<vector<reco::CaloCluster> >(iConfig.getParameter<edm::InputTag>("ebeeClusters"))),
   esClustersToken_(consumes<vector<reco::CaloCluster> >(iConfig.getParameter<edm::InputTag>("esClusters"))),
@@ -309,6 +309,8 @@ void displacedJetMuon_ntupler::enableMuonBranches()
   displacedJetMuonTree->Branch("muon_kinkFinder", muon_kinkFinder,"muon_kinkFinder[nMuons]/F");
   displacedJetMuonTree->Branch("muon_segmentCompatability", muon_segmentCompatability,"muon_segmentCompatability[nMuons]/F");
   displacedJetMuonTree->Branch("muonIsICHEPMedium", muonIsICHEPMedium,"muonIsICHEPMedium[nMuons]/O");
+  displacedJetMuonTree->Branch("muonDtIntersectionEta", muonDtIntersectionEta,"muonDtIntersectionEta[nMuons][4]/F");
+  displacedJetMuonTree->Branch("muonDtIntersectionPhi", muonDtIntersectionPhi,"muonDtIntersectionPhi[nMuons][4]/F");
 };
 
 void displacedJetMuon_ntupler::enableElectronBranches()
@@ -1128,7 +1130,7 @@ void displacedJetMuon_ntupler::loadEvent(const edm::Event& iEvent)//load all min
   iEvent.getByToken(hcalRecHitsHOToken_,hcalRecHitsHO);
   iEvent.getByToken(hcalRecHitsHBHEToken_,hcalRecHitsHBHE);
   iEvent.getByToken(triggerBitsToken_, triggerBits);
-  iEvent.getByToken(triggerPrescalesToken_, triggerPrescales);
+  // iEvent.getByToken(triggerPrescalesToken_, triggerPrescales);
   //iEvent.getByToken(triggerObjectsToken_, triggerObjects);
 
   iEvent.getByToken(hepMCToken_, hepMC);
@@ -1326,6 +1328,8 @@ void displacedJetMuon_ntupler::resetMuonBranches()
     muon_kinkFinder[i] = -99.0;
     muon_segmentCompatability[i] = -99.0;
     muonIsICHEPMedium[i] = false;
+    for (int q=0;q<4;q++) muonDtIntersectionEta[i][q] = -99.0;
+    for (int q=0;q<4;q++) muonDtIntersectionPhi[i][q] = -99.0;
   }
 };
 
@@ -2235,6 +2239,19 @@ void displacedJetMuon_ntupler::beginRun(const edm::Run& iRun, const edm::EventSe
   //covering SUSY signal samples, LO madgraph, NLO madgraph_aMC@NLO, and NLO powheg
   //generated with nnpdf30
   //More robust selection will require some parsing of <initrwgt> block
+    edm::ESHandle<MagneticField> magneticField;
+    iSetup.get<IdealMagneticFieldRecord>().get(magneticField);
+    magneticField_ = &*magneticField;
+
+    iSetup.get<TrackingComponentsRecord>().get("SteppingHelixPropagatorAny", muonPropagatorHandle_);
+    edm::ESHandle<MuonDetLayerGeometry> muonGeometry;
+    iSetup.get<MuonRecoGeometryRecord>().get(muonGeometry);
+    
+    for (int q = 0; q < 4; q++){ 
+	const DetLayer *dtLay = muonGeometry->allDTLayers()[q];
+	barrelCylinder[q] = dynamic_cast<const BoundCylinder *>(&dtLay->surface());
+	barrelHalfLength[q] = barrelCylinder[q]->bounds().length() / 2.;
+    }
 
   if (!isData_) {
 
@@ -4320,9 +4337,6 @@ bool displacedJetMuon_ntupler::fillJets(const edm::EventSetup& iSetup)
   // Save Tracks inside Jets and AK8 Jets
   //********************************************************
   // Magnetic field
-  edm::ESHandle<MagneticField> magneticField;
-  iSetup.get<IdealMagneticFieldRecord>().get(magneticField);
-  magneticField_ = &*magneticField;
   std::string thePropagatorName_ = "PropagatorWithMaterial";
   iSetup.get<TrackingComponentsRecord>().get(thePropagatorName_,thePropagator_);
   StateOnTrackerBound stateOnTracker(thePropagator_.product());
@@ -4457,6 +4471,7 @@ bool displacedJetMuon_ntupler::fillJets(const edm::EventSetup& iSetup)
 
 bool displacedJetMuon_ntupler::fillMuons(const edm::Event& iEvent)
 {
+  auto const& prop = *muonPropagatorHandle_;
   for(const pat::Muon &mu : *muons) {
     muonE[nMuons] = mu.energy();
     muonPt[nMuons] = mu.pt();
@@ -4545,6 +4560,27 @@ bool displacedJetMuon_ntupler::fillMuons(const edm::Event& iEvent)
     }*/
 
     muon_passSingleMuTagFilter[nMuons] = passTagMuonFilter;
+    //mu is a reco muon
+    TrackRef track;
+    bool noTrack = false;
+    TString type = "";
+    if (mu.isGlobalMuon()) {track = mu.globalTrack(); type = "global";}
+    else if (mu.isStandAloneMuon()) {track = mu.standAloneMuon(); type = "standalone";}
+    else if (mu.isTrackerMuon()) {track = mu.innerTrack(); type = "tracker";}
+    else noTrack = true;
+    if (!noTrack && mu.pt() > 10)
+    {
+	FreeTrajectoryState start;
+	start = trajectoryStateTransform::outerFreeState(*track, magneticField_);
+	// prop is "SteppingHelixPropagatorAny"
+	for (int q = 0; q < 4; q++){ 
+	    TrajectoryStateOnSurface tsos = prop.propagate(start, *barrelCylinder[q]);
+	    if (tsos.isValid() && fabs(tsos.globalPosition().z()) <= barrelHalfLength[q]) {
+		muonDtIntersectionEta[nMuons][q] = tsos.globalPosition().eta();
+		muonDtIntersectionPhi[nMuons][q] = tsos.globalPosition().phi();
+	    }
+	}
+    }
     nMuons++;
     if (nMuons > OBJECTARRAYSIZE) {
       cout << "ERROR: nMuons exceeded maximum array size: " << OBJECTARRAYSIZE << "\n";
@@ -5029,7 +5065,7 @@ bool displacedJetMuon_ntupler::fillTrigger(const edm::Event& iEvent)
       if (triggerPathNames[j] == "") continue;
       if (hltPathNameWithoutVersionNumber == triggerPathNames[j]) {
 	triggerDecision[j] = triggerBits->accept(i);
-	triggerHLTPrescale[j] = triggerPrescales->getPrescaleForIndex(i);
+	// triggerHLTPrescale[j] = triggerPrescales->getPrescaleForIndex(i);
       }
     }
   }
