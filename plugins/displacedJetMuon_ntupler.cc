@@ -4064,7 +4064,7 @@ bool displacedJetMuon_ntupler::fillJets(const edm::EventSetup& iSetup)
     fatJetPt[nFatJets] = j.pt();
     fatJetEta[nFatJets] = j.eta();
     fatJetPhi[nFatJets] = j.phi();
-    fatJetRawPt[nFatJets] = j.correctedP4(0).Pt();
+    //fatJetRawPt[nFatJets] = j.correctedP4(0).Pt();
 
     // fatJetICSV[nFatJets] = j.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
     // fatJetBoostedDoubleSVAK8 = j.bDiscriminator("pfBoostedDoubleSecondaryVertexAK8BJetTags");
@@ -5343,7 +5343,7 @@ bool displacedJetMuon_ntupler::fillElectrons(const edm::Event& iEvent)
     ele_PassConvVeto[nElectrons] = false;
     if( beamSpot.isValid() && conversions.isValid() )
     {
-      ele_PassConvVeto[nElectrons] = !ConversionTools::hasMatchedConversion(ele,conversions,beamSpot->position());
+      ele_PassConvVeto[nElectrons] = !ConversionTools::hasMatchedConversion(ele,(*conversions) , beamSpot->position());
     } else {
       cout << "\n\nERROR!!! conversions not found!!!\n";
     }
@@ -5476,11 +5476,11 @@ bool displacedJetMuon_ntupler::fillPhotons(const edm::Event& iEvent, const edm::
     // Fill default miniAOD isolation quantities
     //------------------------------------------
     pho_pfIsoChargedHadronIso[nPhotons] = pho.chargedHadronIso();
-    pho_pfIsoChargedHadronIsoWrongVtx[nPhotons] = pho.chargedHadronIsoWrongVtx();
+    //pho_pfIsoChargedHadronIsoWrongVtx[nPhotons] = pho.chargedHadronIsoWrongVtx();
     pho_pfIsoNeutralHadronIso[nPhotons] = pho.neutralHadronIso();
     pho_pfIsoPhotonIso[nPhotons] = pho.photonIso();
-    pho_pfIsoModFrixione[nPhotons] = pho.getPflowIsolationVariables().modFrixione;
-    pho_pfIsoSumPUPt[nPhotons] = pho.sumPUPt();
+    //pho_pfIsoModFrixione[nPhotons] = pho.getPflowIsolationVariables().modFrixione;
+    //pho_pfIsoSumPUPt[nPhotons] = pho.sumPUPt();
     //-----------------------
     // super cluster position and time
     //-----------------------

@@ -3651,7 +3651,7 @@ bool displacedJetMuon_rechit_studies::fillElectrons(const edm::Event& iEvent)
     ele_PassConvVeto[nElectrons] = false;
     if( beamSpot.isValid() && conversions.isValid() )
     {
-      ele_PassConvVeto[nElectrons] = !ConversionTools::hasMatchedConversion(ele,conversions,beamSpot->position());
+      ele_PassConvVeto[nElectrons] = !ConversionTools::hasMatchedConversion(ele,*conversions,beamSpot->position());
     } else {
       cout << "\n\nERROR!!! conversions not found!!!\n";
     }
