@@ -283,6 +283,7 @@ protected:
   bool    isData_;
   bool    useGen_;
   bool    isRECO_;
+  bool    isRAW_;
   bool    isFastsim_;
   bool enableTriggerInfo_;
   bool enableGenLLPInfo_;
