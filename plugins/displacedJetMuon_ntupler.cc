@@ -331,6 +331,7 @@ void displacedJetMuon_ntupler::enableMuonBranches()
   displacedJetMuonTree->Branch("muonIsMedium", muonIsMedium,"muonIsMedium[nMuons]/O");
   displacedJetMuonTree->Branch("muonIsTight", muonIsTight,"muonIsTight[nMuons]/O");
   displacedJetMuonTree->Branch("muon_d0", muon_d0, "muon_d0[nMuons]/F");
+  displacedJetMuonTree->Branch("muon_d0Err", muon_d0Err, "muon_d0Err[nMuons]/F");
   displacedJetMuonTree->Branch("muon_dZ", muon_dZ, "muon_dZ[nMuons]/F");
   displacedJetMuonTree->Branch("muon_ip3d", muon_ip3d, "muon_ip3d[nMuons]/F");
   displacedJetMuonTree->Branch("muon_ip3dSignificance", muon_ip3dSignificance, "muon_ip3dSignificance[nMuons]/F");
@@ -1452,6 +1453,7 @@ void displacedJetMuon_ntupler::resetMuonBranches()
     muonIsMedium[i] = false;
     muonIsTight[i] = false;
     muon_d0[i] = -99.0;
+    muon_d0Err[i] = -99.0;
     muon_dZ[i] = -99.0;
     muon_ip3d[i] = -99.0;
     muon_ip3dSignificance[i] = -99.0;
@@ -4597,6 +4599,7 @@ bool displacedJetMuon_ntupler::fillMuons(const edm::Event& iEvent)
     muonIsMedium[nMuons] = mu.isMediumMuon();
     muonIsTight[nMuons] = mu.isTightMuon(*myPV);
     muon_d0[nMuons] = -mu.muonBestTrack()->dxy(myPV->position());
+    muon_d0Err[nMuons] = -mu.muonBestTrack()->dxyError();
     muon_dZ[nMuons] = mu.muonBestTrack()->dz(myPV->position());
     muon_ip3d[nMuons] = mu.dB(pat::Muon::PV3D);
     muon_ip3dSignificance[nMuons] = mu.dB(pat::Muon::PV3D)/mu.edB(pat::Muon::PV3D);
