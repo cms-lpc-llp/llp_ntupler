@@ -630,6 +630,7 @@ protected:
  bool muonIsMedium[OBJECTARRAYSIZE];
  bool muonIsTight[OBJECTARRAYSIZE];
  float muon_d0[OBJECTARRAYSIZE];//transverse impact paramenter
+ float muon_d0Err[OBJECTARRAYSIZE];//transverse impact paramenter
  float muon_dZ[OBJECTARRAYSIZE];//impact parameter
  float muon_ip3d[OBJECTARRAYSIZE];//3d impact paramenter
  float muon_ip3dSignificance[OBJECTARRAYSIZE];//3d impact paramenter/error
