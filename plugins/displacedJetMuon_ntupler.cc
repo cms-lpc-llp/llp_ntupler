@@ -38,7 +38,7 @@ displacedJetMuon_ntupler::displacedJetMuon_ntupler(const edm::ParameterSet& iCon
   isRECO_(iConfig.getParameter<bool> ("isRECO")),
   isRAW_(iConfig.getParameter<bool> ("isRAW")),
   isFastsim_(iConfig.getParameter<bool> ("isFastsim")),
-  isBParkAOD_(iConfig.getParameter<bool> ("isBParkAOD")),
+  //isBParkAOD_(iConfig.getParameter<bool> ("isBParkAOD")),
   enableTriggerInfo_(iConfig.getParameter<bool> ("enableTriggerInfo")),
   enableGenLLPInfo_(iConfig.getParameter<bool> ("enableGenLLPInfo")),
   enableEcalRechits_(iConfig.getParameter<bool> ("enableEcalRechits")),
@@ -150,7 +150,7 @@ displacedJetMuon_ntupler::displacedJetMuon_ntupler(const edm::ParameterSet& iCon
   cout << "isRECO = " << isRECO_ << "\n";
   cout << "isRAW = " << isRAW_ << "\n";
   cout << "isFastsim = " << isFastsim_ << "\n";
-  cout << "isBParkAOD = " << isBParkAOD_ << "\n";
+  //cout << "isBParkAOD = " << isBParkAOD_ << "\n";
 
   //declare the TFileService for output
   edm::Service<TFileService> fs;
@@ -2853,7 +2853,8 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
     //************************************************************************************************************
     //************************************************************************************************************
 
-    if (isRECO_ || isBParkAOD_) {
+    //if (isRECO_ || isBParkAOD_) {
+    if (isRECO_ ) {
 
       //cout << "Number of rec hits: "<<cscRechits->size()<<endl;
       points.clear();
@@ -3323,7 +3324,8 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
     //************************************************************************************************************
     //************************************************************************************************************
 
-    if (isRECO_ || isBParkAOD_) {
+    //if (isRECO_ || isBParkAOD_) {
+    if (isRECO_ ) {
 
       //cout<<"number of dt rechits: " <<dtRechits->size()<<endl;
       points.clear();

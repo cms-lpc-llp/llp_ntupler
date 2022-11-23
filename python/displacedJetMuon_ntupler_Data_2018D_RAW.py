@@ -13,9 +13,10 @@ process.load('Configuration.StandardSequences.Services_cff')
 
 #load input files
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring(               
+    fileNames = cms.untracked.vstring(
         #'file:/eos/cms/store/group/phys_susy/razor/run2/RAW/SingleMuon_2018C/2E76B3DF-A98E-E811-A35C-FA163E8E087D.root',
-        'file:/eos/cms/store/group/phys_susy/razor/run2/RAW/EGamma_2018D/0A2A7E62-17A3-E811-8E97-02163E010CD6.root'
+        #'file:/eos/cms/store/group/phys_susy/razor/run2/RAW/EGamma_2018D/0A2A7E62-17A3-E811-8E97-02163E010CD6.root'
+        'file:/uscms_data/d3/jongho/inputs/EEC48554-638F-CF4D-BC22-509B67F1CEE6.root'
         )
 )
 
@@ -88,8 +89,8 @@ process.CSCChannelMapperESProducer = cms.ESProducer("CSCChannelMapperESProducer"
 process.ntuples = cms.EDAnalyzer('displacedJetMuon_ntupler',
     isData = cms.bool(True),
     useGen = cms.bool(False),
-    isRECO = cms.bool(False),                                
-    isRAW = cms.bool(True),                                
+    isRECO = cms.bool(False),
+    isRAW = cms.bool(True),
     isFastsim = cms.bool(False),
     readMuonDigis = cms.bool(True),
     enableTriggerInfo = cms.bool(True),
@@ -99,9 +100,9 @@ process.ntuples = cms.EDAnalyzer('displacedJetMuon_ntupler',
     readGenVertexTime = cms.bool(False),#need to be false for displaced samples
     genParticles_t0 = cms.InputTag("genParticles", "t0", ""),
     triggerPathNamesFile = cms.string("cms_lpc_llp/llp_ntupler/data/trigger_names_llp_v3.dat"),
-    eleHLTFilterNamesFile = cms.string("SUSYBSMAnalysis/RazorTuplizer/data/RazorElectronHLTFilterNames.dat"),
-    muonHLTFilterNamesFile = cms.string("SUSYBSMAnalysis/RazorTuplizer/data/RazorMuonHLTFilterNames.dat"),
-    photonHLTFilterNamesFile = cms.string("SUSYBSMAnalysis/RazorTuplizer/data/RazorPhotonHLTFilterNames.dat"),
+    eleHLTFilterNamesFile = cms.string("cms_lpc_llp/llp_ntupler/data/MuonHLTFilterNames.dat"),
+    muonHLTFilterNamesFile = cms.string("cms_lpc_llp/llp_ntupler/data/MuonHLTFilterNames.dat"),
+    photonHLTFilterNamesFile = cms.string("cms_lpc_llp/llp_ntupler/data/MuonHLTFilterNames.dat"),
 
     #vertices = cms.InputTag("offlinePrimaryVerticesWithBS"),  # for non-timing case
     vertices = cms.InputTag("offlinePrimaryVertices", "", "RECO"),
@@ -144,7 +145,7 @@ process.ntuples = cms.EDAnalyzer('displacedJetMuon_ntupler',
     hepMC = cms.InputTag("generatorSmeared", "", "SIM"),
 
     triggerPrescales = cms.InputTag("patTrigger"),
-    #triggerObjects = cms.InputTag("selectedPatTrigger"),
+    triggerObjects = cms.InputTag("selectedPatTrigger"),
 
     metFilterBits = cms.InputTag("TriggerResults", "", "RECO"),
 
