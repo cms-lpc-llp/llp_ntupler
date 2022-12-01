@@ -16,7 +16,7 @@ process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
         #'file:/eos/cms/store/group/phys_susy/razor/run2/RAW/SingleMuon_2018C/2E76B3DF-A98E-E811-A35C-FA163E8E087D.root',
         #'file:/eos/cms/store/group/phys_susy/razor/run2/RAW/EGamma_2018D/0A2A7E62-17A3-E811-8E97-02163E010CD6.root'
-        'file:/uscms_data/d3/jongho/inputs/EEC48554-638F-CF4D-BC22-509B67F1CEE6.root'
+        'file:/afs/cern.ch/user/s/sixie/work/public/EEC48554-638F-CF4D-BC22-509B67F1CEE6.root'
         )
 )
 
@@ -92,7 +92,7 @@ process.ntuples = cms.EDAnalyzer('displacedJetMuon_ntupler',
     isRECO = cms.bool(False),
     isRAW = cms.bool(True),
     isFastsim = cms.bool(False),
-    readMuonDigis = cms.bool(True),
+    readMuonDigis = cms.bool(False),
     enableTriggerInfo = cms.bool(True),
     enableEcalRechits = cms.bool(False),
     enableCaloJet = cms.bool(True),
