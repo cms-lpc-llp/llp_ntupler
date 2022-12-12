@@ -261,20 +261,20 @@ void displacedJetMuon_ntupler::setBranches()
   enableEventInfoBranches();
   enablePVAllBranches();
   enablePileUpBranches();
-  enableMuonBranches();
-  enableElectronBranches();
-  enableTauBranches();
-  enablePFCandidateBranches();
-  enablePhotonBranches();
+  //enableMuonBranches();
+  //enableElectronBranches();
+  //enableTauBranches();
+  //enablePFCandidateBranches();
+  //enablePhotonBranches();
   enableMuonSystemBranches();
-  enableHORechitBranches();
-  enableEcalRechitBranches();
-  enableHBHERechitBranches();
-  enableTrackBranches();
-  enableSecondaryVerticesBranches();
-  enableJetBranches();
-  enableJetAK8Branches();
-  enableMetBranches();
+  //enableHORechitBranches();
+  //enableEcalRechitBranches();
+  //enableHBHERechitBranches();
+  //enableTrackBranches();
+  //enableSecondaryVerticesBranches();
+  //enableJetBranches();
+  //enableJetAK8Branches();
+  //enableMetBranches();
   enableTriggerBranches();
   enableMCBranches();
   enableGenParticleBranches();
@@ -2858,8 +2858,7 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
     //************************************************************************************************************
     //************************************************************************************************************
 
-    //if (isRECO_ || isBParkAOD_) {
-    if (isRECO_ ) {
+    if (isRECO_ || isRAW_ ) {
 
       //cout << "Number of rec hits: "<<cscRechits->size()<<endl;
       points.clear();
@@ -3337,8 +3336,7 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
     //************************************************************************************************************
     //************************************************************************************************************
 
-    //if (isRECO_ || isBParkAOD_) {
-    if (isRECO_ ) {
+    if (isRECO_ || isRAW_) {
 
       //cout<<"number of dt rechits: " <<dtRechits->size()<<endl;
       points.clear();
