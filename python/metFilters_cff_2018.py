@@ -45,10 +45,10 @@ HBHENoiseFilterResultProducer *
 primaryVertexFilter *
 globalSuperTightHalo2016Filter *
 globalTightHalo2016Filter *
-EcalDeadCellTriggerPrimitiveFilter *
+#EcalDeadCellTriggerPrimitiveFilter *
 BadPFMuonFilter *
-BadChargedCandidateFilter *
-eeBadScFilter *
-ecalBadCalibReducedMINIAODFilter
+BadChargedCandidateFilter 
+#eeBadScFilter *
+#ecalBadCalibReducedMINIAODFilter
 )
 
