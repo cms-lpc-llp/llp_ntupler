@@ -21,7 +21,7 @@ using namespace std;
 
 // CMSSW framework includes
 #include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/one/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -43,7 +43,7 @@ using namespace std;
 #include "TrackingTools/TrajectoryState/interface/FreeTrajectoryState.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateOnSurface.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
-#include "cms_lpc_llp/llp_ntupler/interface/GetTrackTrajInfo.h"
+//#include "cms_lpc_llp/llp_ntupler/interface/GetTrackTrajInfo.h"
 
 #include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
 
@@ -145,7 +145,6 @@ using namespace std;
 #include "DataFormats/MuonDetId/interface/CSCDetId.h"
 
 #include "Geometry/Records/interface/MuonGeometryRecord.h"
-#include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "DataFormats/DTRecHit/interface/DTRecHitCollection.h"
 #include "DataFormats/DTRecHit/interface/DTRecSegment4DCollection.h"
 #include "DataFormats/RPCRecHit/interface/RPCRecHit.h"
@@ -186,11 +185,11 @@ using namespace std;
 
 //------ Class declaration ------//
 
-class displacedJetMuon_ntupler : public edm::EDAnalyzer {
+class displacedJetMuon_ntupler : public edm::one::EDAnalyzer<edm::one::SharedResources> {
 public:
   //analyzer constructor and destructor
   explicit displacedJetMuon_ntupler(const edm::ParameterSet&);
-  ~displacedJetMuon_ntupler();
+  ~displacedJetMuon_ntupler() override;
 
   void loadEvent(const edm::Event& iEvent); //call at the beginning of each event to get input handles from the python config
 
@@ -271,13 +270,13 @@ public:
   bool fillTrigger(const edm::Event& iEvent);
   bool fillMC();
   bool fillSecondaryVertices();
-  bool fillHitsTracksAndPFCands(const edm::EventSetup& iSetup);
+  //bool fillHitsTracksAndPFCands(const edm::EventSetup& iSetup);
 
 
 protected:
   virtual void beginJob() override;
-  virtual void beginRun(const edm::Run&, const edm::EventSetup&) override;
-  virtual void beginLuminosityBlock(edm::LuminosityBlock const& iLumi, edm::EventSetup const&) override;
+  virtual void beginRun(const edm::Run&, const edm::EventSetup&) ;
+  virtual void beginLuminosityBlock(edm::LuminosityBlock const& iLumi, edm::EventSetup const&) ;
   virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
   virtual void endJob() override;
 
