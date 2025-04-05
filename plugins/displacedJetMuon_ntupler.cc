@@ -528,6 +528,7 @@ void displacedJetMuon_ntupler::enableMuonSystemBranches()
     displacedJetMuonTree->Branch("nCscWireDigis",&nCscWireDigis,"nCscWireDigis/I");
     displacedJetMuonTree->Branch("nCscStripDigis",&nCscStripDigis,"nCscStripDigis/I");
     displacedJetMuonTree->Branch("cscStripDigiADC", &cscStripDigiADC,"cscStripDigiADC[nCscStripDigis][8]/I");
+    displacedJetMuonTree->Branch("cscStripDigiDetID", &cscStripDigiDetID,"cscStripDigiDetID[nCscStripDigis]/I");
     displacedJetMuonTree->Branch("cscStripDigiDetIDEndcap", &cscStripDigiDetIDEndcap,"cscStripDigiDetIDEndcap[nCscStripDigis]/I");
     displacedJetMuonTree->Branch("cscStripDigiDetIDStation", &cscStripDigiDetIDStation,"cscStripDigiDetIDStation[nCscStripDigis]/I");
     displacedJetMuonTree->Branch("cscStripDigiDetIDRing", &cscStripDigiDetIDRing,"cscStripDigiDetIDRing[nCscStripDigis]/I");
@@ -539,6 +540,7 @@ void displacedJetMuon_ntupler::enableMuonSystemBranches()
     displacedJetMuonTree->Branch("cscStripDigiLayerZ", &cscStripDigiLayerZ,"cscStripDigiLayerZ[nCscStripDigis]/F");
     displacedJetMuonTree->Branch("cscStripDigiLayerEta", &cscStripDigiLayerEta,"cscStripDigiLayerEta[nCscStripDigis]/F");
     displacedJetMuonTree->Branch("cscStripDigiLayerPhi", &cscStripDigiLayerPhi,"cscStripDigiLayerPhi[nCscStripDigis]/F");
+    displacedJetMuonTree->Branch("cscWireDigiDetID", &cscWireDigiDetID,"cscWireDigiDetID[nCscWireDigis]/I");
     displacedJetMuonTree->Branch("cscWireDigiDetIDEndcap", &cscWireDigiDetIDEndcap,"cscWireDigiDetIDEndcap[nCscWireDigis]/I");
     displacedJetMuonTree->Branch("cscWireDigiDetIDStation", &cscWireDigiDetIDStation,"cscWireDigiDetIDStation[nCscWireDigis]/I");
     displacedJetMuonTree->Branch("cscWireDigiDetIDRing", &cscWireDigiDetIDRing,"cscWireDigiDetIDRing[nCscWireDigis]/I");
@@ -549,7 +551,7 @@ void displacedJetMuon_ntupler::enableMuonSystemBranches()
     displacedJetMuonTree->Branch("cscWireDigiBXandWireGroup", &cscWireDigiBXandWireGroup,"cscWireDigiBXandWireGroup[nCscWireDigis]/I");
     displacedJetMuonTree->Branch("cscWireDigiTimeBin", &cscWireDigiTimeBin,"cscWireDigiTimeBin[nCscWireDigis]/I");
     displacedJetMuonTree->Branch("cscWireDigiTimeBinsOnSize", &cscWireDigiTimeBinsOnSize,"cscWireDigiTimeBinsOnSize[nCscWireDigis]/I");
-    displacedJetMuonTree->Branch("cscWireDigiTimeBinsOn", &cscWireDigiTimeBinsOn,"cscWireDigiTimeBinsOn[nCscWireDigis][cscWireDigiTimeBinsOnSize]/I");
+    displacedJetMuonTree->Branch("cscWireDigiTimeBinsOn", &cscWireDigiTimeBinsOn,"cscWireDigiTimeBinsOn[nCscWireDigis][5]/I");
 
     displacedJetMuonTree->Branch("nCscSeg",&nCscSeg,"nCscSeg/I");
     displacedJetMuonTree->Branch("cscSegPhi",cscSegPhi,"cscSegPhi[nCscSeg]/F");
@@ -579,8 +581,8 @@ void displacedJetMuon_ntupler::enableMuonSystemBranches()
     displacedJetMuonTree->Branch("cscRechitsClusterId",cscRechitsClusterId,"cscRechitsClusterId[ncscRechits]/I");
 
     // displacedJetMuonTree->Branch("nMatchedSimHits",nMatchedSimHits,"nMatchedSimHits[nCscRecHits]/I");
-    displacedJetMuonTree->Branch("cscRechitsChannels",cscRechitsChannels,"cscRechitsChannels[ncscRechits]/I");
     displacedJetMuonTree->Branch("cscRechitsNStrips",cscRechitsNStrips,"cscRechitsNStrips[ncscRechits]/i");
+    displacedJetMuonTree->Branch("cscRechitsChannels",cscRechitsChannels,"cscRechitsChannels[ncscRechits][5]/I");
     displacedJetMuonTree->Branch("cscRechitsHitWire",cscRechitsHitWire,"cscRechitsHitWire[ncscRechits]/I");
     displacedJetMuonTree->Branch("cscRechitsWGroupsBX",cscRechitsWGroupsBX,"cscRechitsWGroupsBX[ncscRechits]/I");
     displacedJetMuonTree->Branch("cscRechitsNWireGroups",cscRechitsNWireGroups,"cscRechitsNWireGroups[ncscRechits]/i");
@@ -1681,6 +1683,7 @@ void displacedJetMuon_ntupler::resetMuonSystemBranches()
   nCscWireDigis = 0;
   nCscStripDigis = 0;
   for ( int i = 0; i < CSCDIGIARRAYSIZE; i++) {
+    cscStripDigiDetID[i] = 0;
     cscStripDigiDetIDEndcap[i] = 0;
     cscStripDigiDetIDStation[i] = 0;
     cscStripDigiDetIDRing[i] = 0;
@@ -1695,6 +1698,7 @@ void displacedJetMuon_ntupler::resetMuonSystemBranches()
     for ( int j=0; j < 8; j++) {
       cscStripDigiADC[i][j] = 0;
     }
+    cscWireDigiDetID[i] = 0;
     cscWireDigiDetIDEndcap[i] = 0;
     cscWireDigiDetIDStation[i] = 0;
     cscWireDigiDetIDRing[i] = 0;
@@ -1705,7 +1709,7 @@ void displacedJetMuon_ntupler::resetMuonSystemBranches()
     cscWireDigiBXandWireGroup[i] = 0;
     cscWireDigiTimeBin[i] = 0;
     cscWireDigiTimeBinsOnSize[i] = 0;
-    for ( int j=0; j < 10; j++) {  
+    for ( int j=0; j < 5; j++) {  
       cscWireDigiTimeBinsOn[i][j] = 0;
     }
   }
@@ -1722,7 +1726,9 @@ void displacedJetMuon_ntupler::resetMuonSystemBranches()
     cscRechitsTwire[i] = 0.0;
     cscRechitsTpeak[i] = 0.0;
     cscRechitsQuality[i] = 0.0;
-    cscRechitsChannels[i] = 0;
+    for (int s=0; s<5; s++) {
+      cscRechitsChannels[i][s] = 0;
+    }
     cscRechitsNStrips[i] = 0;
     cscRechitsHitWire[i] = 0;
     cscRechitsWGroupsBX[i] = 0;
@@ -2682,7 +2688,7 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
          
       for (stripDetIt = MuonCSCStripDigi->begin(); stripDetIt != MuonCSCStripDigi->end(); stripDetIt++){
       const CSCDetId &id = (*stripDetIt).first;
-      // int tempDetId = CSCDetId::rawIdMaker(CSCDetId::endcap(id), CSCDetId::station(id), CSCDetId::ring(id), CSCDetId::chamber(id), CSCDetId::layer(id));
+      int tempDetId = CSCDetId::rawIdMaker(CSCDetId::endcap(id), CSCDetId::station(id), CSCDetId::ring(id), CSCDetId::chamber(id), CSCDetId::layer(id));
 
       CSCDetId tempID(id.endcap(),id.station(),id.ring(),id.chamber(),id.layer()); 
 	 
@@ -2697,7 +2703,7 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
 	//      << tempID
 	//      << " | "
 	//      << " Digi " << stripDigiIndex << " | Strip " << digiIt->getStrip() << "\n";
-
+	cscStripDigiDetID[stripDigiIndex] = tempDetId;
 	cscStripDigiDetIDEndcap[stripDigiIndex] = id.endcap();
 	cscStripDigiDetIDStation[stripDigiIndex] = id.station();
 	cscStripDigiDetIDRing[stripDigiIndex] = id.ring();
@@ -2756,6 +2762,7 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
     CSCWireDigiCollection::DigiRangeIterator wireDetIt;
     for (wireDetIt = MuonCSCWireDigi->begin(); wireDetIt != MuonCSCWireDigi->end(); wireDetIt++){
       const CSCDetId &id = (*wireDetIt).first;
+      int tempDetId = CSCDetId::rawIdMaker(CSCDetId::endcap(id), CSCDetId::station(id), CSCDetId::ring(id), CSCDetId::chamber(id), CSCDetId::layer(id));
       const CSCWireDigiCollection::Range &range = (*wireDetIt).second;
       for (CSCWireDigiCollection::const_iterator digiIt = range.first; digiIt != range.second; ++digiIt) {
 
@@ -2776,6 +2783,7 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
 	// cout << " | "
 	//      << "\n";
 
+	cscWireDigiDetID[wireDigiIndex] = tempDetId;
 	cscWireDigiDetIDEndcap[wireDigiIndex] = id.endcap();
 	cscWireDigiDetIDStation[wireDigiIndex] = id.station();
 	cscWireDigiDetIDRing[wireDigiIndex] = id.ring();
@@ -2787,6 +2795,7 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
 	cscWireDigiTimeBin[wireDigiIndex] = digiIt->getTimeBin();
 	cscWireDigiTimeBinsOnSize[wireDigiIndex] = tbins.size();
 	for (uint q =0; q < tbins.size(); q++) {
+	  if (q>=5) continue; //protect against array overflow
 	  cscWireDigiTimeBinsOn[wireDigiIndex][q] = tbins[q];
 	}
 	
@@ -3031,12 +3040,22 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
 	  // cscRechitsRing[ncscRechits] = CSCDetId::ring(cscdetid);
 
 	  cscRechitsStation[ncscRechits] = endcap *CSCDetId::station(cscdetid);
-	  // cscRechitsChannels[ncscRechits] = cscRechit.channels();
 	  cscRechitsNStrips[ncscRechits] = cscRechit.nStrips();
+	  for (uint s=0; s<cscRechit.nStrips(); s++) {
+	    if (s >= 5) continue; //protect against array overflow
+	    cscRechitsChannels[ncscRechits][s] = cscRechit.channels(s);
+	  }
 	  cscRechitsHitWire[ncscRechits] = cscRechit.hitWire();
 	  cscRechitsWGroupsBX[ncscRechits] = cscRechit.wgroupsBX();
 	  cscRechitsNWireGroups[ncscRechits] = cscRechit.nWireGroups();
 
+	  // cout << "CSC Rechit " << ncscRechits << " : " << cscRechitsEta[ncscRechits]  << " " << cscRechitsPhi[ncscRechits] << " | "  << cscRechit.energyDepositedInLayer() << " | "
+	  //      << cscRechit.nStrips() << ": ";
+	  // for (uint s = 0; s < cscRechit.nStrips(); s++) cout << cscRechit.channels(s) << ", ";
+	  // cout << " | ";
+	  // cout << " \n";
+	  
+	  
 	  Point p;
 	  p.phi = cscRechitsPhi[ncscRechits];
 	  p.eta = cscRechitsEta[ncscRechits];

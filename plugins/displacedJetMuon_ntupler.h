@@ -912,6 +912,7 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
   //Muon system
   int nCscWireDigis;
   int nCscStripDigis;
+  int cscStripDigiDetID[CSCDIGIARRAYSIZE];
   int cscStripDigiDetIDEndcap[CSCDIGIARRAYSIZE];
   int cscStripDigiDetIDStation[CSCDIGIARRAYSIZE];
   int cscStripDigiDetIDRing[CSCDIGIARRAYSIZE];
@@ -924,6 +925,7 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
   float cscStripDigiLayerEta[CSCDIGIARRAYSIZE];
   float cscStripDigiLayerPhi[CSCDIGIARRAYSIZE];
   int cscStripDigiADC[CSCDIGIARRAYSIZE][8];
+  int cscWireDigiDetID[CSCDIGIARRAYSIZE];
   int cscWireDigiDetIDEndcap[CSCDIGIARRAYSIZE];
   int cscWireDigiDetIDStation[CSCDIGIARRAYSIZE];
   int cscWireDigiDetIDRing[CSCDIGIARRAYSIZE];
@@ -934,7 +936,7 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
   int cscWireDigiBXandWireGroup[CSCDIGIARRAYSIZE];
   int cscWireDigiTimeBin[CSCDIGIARRAYSIZE];
   int cscWireDigiTimeBinsOnSize[CSCDIGIARRAYSIZE];
-  int cscWireDigiTimeBinsOn[CSCDIGIARRAYSIZE][10];
+  int cscWireDigiTimeBinsOn[CSCDIGIARRAYSIZE][5];
 
 
   
@@ -1028,7 +1030,7 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
   float cscRechitsTpeak[CSCRECHITARRAYSIZE];
   float cscRechitsTwire[CSCRECHITARRAYSIZE];
   int   cscRechitsQuality[CSCRECHITARRAYSIZE];
-  int   cscRechitsChannels[CSCRECHITARRAYSIZE];
+  int   cscRechitsChannels[CSCRECHITARRAYSIZE][5];
   int   cscRechitsNStrips[CSCRECHITARRAYSIZE];
   int   cscRechitsHitWire[CSCRECHITARRAYSIZE];
   int   cscRechitsWGroupsBX[CSCRECHITARRAYSIZE];
