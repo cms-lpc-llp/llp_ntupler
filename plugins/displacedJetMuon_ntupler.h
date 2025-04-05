@@ -170,6 +170,7 @@ using namespace std;
 
 //------ Array Size Constants ------//
 #define OBJECTARRAYSIZE 5000
+#define CSCDIGIARRAYSIZE 20000
 #define CSCRECHITARRAYSIZE 1000000
 #define RECHITARRAYSIZE 20000
 #define HORECHITARRAYSIZE 2000
@@ -911,6 +912,32 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
   //Muon system
   int nCscWireDigis;
   int nCscStripDigis;
+  int cscStripDigiDetIDEndcap[CSCDIGIARRAYSIZE];
+  int cscStripDigiDetIDStation[CSCDIGIARRAYSIZE];
+  int cscStripDigiDetIDRing[CSCDIGIARRAYSIZE];
+  int cscStripDigiDetIDChamber[CSCDIGIARRAYSIZE];
+  int cscStripDigiDetIDLayer[CSCDIGIARRAYSIZE];
+  uint cscStripDigiStripNumber[CSCDIGIARRAYSIZE];
+  float cscStripDigiLayerX[CSCDIGIARRAYSIZE];
+  float cscStripDigiLayerY[CSCDIGIARRAYSIZE];
+  float cscStripDigiLayerZ[CSCDIGIARRAYSIZE];
+  float cscStripDigiLayerEta[CSCDIGIARRAYSIZE];
+  float cscStripDigiLayerPhi[CSCDIGIARRAYSIZE];
+  int cscStripDigiADC[CSCDIGIARRAYSIZE][8];
+  int cscWireDigiDetIDEndcap[CSCDIGIARRAYSIZE];
+  int cscWireDigiDetIDStation[CSCDIGIARRAYSIZE];
+  int cscWireDigiDetIDRing[CSCDIGIARRAYSIZE];
+  int cscWireDigiDetIDChamber[CSCDIGIARRAYSIZE];
+  int cscWireDigiDetIDLayer[CSCDIGIARRAYSIZE];
+  int cscWireDigiWireGroup[CSCDIGIARRAYSIZE];
+  int cscWireDigiWireGroupBX[CSCDIGIARRAYSIZE];
+  int cscWireDigiBXandWireGroup[CSCDIGIARRAYSIZE];
+  int cscWireDigiTimeBin[CSCDIGIARRAYSIZE];
+  int cscWireDigiTimeBinsOnSize[CSCDIGIARRAYSIZE];
+  int cscWireDigiTimeBinsOn[CSCDIGIARRAYSIZE][10];
+
+
+  
   int nCscSeg;
   float cscSegPhi[CSCRECHITARRAYSIZE];
   float cscSegEta[CSCRECHITARRAYSIZE];
