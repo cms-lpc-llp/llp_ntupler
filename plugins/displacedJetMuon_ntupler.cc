@@ -551,11 +551,6 @@ void displacedJetMuon_ntupler::enableMuonSystemBranches()
    displacedJetMuonTree->Branch("cscStripEndZ", &cscStripEndZ,"cscStripEndZ[nCscStripDigis]/F");
    displacedJetMuonTree->Branch("cscStripLength", &cscStripLength,"cscStripLength[nCscStripDigis]/F");
     
-    
-    
-    
-    
-    
     displacedJetMuonTree->Branch("cscWireDigiDetID", &cscWireDigiDetID,"cscWireDigiDetID[nCscWireDigis]/I");
     displacedJetMuonTree->Branch("cscWireDigiDetIDEndcap", &cscWireDigiDetIDEndcap,"cscWireDigiDetIDEndcap[nCscWireDigis]/I");
     displacedJetMuonTree->Branch("cscWireDigiDetIDStation", &cscWireDigiDetIDStation,"cscWireDigiDetIDStation[nCscWireDigis]/I");
@@ -565,6 +560,18 @@ void displacedJetMuon_ntupler::enableMuonSystemBranches()
     displacedJetMuonTree->Branch("cscWireDigiWireGroup", &cscWireDigiWireGroup,"cscWireDigiWireGroup[nCscWireDigis]/I");
     displacedJetMuonTree->Branch("cscWireDigiWireGroupBX", &cscWireDigiWireGroupBX,"cscWireDigiWireGroupBX[nCscWireDigis]/I");
     displacedJetMuonTree->Branch("cscWireDigiBXandWireGroup", &cscWireDigiBXandWireGroup,"cscWireDigiBXandWireGroup[nCscWireDigis]/I");
+    
+    displacedJetMuonTree->Branch("cscWireDigiCenterX", &cscWireDigiCenterX,"cscWireDigiCenterX[nCscWireDigis]/F");
+    displacedJetMuonTree->Branch("cscWireDigiCenterY", &cscWireDigiCenterY,"cscWireDigiCenterY[nCscWireDigis]/F");
+    displacedJetMuonTree->Branch("cscWireDigiCenterZ", &cscWireDigiCenterZ,"cscWireDigiCenterZ[nCscWireDigis]/F");
+    displacedJetMuonTree->Branch("cscWireDigiStartX", &cscWireDigiStartX,"cscWireDigiStartX[nCscWireDigis]/F");
+    displacedJetMuonTree->Branch("cscWireDigiStartY", &cscWireDigiStartY,"cscWireDigiStartY[nCscWireDigis]/F");
+    displacedJetMuonTree->Branch("cscWireDigiStartZ", &cscWireDigiStartZ,"cscWireDigiStartZ[nCscWireDigis]/F");
+    displacedJetMuonTree->Branch("cscWireDigiEndX", &cscWireDigiEndX,"cscWireDigiEndX[nCscWireDigis]/F");
+    displacedJetMuonTree->Branch("cscWireDigiEndY", &cscWireDigiEndY,"cscWireDigiEndY[nCscWireDigis]/F");
+    displacedJetMuonTree->Branch("cscWireDigiEndZ", &cscWireDigiEndZ,"cscWireDigiEndZ[nCscWireDigis]/F");
+    displacedJetMuonTree->Branch("cscWireDigiLength", &cscWireDigiLength,"cscWireDigiLength[nCscWireDigis]/F");
+   
     displacedJetMuonTree->Branch("cscWireDigiTimeBin", &cscWireDigiTimeBin,"cscWireDigiTimeBin[nCscWireDigis]/I");
     displacedJetMuonTree->Branch("cscWireDigiTimeBinsOnSize", &cscWireDigiTimeBinsOnSize,"cscWireDigiTimeBinsOnSize[nCscWireDigis]/I");
     displacedJetMuonTree->Branch("cscWireDigiTimeBinsOn", &cscWireDigiTimeBinsOn,"cscWireDigiTimeBinsOn[nCscWireDigis][5]/I");
@@ -1736,6 +1743,18 @@ void displacedJetMuon_ntupler::resetMuonSystemBranches()
     cscWireDigiWireGroup[i] = 0;
     cscWireDigiWireGroupBX[i] = 0;
     cscWireDigiBXandWireGroup[i] = 0;
+      
+    cscWireDigiCenterX[i] = 0;
+    cscWireDigiCenterY[i] = 0;
+    cscWireDigiCenterZ[i] = 0;
+    cscWireDigiStartX[i] = 0;
+    cscWireDigiStartY[i] = 0;
+    cscWireDigiStartZ[i] = 0;
+    cscWireDigiEndX[i] = 0;
+    cscWireDigiEndY[i] = 0;
+    cscWireDigiEndZ[i] = 0;
+    cscWireDigiLength[i] = 0;
+      
     cscWireDigiTimeBin[i] = 0;
     cscWireDigiTimeBinsOnSize[i] = 0;
     for ( int j=0; j < 5; j++) {  
@@ -2683,6 +2702,13 @@ bool displacedJetMuon_ntupler::fillEventInfo(const edm::Event& iEvent)
   return true;
 };
 
+
+float TrapezoidalWidthAtY(float y, float halfLength, float hbotedge, float htopedge) {
+    float slope = (htopedge - hbotedge) / (2.0f * halfLength);
+    return 2.0f * (hbotedge + slope * (y + halfLength));  // full width at y
+}
+
+
 bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   // edm::ESHandle<CSCGeometry> cscG;
@@ -2721,16 +2747,16 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
 	 
       const CSCStripDigiCollection::Range &range = (*stripDetIt).second;
       for (CSCStripDigiCollection::const_iterator digiIt = range.first; digiIt != range.second; ++digiIt) {
-    cout << "-----------------------------------------------------------------" << endl;
+//     cout << "-----------------------------------------------------------------" << endl;
 // 	cout << "CSC Strip "
 // 	     << id
 // 	     // << id.endcap() << ":" << id.station() << ":" << id.ring() << ":" << id.chamber() << ":" << id.layer()	  
 // 	     << " | "
 // 	     << " StripDigi " << stripDigiIndex << " | Strip " << digiIt->getStrip() << "\n";
-	cout << "CSC Strip "
-	     << tempID
-	     << " | "
-	     << " Digi " << stripDigiIndex << " | Strip " << digiIt->getStrip() << "\n";
+// 	cout << "CSC Strip "
+// 	     << tempID
+// 	     << " | "
+// 	     << " Digi " << stripDigiIndex << " | Strip " << digiIt->getStrip() << "\n";
           
           
 	cscStripDigiDetID[stripDigiIndex] = tempDetId;
@@ -2751,7 +2777,7 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
     if (layer) {
         GlobalPoint globalPosition = layer->centerOfStrip(stripNum);
 
-        cout << "Global Position of strip center: " << globalPosition.x() << " " << globalPosition.y() << " " << globalPosition.z() << " | " << globalPosition.phi() << " " << globalPosition.eta() << "\n";
+//         cout << "Global Position of strip center: " << globalPosition.x() << " " << globalPosition.y() << " " << globalPosition.z() << " | " << globalPosition.phi() << " " << globalPosition.eta() << "\n";
 
         cscStripDigiLayerX[stripDigiIndex] = globalPosition.x();
         cscStripDigiLayerY[stripDigiIndex] = globalPosition.y();
@@ -2786,9 +2812,9 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
             cscStripEndZ[stripDigiIndex]   = stripEnd.z();
             cscStripLength[stripDigiIndex] = stripLength;
 
-            std::cout << "  Start: (" << stripStart.x() << ", " << stripStart.y() << ", " << stripStart.z() << ")" << std::endl;
-            std::cout << "  End  : (" << stripEnd.x()   << ", " << stripEnd.y()   << ", " << stripEnd.z()   << ")" << std::endl;
-            std::cout << "  Length: " << stripLength << " cm" << std::endl;
+//             std::cout << "  Start: (" << stripStart.x() << ", " << stripStart.y() << ", " << stripStart.z() << ")" << std::endl;
+//             std::cout << "  End  : (" << stripEnd.x()   << ", " << stripEnd.y()   << ", " << stripEnd.z()   << ")" << std::endl;
+//             std::cout << "  Length: " << stripLength << " cm" << std::endl;
             
 //             std::cout << "Strip direction: (" << stripDir.x()
 //           << ", " << stripDir.y()
@@ -2796,11 +2822,7 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
         }
     } 
 
-          
-
-
-
-          
+  
 		 
         //ADC count is 8 time stamps
         std::vector<int> myADCVals = digiIt->getADCCounts();
@@ -2847,25 +2869,90 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
     for (wireDetIt = MuonCSCWireDigi->begin(); wireDetIt != MuonCSCWireDigi->end(); wireDetIt++){
       const CSCDetId &id = (*wireDetIt).first;
       int tempDetId = CSCDetId::rawIdMaker(CSCDetId::endcap(id), CSCDetId::station(id), CSCDetId::ring(id), CSCDetId::chamber(id), CSCDetId::layer(id));
+        
+        
+      CSCDetId tempID(id.endcap(),id.station(),id.ring(),id.chamber(),id.layer()); 
+        
       const CSCWireDigiCollection::Range &range = (*wireDetIt).second;
       for (CSCWireDigiCollection::const_iterator digiIt = range.first; digiIt != range.second; ++digiIt) {
 
+         
+
+     
 	std::vector<int> tbins = digiIt->getTimeBinsOn();
-	// cout << "CSC Wires "
-	//      << id
-	//      << " | "
-	//      << " WireDigi " << wireDigiIndex << " | Wire " << digiIt->getWireGroup()
-	//      << " | "
-	//      << digiIt->getWireGroupBX() << " "
-	//      << digiIt->getBXandWireGroup() << " "
-	//      << " | "
-	//      << digiIt->getTimeBin()
-	//      << " | ";
-	// for (uint q =0; q < tbins.size(); q++) {
-	//   cout << tbins[q] << " ";
-	// }
-	// cout << " | "
-	//      << "\n";
+//     cout << "-----------------------------------------------------------------" << endl;
+// 	cout << "CSC Wires "
+// 	     << id
+// 	     << " | "
+// 	     << " WireDigi " << wireDigiIndex << " | Wire " << digiIt->getWireGroup()
+// 	     << " | "
+// 	     << digiIt->getWireGroupBX() << " "
+// 	     << digiIt->getBXandWireGroup() << " "
+// 	     << " | "
+// 	     << digiIt->getTimeBin()
+// 	     << " | ";
+// 	for (uint q =0; q < tbins.size(); q++) {
+// 	  cout << tbins[q] << " ";
+// 	}
+// 	cout << " | "
+// 	     << "\n";
+          
+    const CSCLayer* layer = cscG.layer(tempID); 
+    const TrapezoidalPlaneBounds* bounds = dynamic_cast<const TrapezoidalPlaneBounds*>(&layer->surface().bounds());
+   
+    if (!bounds) {
+        edm::LogError("CSC") << "Bounds cast failed for wire geometry!";
+        return false;
+    }
+
+    float halfLength = 0.5*(bounds->length());
+    float hbotedge = bounds->widthAtHalfLength() / 2.0f - (bounds->width() / 2.0f - bounds->widthAtHalfLength() / 2.0f);  // approximation
+    float htopedge = bounds->width() / 2.0f;
+
+    // You may hardcode better values if you want to avoid this math
+          
+    GlobalPoint wireCenter = layer->centerOfWireGroup(digiIt->getWireGroup());
+    LocalPoint centerLocal = layer->toLocal(wireCenter);
+    float y = centerLocal.y();
+
+    float fullWidthAtY = TrapezoidalWidthAtY(y, halfLength, hbotedge, htopedge);
+    float halfWidth = 0.5f * fullWidthAtY;
+   
+
+    // Local endpoints of the wire (wire runs along local x)
+    LocalPoint localStart(centerLocal.x() - halfWidth, centerLocal.y(), centerLocal.z());
+    LocalPoint localEnd   (centerLocal.x() + halfWidth, centerLocal.y(), centerLocal.z());
+
+    // Convert to global coordinates
+    GlobalPoint wireStart = layer->toGlobal(localStart);
+    GlobalPoint wireEnd   = layer->toGlobal(localEnd);
+
+    // Optional: wire length and direction
+    double wireLength = (wireEnd - wireStart).mag();
+//     GlobalVector wireDir = (wireEnd - wireStart).unit();
+
+    // ✅ Print everything
+//     std::cout << "Wire Group #" << digiIt->getWireGroup() << std::endl;
+//     std::cout << "  Center : (x=" << wireCenter.x()
+//               << ", y=" << wireCenter.y()
+//               << ", z=" << wireCenter.z() << ")" << std::endl;
+
+//     std::cout << "  Start  : (x=" << wireStart.x()
+//               << ", y=" << wireStart.y()
+//               << ", z=" << wireStart.z() << ")" << std::endl;
+
+//     std::cout << "  End    : (x=" << wireEnd.x()
+//               << ", y=" << wireEnd.y()
+//               << ", z=" << wireEnd.z() << ")" << std::endl;
+
+//     std::cout << "  Length : " << wireLength << " cm" << std::endl;
+
+//     std::cout << "  Direction (unit): ("
+//               << wireDir.x() << ", "
+//               << wireDir.y() << ", "
+//               << wireDir.z() << ")" << std::endl;
+
+
 
 	cscWireDigiDetID[wireDigiIndex] = tempDetId;
 	cscWireDigiDetIDEndcap[wireDigiIndex] = id.endcap();
@@ -2876,6 +2963,18 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
 	cscWireDigiWireGroup[wireDigiIndex] = digiIt->getWireGroup();
 	cscWireDigiWireGroupBX[wireDigiIndex] = digiIt->getWireGroupBX();
 	cscWireDigiBXandWireGroup[wireDigiIndex] = digiIt->getBXandWireGroup();
+          
+    cscWireDigiCenterX[wireDigiIndex]  = wireCenter.x();
+    cscWireDigiCenterY[wireDigiIndex]  = wireCenter.y();
+    cscWireDigiCenterZ[wireDigiIndex]  = wireCenter.z();
+    cscWireDigiStartX[wireDigiIndex]   = wireStart.x();
+    cscWireDigiStartY[wireDigiIndex]   = wireStart.y();
+    cscWireDigiStartZ[wireDigiIndex]   = wireStart.z();
+    cscWireDigiEndX[wireDigiIndex]     = wireEnd.x();
+    cscWireDigiEndY[wireDigiIndex]     = wireEnd.y();
+    cscWireDigiEndZ[wireDigiIndex]     = wireEnd.z();
+    cscWireDigiLength[wireDigiIndex]   = wireLength;
+      
 	cscWireDigiTimeBin[wireDigiIndex] = digiIt->getTimeBin();
 	cscWireDigiTimeBinsOnSize[wireDigiIndex] = tbins.size();
 	for (uint q =0; q < tbins.size(); q++) {
@@ -2888,161 +2987,6 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
     }
     nCscWireDigis = wireDigiIndex;
   }
-
-
-// bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const edm::EventSetup& iSetup)
-// {
-//   // edm::ESHandle<CSCGeometry> cscG;
-//   // edm::ESHandle<DTGeometry> dtG;
-//   // edm::ESHandle<RPCGeometry> rpcG;
-//   // iSetup.get<MuonGeometryRecord>().get(cscG);
-//   // iSetup.get<MuonGeometryRecord>().get(dtG);
-//   // iSetup.get<MuonGeometryRecord>().get(rpcG);
-
-//   auto const& cscG = iSetup.getData(cscGeometryToken_);
-//   auto const& dtG = iSetup.getData(dtGeometryToken_);
-//   auto const& rpcG = iSetup.getData(rpcGeometryToken_);
-
-//   // edm::ESHandle<CaloGeometry> geoHandle;
-//   // iSetup.get<CaloGeometryRecord>().get(geoHandle);
-//   // const CaloSubdetectorGeometry *barrelGeometry = geoHandle->getSubdetectorGeometry(DetId::Ecal, EcalBarrel);
-//   // const CaloSubdetectorGeometry *endcapGeometry = geoHandle->getSubdetectorGeometry(DetId::Ecal, EcalEndcap);
-//   // const CaloSubdetectorGeometry *hbGeometry = geoHandle->getSubdetectorGeometry(DetId::Hcal, HcalBarrel);
-//   // const CaloSubdetectorGeometry *heGeometry = geoHandle->getSubdetectorGeometry(DetId::Hcal, HcalEndcap);
-
-//   //*****************
-//   //** DIGIS
-//   //*****************
-//   if (readMuonDigis_) {    
-//     int stripDigiIndex = 0;
-//     nCscStripDigis = 0;
-//     int nCscStripDigisFired = 0;
-    
-//     CSCStripDigiCollection::DigiRangeIterator stripDetIt;
-         
-//       for (stripDetIt = MuonCSCStripDigi->begin(); stripDetIt != MuonCSCStripDigi->end(); stripDetIt++){
-//       const CSCDetId &id = (*stripDetIt).first;
-//       int tempDetId = CSCDetId::rawIdMaker(CSCDetId::endcap(id), CSCDetId::station(id), CSCDetId::ring(id), CSCDetId::chamber(id), CSCDetId::layer(id));
-
-//       CSCDetId tempID(id.endcap(),id.station(),id.ring(),id.chamber(),id.layer()); 
-	 
-//       const CSCStripDigiCollection::Range &range = (*stripDetIt).second;
-//       for (CSCStripDigiCollection::const_iterator digiIt = range.first; digiIt != range.second; ++digiIt) {
-// 	// cout << "CSC Strip "
-// 	//      << id
-// 	//      // << id.endcap() << ":" << id.station() << ":" << id.ring() << ":" << id.chamber() << ":" << id.layer()	  
-// 	//      << " | "
-// 	//      << " StripDigi " << stripDigiIndex << " | Strip " << digiIt->getStrip() << "\n";
-// 	// cout << "CSC Strip "
-// 	//      << tempID
-// 	//      << " | "
-// 	//      << " Digi " << stripDigiIndex << " | Strip " << digiIt->getStrip() << "\n";
-// 	cscStripDigiDetID[stripDigiIndex] = tempDetId;
-// 	cscStripDigiDetIDEndcap[stripDigiIndex] = id.endcap();
-// 	cscStripDigiDetIDStation[stripDigiIndex] = id.station();
-// 	cscStripDigiDetIDRing[stripDigiIndex] = id.ring();
-// 	cscStripDigiDetIDChamber[stripDigiIndex] = id.chamber();
-// 	cscStripDigiDetIDLayer[stripDigiIndex] = id.layer();
-// 	cscStripDigiStripNumber[stripDigiIndex] = digiIt->getStrip();
-		
-// 	LocalPoint lp0(0., 0.); //SX: seems like the local point units are in centimeters
-// 	LocalPoint lp1(0., 1.);
-// 	LocalPoint lp2(0., 2.);
-// 	const CSCChamber* cscchamber = cscG.chamber(tempID);       
-// 	if (cscchamber) {
-// 	  GlobalPoint globalPosition = cscchamber->toGlobal(lp0);
-
-// 	  //cout << "Global Position: " << globalPosition.x() << " " << globalPosition.y() << " " << globalPosition.z() << " | " << globalPosition.phi() << " " << globalPosition.eta() << "\n";
-// 	  cscStripDigiLayerX[stripDigiIndex] = globalPosition.x();
-// 	  cscStripDigiLayerY[stripDigiIndex] = globalPosition.y();
-// 	  cscStripDigiLayerZ[stripDigiIndex] = globalPosition.z();
-// 	  cscStripDigiLayerEta[stripDigiIndex] = globalPosition.eta();
-// 	  cscStripDigiLayerPhi[stripDigiIndex] = globalPosition.phi();
-// 	}
-		 
-//         //ADC count is 8 time stamps
-//         std::vector<int> myADCVals = digiIt->getADCCounts();
-// 	bool thisStripFired = false;
-// 	float thisPedestal = 0.5 * (float)(myADCVals[0] + myADCVals[1]);
-// 	float threshold = STRIP_DIGI_THRESHOLD;
-// 	float diff = 0.;
-	
-// 	for (unsigned int iCount = 0; iCount < myADCVals.size(); iCount++) {
-// 	  if (iCount >= 8) { //protect against array overflow
-// 	    cout << "Error: More than 8 time samples in CSC strip digi ADC array. Stopping now!\n";
-// 	    assert(0);
-// 	  }	  
-// 	  cscStripDigiADC[stripDigiIndex][iCount] = myADCVals[iCount];
-// 	  diff = (float)myADCVals[iCount] - thisPedestal;
-// 	  //cout << "Digi Sample " << iCount << " : " << (float)myADCVals[iCount] << " - " << thisPedestal << " = " << diff << " | " << threshold << "\n";
-// 	  if (diff > threshold) {
-// 	    thisStripFired = true;
-// 	  }
-// 	}
-// 	if (thisStripFired) nCscStripDigisFired++;
-// 	stripDigiIndex++;
-	
-// 	if (stripDigiIndex >= CSCDIGIARRAYSIZE) { //protect against array overflow
-// 	  cout << "Error: stripDigiIndex larger than CSCDIGIARRAYSIZE. Stopping now!\n";
-// 	  assert(0);
-// 	}
-//       }
-//     }
-//     nCscStripDigis = stripDigiIndex;
-//     //cout << "NStripDigis: " << stripDigiIndex << "\n";
-    
-//     int wireDigiIndex = 0;
-//     nCscWireDigis = 0;
-//     CSCWireDigiCollection::DigiRangeIterator wireDetIt;
-//     for (wireDetIt = MuonCSCWireDigi->begin(); wireDetIt != MuonCSCWireDigi->end(); wireDetIt++){
-//       const CSCDetId &id = (*wireDetIt).first;
-//       int tempDetId = CSCDetId::rawIdMaker(CSCDetId::endcap(id), CSCDetId::station(id), CSCDetId::ring(id), CSCDetId::chamber(id), CSCDetId::layer(id));
-//       const CSCWireDigiCollection::Range &range = (*wireDetIt).second;
-//       for (CSCWireDigiCollection::const_iterator digiIt = range.first; digiIt != range.second; ++digiIt) {
-
-// 	std::vector<int> tbins = digiIt->getTimeBinsOn();
-// 	// cout << "CSC Wires "
-// 	//      << id
-// 	//      << " | "
-// 	//      << " WireDigi " << wireDigiIndex << " | Wire " << digiIt->getWireGroup()
-// 	//      << " | "
-// 	//      << digiIt->getWireGroupBX() << " "
-// 	//      << digiIt->getBXandWireGroup() << " "
-// 	//      << " | "
-// 	//      << digiIt->getTimeBin()
-// 	//      << " | ";
-// 	// for (uint q =0; q < tbins.size(); q++) {
-// 	//   cout << tbins[q] << " ";
-// 	// }
-// 	// cout << " | "
-// 	//      << "\n";
-
-// 	cscWireDigiDetID[wireDigiIndex] = tempDetId;
-// 	cscWireDigiDetIDEndcap[wireDigiIndex] = id.endcap();
-// 	cscWireDigiDetIDStation[wireDigiIndex] = id.station();
-// 	cscWireDigiDetIDRing[wireDigiIndex] = id.ring();
-// 	cscWireDigiDetIDChamber[wireDigiIndex] = id.chamber();
-// 	cscWireDigiDetIDLayer[wireDigiIndex] = id.layer();
-// 	cscWireDigiWireGroup[wireDigiIndex] = digiIt->getWireGroup();
-// 	cscWireDigiWireGroupBX[wireDigiIndex] = digiIt->getWireGroupBX();
-// 	cscWireDigiBXandWireGroup[wireDigiIndex] = digiIt->getBXandWireGroup();
-// 	cscWireDigiTimeBin[wireDigiIndex] = digiIt->getTimeBin();
-// 	cscWireDigiTimeBinsOnSize[wireDigiIndex] = tbins.size();
-// 	for (uint q =0; q < tbins.size(); q++) {
-// 	  if (q>=5) continue; //protect against array overflow
-// 	  cscWireDigiTimeBinsOn[wireDigiIndex][q] = tbins[q];
-// 	}
-	
-//         wireDigiIndex++;
-//       }      
-//     }
-//     nCscWireDigis = wireDigiIndex;
-//   }
-
-
-
-
-
 
 
   //*****************

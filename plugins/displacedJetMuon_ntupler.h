@@ -944,6 +944,18 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
   int cscWireDigiWireGroup[CSCDIGIARRAYSIZE];
   int cscWireDigiWireGroupBX[CSCDIGIARRAYSIZE];
   int cscWireDigiBXandWireGroup[CSCDIGIARRAYSIZE];
+    
+  float cscWireDigiCenterX[CSCDIGIARRAYSIZE];
+  float cscWireDigiCenterY[CSCDIGIARRAYSIZE];
+  float cscWireDigiCenterZ[CSCDIGIARRAYSIZE];
+  float cscWireDigiStartX[CSCDIGIARRAYSIZE];
+  float cscWireDigiStartY[CSCDIGIARRAYSIZE];
+  float cscWireDigiStartZ[CSCDIGIARRAYSIZE];
+  float cscWireDigiEndX[CSCDIGIARRAYSIZE];
+  float cscWireDigiEndY[CSCDIGIARRAYSIZE];
+  float cscWireDigiEndZ[CSCDIGIARRAYSIZE];
+  float cscWireDigiLength[CSCDIGIARRAYSIZE];
+
   int cscWireDigiTimeBin[CSCDIGIARRAYSIZE];
   int cscWireDigiTimeBinsOnSize[CSCDIGIARRAYSIZE];
   int cscWireDigiTimeBinsOn[CSCDIGIARRAYSIZE][5];
