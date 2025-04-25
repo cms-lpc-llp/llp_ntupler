@@ -2708,7 +2708,6 @@ float TrapezoidalWidthAtY(float y, float halfLength, float hbotedge, float htope
     return 2.0f * (hbotedge + slope * (y + halfLength));  // full width at y
 }
 
-
 bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   // edm::ESHandle<CSCGeometry> cscG;
@@ -2897,38 +2896,86 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
 // 	cout << " | "
 // 	     << "\n";
           
-    const CSCLayer* layer = cscG.layer(tempID); 
-    const TrapezoidalPlaneBounds* bounds = dynamic_cast<const TrapezoidalPlaneBounds*>(&layer->surface().bounds());
-   
-    if (!bounds) {
-        edm::LogError("CSC") << "Bounds cast failed for wire geometry!";
-        return false;
-    }
-
-    float halfLength = 0.5*(bounds->length());
-    float hbotedge = bounds->widthAtHalfLength() / 2.0f - (bounds->width() / 2.0f - bounds->widthAtHalfLength() / 2.0f);  // approximation
-    float htopedge = bounds->width() / 2.0f;
-
-    // You may hardcode better values if you want to avoid this math
           
-    GlobalPoint wireCenter = layer->centerOfWireGroup(digiIt->getWireGroup());
-    LocalPoint centerLocal = layer->toLocal(wireCenter);
-    float y = centerLocal.y();
+          
+          
+       
+        const CSCLayer* layer = cscG.layer(tempID);
+        if (!layer) return false;
 
-    float fullWidthAtY = TrapezoidalWidthAtY(y, halfLength, hbotedge, htopedge);
-    float halfWidth = 0.5f * fullWidthAtY;
+    
+        const TrapezoidalPlaneBounds* bounds =
+            dynamic_cast<const TrapezoidalPlaneBounds*>(&layer->surface().bounds());
+        if (!bounds) return false;
+
+        //Get wire center
+        GlobalPoint wireCenter = layer->centerOfWireGroup(digiIt->getWireGroup());
+        LocalPoint centerLocal = layer->toLocal(wireCenter);
+        float y = centerLocal.y();
+
+        //Compute local width at this y
+        float halfLength = 0.5f * (bounds->length());  // half-length of chamber
+        float htopedge = bounds->width() / 2.0f;
+        float hbotedge = bounds->widthAtHalfLength() - htopedge;
+        float fullWidthAtY = TrapezoidalWidthAtY(y, halfLength, hbotedge, htopedge);
+        float halfWireSpan = 0.5f * fullWidthAtY;
+
+        //Use radial/tangential geometry to compute wire direction
+        GlobalPoint chamberCenter = layer->toGlobal(LocalPoint(0, 0, 0));
+        GlobalVector radialDir = (wireCenter - chamberCenter).unit();
+        GlobalVector wireDir(-radialDir.y(), radialDir.x(), 0);  // tangential (2D perp)
+
+        GlobalPoint wireStart = wireCenter - wireDir * halfWireSpan;
+        GlobalPoint wireEnd   = wireCenter + wireDir * halfWireSpan;
+//         GlobalVector wireDirection = (wireEnd - wireStart).unit();
+        double wireLength = (wireEnd - wireStart).mag();
+
+//         std::cout << "Wire Group #" << digiIt->getWireGroup() << std::endl;
+//         std::cout << "  Center : (" << wireCenter.x() << ", " << wireCenter.y() << ", " << wireCenter.z() << ")" << std::endl;
+//         std::cout << "  Start  : (" << wireStart.x() << ", " << wireStart.y() << ", " << wireStart.z() << ")" << std::endl;
+//         std::cout << "  End    : (" << wireEnd.x()   << ", " << wireEnd.y()   << ", " << wireEnd.z()   << ")" << std::endl;
+//         std::cout << "  Length : " << wireLength << " cm" << std::endl;
+//         std::cout << "  Direction (unit): (" << wireDirection.x() << ", "
+//                                              << wireDirection.y() << ", "
+//                                              << wireDirection.z() << ")" << std::endl;  
+
+
+
+          
+          
+          
+//     const CSCLayer* layer = cscG.layer(tempID); 
+//     const TrapezoidalPlaneBounds* bounds = dynamic_cast<const TrapezoidalPlaneBounds*>(&layer->surface().bounds());
+   
+//     if (!bounds) {
+//         edm::LogError("CSC") << "Bounds cast failed for wire geometry!";
+//         return false;
+//     }
+
+//     float halfLength = 0.5*(bounds->length());
+//     float hbotedge = bounds->widthAtHalfLength() / 2.0f - (bounds->width() / 2.0f - bounds->widthAtHalfLength() / 2.0f);  // approximation
+//     float htopedge = bounds->width() / 2.0f;
+
+//     // You may hardcode better values if you want to avoid this math
+          
+//     GlobalPoint wireCenter = layer->centerOfWireGroup(digiIt->getWireGroup());
+//     LocalPoint centerLocal = layer->toLocal(wireCenter);
+//     float y = centerLocal.y();
+
+//     float fullWidthAtY = TrapezoidalWidthAtY(y, halfLength, hbotedge, htopedge);
+//     float halfWidth = 0.5f * fullWidthAtY;
    
 
-    // Local endpoints of the wire (wire runs along local x)
-    LocalPoint localStart(centerLocal.x() - halfWidth, centerLocal.y(), centerLocal.z());
-    LocalPoint localEnd   (centerLocal.x() + halfWidth, centerLocal.y(), centerLocal.z());
+//     // Local endpoints of the wire (wire runs along local x)
+//     LocalPoint localStart(centerLocal.x() - halfWidth, centerLocal.y(), centerLocal.z());
+//     LocalPoint localEnd   (centerLocal.x() + halfWidth, centerLocal.y(), centerLocal.z());
 
-    // Convert to global coordinates
-    GlobalPoint wireStart = layer->toGlobal(localStart);
-    GlobalPoint wireEnd   = layer->toGlobal(localEnd);
+//     // Convert to global coordinates
+//     GlobalPoint wireStart = layer->toGlobal(localStart);
+//     GlobalPoint wireEnd   = layer->toGlobal(localEnd);
 
-    // Optional: wire length and direction
-    double wireLength = (wireEnd - wireStart).mag();
+//     // Optional: wire length and direction
+//     double wireLength = (wireEnd - wireStart).mag();
 //     GlobalVector wireDir = (wireEnd - wireStart).unit();
 
     // ✅ Print everything
