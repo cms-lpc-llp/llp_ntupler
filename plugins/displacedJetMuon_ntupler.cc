@@ -17,6 +17,8 @@
 #include "RecoVertex/VertexTools/interface/VertexDistance3D.h"
 #include "RecoVertex/VertexPrimitives/interface/VertexState.h"
 
+
+
 struct muonCscLayers{
   int id;
   int nSimHits;
@@ -540,6 +542,20 @@ void displacedJetMuon_ntupler::enableMuonSystemBranches()
     displacedJetMuonTree->Branch("cscStripDigiLayerZ", &cscStripDigiLayerZ,"cscStripDigiLayerZ[nCscStripDigis]/F");
     displacedJetMuonTree->Branch("cscStripDigiLayerEta", &cscStripDigiLayerEta,"cscStripDigiLayerEta[nCscStripDigis]/F");
     displacedJetMuonTree->Branch("cscStripDigiLayerPhi", &cscStripDigiLayerPhi,"cscStripDigiLayerPhi[nCscStripDigis]/F");
+ 
+   displacedJetMuonTree->Branch("cscStripStartX", &cscStripStartX,"cscStripStartX[nCscStripDigis]/F");
+   displacedJetMuonTree->Branch("cscStripStartY", &cscStripStartY,"cscStripStartY[nCscStripDigis]/F");
+   displacedJetMuonTree->Branch("cscStripStartZ", &cscStripStartZ,"cscStripStartZ[nCscStripDigis]/F");
+   displacedJetMuonTree->Branch("cscStripEndX", &cscStripEndX,"cscStripEndX[nCscStripDigis]/F");
+   displacedJetMuonTree->Branch("cscStripEndY", &cscStripEndY,"cscStripEndY[nCscStripDigis]/F");
+   displacedJetMuonTree->Branch("cscStripEndZ", &cscStripEndZ,"cscStripEndZ[nCscStripDigis]/F");
+   displacedJetMuonTree->Branch("cscStripLength", &cscStripLength,"cscStripLength[nCscStripDigis]/F");
+    
+    
+    
+    
+    
+    
     displacedJetMuonTree->Branch("cscWireDigiDetID", &cscWireDigiDetID,"cscWireDigiDetID[nCscWireDigis]/I");
     displacedJetMuonTree->Branch("cscWireDigiDetIDEndcap", &cscWireDigiDetIDEndcap,"cscWireDigiDetIDEndcap[nCscWireDigis]/I");
     displacedJetMuonTree->Branch("cscWireDigiDetIDStation", &cscWireDigiDetIDStation,"cscWireDigiDetIDStation[nCscWireDigis]/I");
@@ -1695,6 +1711,19 @@ void displacedJetMuon_ntupler::resetMuonSystemBranches()
     cscStripDigiLayerZ[i] = 0;
     cscStripDigiLayerEta[i] = 0;
     cscStripDigiLayerPhi[i] = 0;
+      
+    cscStripStartX[i] = 0;
+    cscStripStartY[i] = 0;
+    cscStripStartZ[i] = 0;
+    cscStripEndX[i] = 0;
+    cscStripEndY[i] = 0;
+    cscStripEndZ[i] = 0;
+    cscStripLength[i] = 0;
+
+    
+      
+      
+      
     for ( int j=0; j < 8; j++) {
       cscStripDigiADC[i][j] = 0;
     }
@@ -2654,8 +2683,6 @@ bool displacedJetMuon_ntupler::fillEventInfo(const edm::Event& iEvent)
   return true;
 };
 
-
-
 bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   // edm::ESHandle<CSCGeometry> cscG;
@@ -2694,15 +2721,18 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
 	 
       const CSCStripDigiCollection::Range &range = (*stripDetIt).second;
       for (CSCStripDigiCollection::const_iterator digiIt = range.first; digiIt != range.second; ++digiIt) {
-	// cout << "CSC Strip "
-	//      << id
-	//      // << id.endcap() << ":" << id.station() << ":" << id.ring() << ":" << id.chamber() << ":" << id.layer()	  
-	//      << " | "
-	//      << " StripDigi " << stripDigiIndex << " | Strip " << digiIt->getStrip() << "\n";
-	// cout << "CSC Strip "
-	//      << tempID
-	//      << " | "
-	//      << " Digi " << stripDigiIndex << " | Strip " << digiIt->getStrip() << "\n";
+    cout << "-----------------------------------------------------------------" << endl;
+// 	cout << "CSC Strip "
+// 	     << id
+// 	     // << id.endcap() << ":" << id.station() << ":" << id.ring() << ":" << id.chamber() << ":" << id.layer()	  
+// 	     << " | "
+// 	     << " StripDigi " << stripDigiIndex << " | Strip " << digiIt->getStrip() << "\n";
+	cout << "CSC Strip "
+	     << tempID
+	     << " | "
+	     << " Digi " << stripDigiIndex << " | Strip " << digiIt->getStrip() << "\n";
+          
+          
 	cscStripDigiDetID[stripDigiIndex] = tempDetId;
 	cscStripDigiDetIDEndcap[stripDigiIndex] = id.endcap();
 	cscStripDigiDetIDStation[stripDigiIndex] = id.station();
@@ -2711,20 +2741,66 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
 	cscStripDigiDetIDLayer[stripDigiIndex] = id.layer();
 	cscStripDigiStripNumber[stripDigiIndex] = digiIt->getStrip();
 		
-	LocalPoint lp0(0., 0.); //SX: seems like the local point units are in centimeters
-	LocalPoint lp1(0., 1.);
-	LocalPoint lp2(0., 2.);
-	const CSCChamber* cscchamber = cscG.chamber(tempID);       
-	if (cscchamber) {
-	  GlobalPoint globalPosition = cscchamber->toGlobal(lp0);
+// 	LocalPoint lp0(0., 0.); //SX: seems like the local point units are in centimeters
+// 	LocalPoint lp1(0., 1.);
+// 	LocalPoint lp2(0., 2.);
+          
+    int stripNum = digiIt->getStrip();
+    const CSCLayer* layer = cscG.layer(tempID);
 
-	  //cout << "Global Position: " << globalPosition.x() << " " << globalPosition.y() << " " << globalPosition.z() << " | " << globalPosition.phi() << " " << globalPosition.eta() << "\n";
-	  cscStripDigiLayerX[stripDigiIndex] = globalPosition.x();
-	  cscStripDigiLayerY[stripDigiIndex] = globalPosition.y();
-	  cscStripDigiLayerZ[stripDigiIndex] = globalPosition.z();
-	  cscStripDigiLayerEta[stripDigiIndex] = globalPosition.eta();
-	  cscStripDigiLayerPhi[stripDigiIndex] = globalPosition.phi();
-	}
+    if (layer) {
+        GlobalPoint globalPosition = layer->centerOfStrip(stripNum);
+
+        cout << "Global Position of strip center: " << globalPosition.x() << " " << globalPosition.y() << " " << globalPosition.z() << " | " << globalPosition.phi() << " " << globalPosition.eta() << "\n";
+
+        cscStripDigiLayerX[stripDigiIndex] = globalPosition.x();
+        cscStripDigiLayerY[stripDigiIndex] = globalPosition.y();
+        cscStripDigiLayerZ[stripDigiIndex] = globalPosition.z();
+        cscStripDigiLayerEta[stripDigiIndex] = globalPosition.eta();
+        cscStripDigiLayerPhi[stripDigiIndex] = globalPosition.phi();
+        
+        
+        // This was enough for individual strip positions
+        // Below is to get the strip end points!        
+        const TrapezoidalPlaneBounds* bounds =
+            dynamic_cast<const TrapezoidalPlaneBounds*>(&layer->surface().bounds());
+
+        if (bounds) {
+            float halfLength = 0.5 *(bounds->length());
+
+            LocalPoint centerLocal = layer->toLocal(layer->centerOfStrip(stripNum));
+            LocalPoint localStart(centerLocal.x(), -halfLength, centerLocal.z());
+            LocalPoint localEnd(centerLocal.x(), +halfLength, centerLocal.z());
+
+            GlobalPoint stripStart = layer->toGlobal(localStart);
+            GlobalPoint stripEnd   = layer->toGlobal(localEnd);
+
+            double stripLength = (stripEnd - stripStart).mag();
+//             GlobalVector stripDir = (stripEnd - stripStart).unit();
+            
+            cscStripStartX[stripDigiIndex] = stripStart.x();
+            cscStripStartY[stripDigiIndex] = stripStart.y();
+            cscStripStartZ[stripDigiIndex] = stripStart.z();
+            cscStripEndX[stripDigiIndex]   = stripEnd.x();
+            cscStripEndY[stripDigiIndex]   = stripEnd.y();
+            cscStripEndZ[stripDigiIndex]   = stripEnd.z();
+            cscStripLength[stripDigiIndex] = stripLength;
+
+            std::cout << "  Start: (" << stripStart.x() << ", " << stripStart.y() << ", " << stripStart.z() << ")" << std::endl;
+            std::cout << "  End  : (" << stripEnd.x()   << ", " << stripEnd.y()   << ", " << stripEnd.z()   << ")" << std::endl;
+            std::cout << "  Length: " << stripLength << " cm" << std::endl;
+            
+//             std::cout << "Strip direction: (" << stripDir.x()
+//           << ", " << stripDir.y()
+//           << ", " << stripDir.z() << ")" << std::endl;
+        }
+    } 
+
+          
+
+
+
+          
 		 
         //ADC count is 8 time stamps
         std::vector<int> myADCVals = digiIt->getADCCounts();
@@ -2740,7 +2816,7 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
 	  }	  
 	  cscStripDigiADC[stripDigiIndex][iCount] = myADCVals[iCount];
 	  diff = (float)myADCVals[iCount] - thisPedestal;
-	  //cout << "Digi Sample " << iCount << " : " << (float)myADCVals[iCount] << " - " << thisPedestal << " = " << diff << " | " << threshold << "\n";
+// 	  cout << "Digi Sample " << iCount << " : " << (float)myADCVals[iCount] << " - " << thisPedestal << " = " << diff << " | " << threshold << "\n";
 	  if (diff > threshold) {
 	    thisStripFired = true;
 	  }
@@ -2757,6 +2833,14 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
     nCscStripDigis = stripDigiIndex;
     //cout << "NStripDigis: " << stripDigiIndex << "\n";
     
+      
+      
+      
+      
+      
+      
+      
+      
     int wireDigiIndex = 0;
     nCscWireDigis = 0;
     CSCWireDigiCollection::DigiRangeIterator wireDetIt;
@@ -2804,6 +2888,156 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
     }
     nCscWireDigis = wireDigiIndex;
   }
+
+
+// bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+// {
+//   // edm::ESHandle<CSCGeometry> cscG;
+//   // edm::ESHandle<DTGeometry> dtG;
+//   // edm::ESHandle<RPCGeometry> rpcG;
+//   // iSetup.get<MuonGeometryRecord>().get(cscG);
+//   // iSetup.get<MuonGeometryRecord>().get(dtG);
+//   // iSetup.get<MuonGeometryRecord>().get(rpcG);
+
+//   auto const& cscG = iSetup.getData(cscGeometryToken_);
+//   auto const& dtG = iSetup.getData(dtGeometryToken_);
+//   auto const& rpcG = iSetup.getData(rpcGeometryToken_);
+
+//   // edm::ESHandle<CaloGeometry> geoHandle;
+//   // iSetup.get<CaloGeometryRecord>().get(geoHandle);
+//   // const CaloSubdetectorGeometry *barrelGeometry = geoHandle->getSubdetectorGeometry(DetId::Ecal, EcalBarrel);
+//   // const CaloSubdetectorGeometry *endcapGeometry = geoHandle->getSubdetectorGeometry(DetId::Ecal, EcalEndcap);
+//   // const CaloSubdetectorGeometry *hbGeometry = geoHandle->getSubdetectorGeometry(DetId::Hcal, HcalBarrel);
+//   // const CaloSubdetectorGeometry *heGeometry = geoHandle->getSubdetectorGeometry(DetId::Hcal, HcalEndcap);
+
+//   //*****************
+//   //** DIGIS
+//   //*****************
+//   if (readMuonDigis_) {    
+//     int stripDigiIndex = 0;
+//     nCscStripDigis = 0;
+//     int nCscStripDigisFired = 0;
+    
+//     CSCStripDigiCollection::DigiRangeIterator stripDetIt;
+         
+//       for (stripDetIt = MuonCSCStripDigi->begin(); stripDetIt != MuonCSCStripDigi->end(); stripDetIt++){
+//       const CSCDetId &id = (*stripDetIt).first;
+//       int tempDetId = CSCDetId::rawIdMaker(CSCDetId::endcap(id), CSCDetId::station(id), CSCDetId::ring(id), CSCDetId::chamber(id), CSCDetId::layer(id));
+
+//       CSCDetId tempID(id.endcap(),id.station(),id.ring(),id.chamber(),id.layer()); 
+	 
+//       const CSCStripDigiCollection::Range &range = (*stripDetIt).second;
+//       for (CSCStripDigiCollection::const_iterator digiIt = range.first; digiIt != range.second; ++digiIt) {
+// 	// cout << "CSC Strip "
+// 	//      << id
+// 	//      // << id.endcap() << ":" << id.station() << ":" << id.ring() << ":" << id.chamber() << ":" << id.layer()	  
+// 	//      << " | "
+// 	//      << " StripDigi " << stripDigiIndex << " | Strip " << digiIt->getStrip() << "\n";
+// 	// cout << "CSC Strip "
+// 	//      << tempID
+// 	//      << " | "
+// 	//      << " Digi " << stripDigiIndex << " | Strip " << digiIt->getStrip() << "\n";
+// 	cscStripDigiDetID[stripDigiIndex] = tempDetId;
+// 	cscStripDigiDetIDEndcap[stripDigiIndex] = id.endcap();
+// 	cscStripDigiDetIDStation[stripDigiIndex] = id.station();
+// 	cscStripDigiDetIDRing[stripDigiIndex] = id.ring();
+// 	cscStripDigiDetIDChamber[stripDigiIndex] = id.chamber();
+// 	cscStripDigiDetIDLayer[stripDigiIndex] = id.layer();
+// 	cscStripDigiStripNumber[stripDigiIndex] = digiIt->getStrip();
+		
+// 	LocalPoint lp0(0., 0.); //SX: seems like the local point units are in centimeters
+// 	LocalPoint lp1(0., 1.);
+// 	LocalPoint lp2(0., 2.);
+// 	const CSCChamber* cscchamber = cscG.chamber(tempID);       
+// 	if (cscchamber) {
+// 	  GlobalPoint globalPosition = cscchamber->toGlobal(lp0);
+
+// 	  //cout << "Global Position: " << globalPosition.x() << " " << globalPosition.y() << " " << globalPosition.z() << " | " << globalPosition.phi() << " " << globalPosition.eta() << "\n";
+// 	  cscStripDigiLayerX[stripDigiIndex] = globalPosition.x();
+// 	  cscStripDigiLayerY[stripDigiIndex] = globalPosition.y();
+// 	  cscStripDigiLayerZ[stripDigiIndex] = globalPosition.z();
+// 	  cscStripDigiLayerEta[stripDigiIndex] = globalPosition.eta();
+// 	  cscStripDigiLayerPhi[stripDigiIndex] = globalPosition.phi();
+// 	}
+		 
+//         //ADC count is 8 time stamps
+//         std::vector<int> myADCVals = digiIt->getADCCounts();
+// 	bool thisStripFired = false;
+// 	float thisPedestal = 0.5 * (float)(myADCVals[0] + myADCVals[1]);
+// 	float threshold = STRIP_DIGI_THRESHOLD;
+// 	float diff = 0.;
+	
+// 	for (unsigned int iCount = 0; iCount < myADCVals.size(); iCount++) {
+// 	  if (iCount >= 8) { //protect against array overflow
+// 	    cout << "Error: More than 8 time samples in CSC strip digi ADC array. Stopping now!\n";
+// 	    assert(0);
+// 	  }	  
+// 	  cscStripDigiADC[stripDigiIndex][iCount] = myADCVals[iCount];
+// 	  diff = (float)myADCVals[iCount] - thisPedestal;
+// 	  //cout << "Digi Sample " << iCount << " : " << (float)myADCVals[iCount] << " - " << thisPedestal << " = " << diff << " | " << threshold << "\n";
+// 	  if (diff > threshold) {
+// 	    thisStripFired = true;
+// 	  }
+// 	}
+// 	if (thisStripFired) nCscStripDigisFired++;
+// 	stripDigiIndex++;
+	
+// 	if (stripDigiIndex >= CSCDIGIARRAYSIZE) { //protect against array overflow
+// 	  cout << "Error: stripDigiIndex larger than CSCDIGIARRAYSIZE. Stopping now!\n";
+// 	  assert(0);
+// 	}
+//       }
+//     }
+//     nCscStripDigis = stripDigiIndex;
+//     //cout << "NStripDigis: " << stripDigiIndex << "\n";
+    
+//     int wireDigiIndex = 0;
+//     nCscWireDigis = 0;
+//     CSCWireDigiCollection::DigiRangeIterator wireDetIt;
+//     for (wireDetIt = MuonCSCWireDigi->begin(); wireDetIt != MuonCSCWireDigi->end(); wireDetIt++){
+//       const CSCDetId &id = (*wireDetIt).first;
+//       int tempDetId = CSCDetId::rawIdMaker(CSCDetId::endcap(id), CSCDetId::station(id), CSCDetId::ring(id), CSCDetId::chamber(id), CSCDetId::layer(id));
+//       const CSCWireDigiCollection::Range &range = (*wireDetIt).second;
+//       for (CSCWireDigiCollection::const_iterator digiIt = range.first; digiIt != range.second; ++digiIt) {
+
+// 	std::vector<int> tbins = digiIt->getTimeBinsOn();
+// 	// cout << "CSC Wires "
+// 	//      << id
+// 	//      << " | "
+// 	//      << " WireDigi " << wireDigiIndex << " | Wire " << digiIt->getWireGroup()
+// 	//      << " | "
+// 	//      << digiIt->getWireGroupBX() << " "
+// 	//      << digiIt->getBXandWireGroup() << " "
+// 	//      << " | "
+// 	//      << digiIt->getTimeBin()
+// 	//      << " | ";
+// 	// for (uint q =0; q < tbins.size(); q++) {
+// 	//   cout << tbins[q] << " ";
+// 	// }
+// 	// cout << " | "
+// 	//      << "\n";
+
+// 	cscWireDigiDetID[wireDigiIndex] = tempDetId;
+// 	cscWireDigiDetIDEndcap[wireDigiIndex] = id.endcap();
+// 	cscWireDigiDetIDStation[wireDigiIndex] = id.station();
+// 	cscWireDigiDetIDRing[wireDigiIndex] = id.ring();
+// 	cscWireDigiDetIDChamber[wireDigiIndex] = id.chamber();
+// 	cscWireDigiDetIDLayer[wireDigiIndex] = id.layer();
+// 	cscWireDigiWireGroup[wireDigiIndex] = digiIt->getWireGroup();
+// 	cscWireDigiWireGroupBX[wireDigiIndex] = digiIt->getWireGroupBX();
+// 	cscWireDigiBXandWireGroup[wireDigiIndex] = digiIt->getBXandWireGroup();
+// 	cscWireDigiTimeBin[wireDigiIndex] = digiIt->getTimeBin();
+// 	cscWireDigiTimeBinsOnSize[wireDigiIndex] = tbins.size();
+// 	for (uint q =0; q < tbins.size(); q++) {
+// 	  if (q>=5) continue; //protect against array overflow
+// 	  cscWireDigiTimeBinsOn[wireDigiIndex][q] = tbins[q];
+// 	}
+	
+//         wireDigiIndex++;
+//       }      
+//     }
+//     nCscWireDigis = wireDigiIndex;
+//   }
 
 
 

@@ -919,11 +919,21 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
   int cscStripDigiDetIDChamber[CSCDIGIARRAYSIZE];
   int cscStripDigiDetIDLayer[CSCDIGIARRAYSIZE];
   uint cscStripDigiStripNumber[CSCDIGIARRAYSIZE];
+    
   float cscStripDigiLayerX[CSCDIGIARRAYSIZE];
   float cscStripDigiLayerY[CSCDIGIARRAYSIZE];
   float cscStripDigiLayerZ[CSCDIGIARRAYSIZE];
   float cscStripDigiLayerEta[CSCDIGIARRAYSIZE];
   float cscStripDigiLayerPhi[CSCDIGIARRAYSIZE];
+    
+  float cscStripStartX[CSCDIGIARRAYSIZE];
+  float cscStripStartY[CSCDIGIARRAYSIZE];
+  float cscStripStartZ[CSCDIGIARRAYSIZE];
+  float cscStripEndX[CSCDIGIARRAYSIZE];
+  float cscStripEndY[CSCDIGIARRAYSIZE];
+  float cscStripEndZ[CSCDIGIARRAYSIZE];
+  float cscStripLength[CSCDIGIARRAYSIZE];
+
   int cscStripDigiADC[CSCDIGIARRAYSIZE][8];
   int cscWireDigiDetID[CSCDIGIARRAYSIZE];
   int cscWireDigiDetIDEndcap[CSCDIGIARRAYSIZE];
