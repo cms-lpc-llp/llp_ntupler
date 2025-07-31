@@ -919,11 +919,21 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
   int cscStripDigiDetIDChamber[CSCDIGIARRAYSIZE];
   int cscStripDigiDetIDLayer[CSCDIGIARRAYSIZE];
   uint cscStripDigiStripNumber[CSCDIGIARRAYSIZE];
+    
   float cscStripDigiLayerX[CSCDIGIARRAYSIZE];
   float cscStripDigiLayerY[CSCDIGIARRAYSIZE];
   float cscStripDigiLayerZ[CSCDIGIARRAYSIZE];
   float cscStripDigiLayerEta[CSCDIGIARRAYSIZE];
   float cscStripDigiLayerPhi[CSCDIGIARRAYSIZE];
+    
+  float cscStripStartX[CSCDIGIARRAYSIZE];
+  float cscStripStartY[CSCDIGIARRAYSIZE];
+  float cscStripStartZ[CSCDIGIARRAYSIZE];
+  float cscStripEndX[CSCDIGIARRAYSIZE];
+  float cscStripEndY[CSCDIGIARRAYSIZE];
+  float cscStripEndZ[CSCDIGIARRAYSIZE];
+  float cscStripLength[CSCDIGIARRAYSIZE];
+
   int cscStripDigiADC[CSCDIGIARRAYSIZE][8];
   int cscWireDigiDetID[CSCDIGIARRAYSIZE];
   int cscWireDigiDetIDEndcap[CSCDIGIARRAYSIZE];
@@ -934,6 +944,18 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
   int cscWireDigiWireGroup[CSCDIGIARRAYSIZE];
   int cscWireDigiWireGroupBX[CSCDIGIARRAYSIZE];
   int cscWireDigiBXandWireGroup[CSCDIGIARRAYSIZE];
+    
+  float cscWireDigiCenterX[CSCDIGIARRAYSIZE];
+  float cscWireDigiCenterY[CSCDIGIARRAYSIZE];
+  float cscWireDigiCenterZ[CSCDIGIARRAYSIZE];
+  float cscWireDigiStartX[CSCDIGIARRAYSIZE];
+  float cscWireDigiStartY[CSCDIGIARRAYSIZE];
+  float cscWireDigiStartZ[CSCDIGIARRAYSIZE];
+  float cscWireDigiEndX[CSCDIGIARRAYSIZE];
+  float cscWireDigiEndY[CSCDIGIARRAYSIZE];
+  float cscWireDigiEndZ[CSCDIGIARRAYSIZE];
+  float cscWireDigiLength[CSCDIGIARRAYSIZE];
+
   int cscWireDigiTimeBin[CSCDIGIARRAYSIZE];
   int cscWireDigiTimeBinsOnSize[CSCDIGIARRAYSIZE];
   int cscWireDigiTimeBinsOn[CSCDIGIARRAYSIZE][5];
