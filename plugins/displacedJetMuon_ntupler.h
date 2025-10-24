@@ -171,6 +171,7 @@ using namespace std;
 //------ Array Size Constants ------//
 #define OBJECTARRAYSIZE 5000
 #define CSCDIGIARRAYSIZE 20000
+#define CSCSIMHITARRAYSIZE 20000
 #define CSCRECHITARRAYSIZE 1000000
 #define RECHITARRAYSIZE 20000
 #define HORECHITARRAYSIZE 2000
@@ -960,8 +961,14 @@ float pho_pfClusterSeedE[OBJECTARRAYSIZE];
   int cscWireDigiTimeBinsOnSize[CSCDIGIARRAYSIZE];
   int cscWireDigiTimeBinsOn[CSCDIGIARRAYSIZE][5];
 
-
-  
+  int nCscSimHits;
+  int cscSimHitDetID[CSCSIMHITARRAYSIZE];
+  float cscSimHitX[CSCSIMHITARRAYSIZE];
+  float cscSimHitY[CSCSIMHITARRAYSIZE];
+  float cscSimHitZ[CSCSIMHITARRAYSIZE];
+  float cscSimHitE[CSCSIMHITARRAYSIZE];
+  int cscSimHitPDG[CSCSIMHITARRAYSIZE];
+    
   int nCscSeg;
   float cscSegPhi[CSCRECHITARRAYSIZE];
   float cscSegEta[CSCRECHITARRAYSIZE];
