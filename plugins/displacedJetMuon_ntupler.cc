@@ -3229,9 +3229,12 @@ bool displacedJetMuon_ntupler::fillMuonSystem(const edm::Event& iEvent, const ed
 	CSCDetId cscdetid = cscRechit.cscDetId();
 	cscRechitsDetId[ncscRechits] = CSCDetId::rawIdMaker(CSCDetId::endcap(cscdetid), CSCDetId::station(cscdetid), CSCDetId::ring(cscdetid), CSCDetId::chamber(cscdetid), CSCDetId::layer(cscdetid));
 	int endcap = CSCDetId::endcap(cscdetid) == 1 ? 1 : -1;
-	const CSCChamber* cscchamber = cscG.chamber(cscdetid);
-	if (cscchamber) {
-	  GlobalPoint globalPosition = cscchamber->toGlobal(cscRecHitLocalPosition);
+	// const CSCChamber* cscchamber = cscG.chamber(cscdetid);
+	// if (cscchamber) {
+	//   GlobalPoint globalPosition = cscchamber->toGlobal(cscRecHitLocalPosition);
+  const CSCLayer* csclayer = cscG.layer(cscdetid);
+  if (csclayer) {
+    GlobalPoint globalPosition = csclayer->toGlobal(cscRecHitLocalPosition);
 	  cscRechitsX[ncscRechits] = globalPosition.x();
 	  cscRechitsY[ncscRechits] = globalPosition.y();
 	  cscRechitsZ[ncscRechits] = globalPosition.z();
